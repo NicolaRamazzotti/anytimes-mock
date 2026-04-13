@@ -69,23 +69,129 @@
 .ftag{font-size:10px;padding:3px 9px;border-radius:5px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.35);border:1px solid rgba(255,255,255,0.08);font-family:monospace}
 
 /* ── AI SECTION ── */
-.ai-section{background:var(--off-white)}
-.ai-section .s-title{color:var(--dark)}
-.ai-section .s-sub{color:var(--text-muted-dark)}
-.ai-section .eyebrow{color:var(--brand)}
-.ai-inner-card{background:var(--dark);border-radius:var(--r-xl);padding:clamp(2.5rem,5vw,4rem);margin-top:3.5rem;position:relative;overflow:hidden}
-.ai-inner-card::before{content:'';position:absolute;top:-120px;right:-120px;width:500px;height:500px;background:radial-gradient(circle,rgba(247,88,63,0.07) 0%,transparent 70%)}
-.ai-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;position:relative;z-index:1}
-.ai-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--r-lg);padding:1.5rem;transition:all .25s}
-.ai-card:hover{background:rgba(255,255,255,0.07);transform:translateY(-3px);border-color:rgba(247,88,63,0.2)}
-.ai-icon{font-size:22px;margin-bottom:.9rem;display:block}
-.ai-card h4{font-family:var(--font-display);font-size:14px;font-weight:700;color:#fff;margin-bottom:.4rem}
-.ai-card p{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.7;font-weight:300}
-.ai-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(247,88,63,0.1);border:1px solid rgba(247,88,63,0.2);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--brand-mid);font-weight:500;margin-bottom:2rem}
-.ai-head-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem}
-.ai-head-left .s-title{color:#fff}
-.ai-head-left .s-sub{color:rgba(255,255,255,0.55);max-width:460px}
-.ai-tag{display:inline-block;margin-top:.75rem;background:rgba(247,88,63,0.1);border:1px solid rgba(247,88,63,0.15);border-radius:5px;padding:2px 9px;font-size:10px;color:var(--brand-mid);font-family:monospace}
+/* ── AI SECTION redesign ── */
+.ai-section{
+  background:#06040e;
+  position:relative;overflow:hidden;
+}
+.ai-section::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(92,50,234,0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(92,50,234,0.045) 1px, transparent 1px);
+  background-size:48px 48px;
+  pointer-events:none;
+}
+.ai-orb{
+  position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;
+}
+.ai-orb-1{width:600px;height:600px;background:rgba(92,50,234,0.16);top:-180px;left:-150px;}
+.ai-orb-2{width:480px;height:480px;background:rgba(92,50,234,0.1);bottom:-160px;right:-100px;}
+.ai-section .eyebrow{color:var(--ai-mid)}
+.ai-section .s-title{color:#fff}
+.ai-section .s-sub{color:rgba(255,255,255,0.45)}
+/* ai header */
+.ai-header-wrap{text-align:center;margin-bottom:3rem;position:relative;z-index:1}
+.ai-header-wrap .s-title{margin:0 auto .75rem;max-width:620px}
+.ai-header-wrap .s-sub{max-width:500px;margin:0 auto 1.5rem}
+.ai-gemini-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(92,50,234,0.12);border:1px solid rgba(92,50,234,0.3);
+  border-radius:20px;padding:7px 16px;
+  font-size:11px;color:var(--ai-mid);font-weight:500;font-family:var(--font-body);
+}
+.ai-gemini-dot{width:6px;height:6px;border-radius:50%;background:var(--ai);animation:pulse 2s ease-in-out infinite}
+/* main layout */
+.ai-layout{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1.25rem;position:relative;z-index:1;
+}
+/* terminal */
+.ai-terminal{
+  background:rgba(6,4,14,0.7);
+  border:1px solid rgba(92,50,234,0.2);
+  border-radius:var(--r-xl);overflow:hidden;
+  display:flex;flex-direction:column;
+  backdrop-filter:blur(10px);
+}
+.ai-term-bar{
+  background:rgba(92,50,234,0.08);border-bottom:1px solid rgba(92,50,234,0.15);
+  padding:11px 16px;display:flex;align-items:center;gap:8px;
+}
+.ai-term-dots{display:flex;gap:5px}
+.ai-term-dot{width:10px;height:10px;border-radius:50%}
+.ai-term-dot.r{background:#fc6058}.ai-term-dot.y{background:#fec02f}.ai-term-dot.g{background:#2bc840}
+.ai-term-label{font-size:10px;color:rgba(155,121,245,0.6);font-family:monospace;flex:1;text-align:center;letter-spacing:.5px}
+.ai-term-live{display:flex;align-items:center;gap:5px;font-size:10px;color:#4ade80;font-family:var(--font-body)}
+.ai-term-live-dot{width:5px;height:5px;border-radius:50%;background:#4ade80;animation:pulse 1.5s infinite}
+.ai-term-body{
+  flex:1;padding:1.25rem 1.5rem;
+  font-family:'SFMono-Regular',Consolas,monospace;font-size:11px;line-height:2;
+  min-height:320px;overflow:hidden;
+}
+.ai-term-line{display:flex;gap:8px;opacity:0}
+.ai-term-line.show{animation:termLine .25s forwards}
+.atl-time{color:rgba(92,50,234,0.5);flex-shrink:0;user-select:none}
+.atl-mod{flex-shrink:0;font-weight:600}
+.atl-mod.insight{color:#9b79f5}
+.atl-mod.metrics{color:#a78bfa}
+.atl-mod.match{color:#c4b5fd}
+.atl-mod.company{color:#7c6ef5}
+.atl-val{color:rgba(255,255,255,0.7)}
+.atl-val.good{color:#4ade80}
+.atl-val.warn{color:#fb923c}
+.atl-val.ai{color:var(--ai-mid);font-style:italic}
+.atl-val.num{color:#e879f9}
+.ai-cursor{display:inline-block;width:7px;height:12px;background:var(--ai-mid);animation:blink 1s step-end infinite;vertical-align:middle;margin-left:3px}
+/* scan line */
+.ai-scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(92,50,234,0.5),transparent);animation:scanLine 5s linear infinite;pointer-events:none}
+/* right cards */
+.ai-mods{
+  display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+  gap:1rem;
+}
+.ai-mod{
+  background:rgba(92,50,234,0.04);
+  border:1px solid rgba(92,50,234,0.16);
+  border-radius:var(--r-lg);padding:1.5rem;
+  position:relative;overflow:hidden;
+  opacity:0;transform:translateY(14px);
+  transition:opacity .5s,transform .5s,background .3s,border-color .3s,box-shadow .3s;
+}
+.ai-mod.visible{opacity:1;transform:translateY(0)}
+.ai-mod::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(circle at top left,rgba(92,50,234,0.1) 0%,transparent 60%);
+  pointer-events:none;
+}
+.ai-mod:hover{
+  background:rgba(92,50,234,0.09);
+  border-color:rgba(92,50,234,0.35);
+  transform:translateY(-3px);
+  box-shadow:0 12px 40px rgba(92,50,234,0.2);
+}
+.ai-mod-scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(92,50,234,0.4),transparent);animation:scanLine 4s linear infinite;pointer-events:none;opacity:0;transition:opacity .3s}
+.ai-mod:hover .ai-mod-scan{opacity:1}
+.ai-mod-icon{
+  width:38px;height:38px;border-radius:10px;
+  background:rgba(92,50,234,0.15);border:1px solid rgba(92,50,234,0.25);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;margin-bottom:1rem;position:relative;z-index:1;
+}
+.ai-mod h4{font-family:var(--font-display);font-size:14px;font-weight:700;color:#fff;margin-bottom:.35rem;letter-spacing:-.2px;position:relative;z-index:1}
+.ai-mod p{font-size:11.5px;color:rgba(255,255,255,0.45);line-height:1.65;font-weight:300;position:relative;z-index:1}
+.ai-mod-tag{
+  display:inline-block;margin-top:.7rem;
+  background:rgba(92,50,234,0.1);border:1px solid rgba(92,50,234,0.2);
+  border-radius:5px;padding:2px 8px;
+  font-size:9px;color:var(--ai-mid);font-family:monospace;
+  position:relative;z-index:1;
+}
+@keyframes termLine{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes scanLine{0%{top:-2px;opacity:0}5%{opacity:1}95%{opacity:1}100%{top:100%;opacity:0}}
 
 /* ── WHO ── */
 .who-section{background:var(--dark)}
@@ -165,14 +271,15 @@
   .hero{grid-template-columns:1fr;gap:3rem}
   .feat-bento{grid-template-columns:repeat(2,1fr)}
   .fb.wide{grid-column:span 1}
-  .ai-grid{grid-template-columns:repeat(2,1fr)}
+  .ai-layout{grid-template-columns:1fr}
+  .ai-mods{grid-template-columns:1fr 1fr}
   .who-grid{grid-template-columns:1fr}
   .pricing-grid{grid-template-columns:1fr;max-width:440px;margin-left:auto;margin-right:auto}
   .dash-layout{grid-template-columns:120px 1fr}
 }
 @media(max-width:600px){
   .feat-bento{grid-template-columns:1fr}
-  .ai-grid{grid-template-columns:1fr}
+  .ai-mods{grid-template-columns:1fr}
   .stats-g{grid-template-columns:repeat(2,1fr)}
   .slots{grid-template-columns:repeat(3,1fr)}
   .hero-h1{letter-spacing:-1.5px}
@@ -295,27 +402,72 @@
 
 <!-- AI INSIGHTS -->
 <section class="section ai-section" id="ai">
-  <div class="inner">
-    <div class="fade-up" style="text-align:center">
-      <div class="eyebrow" style="justify-content:center;display:flex">AI Insights</div>
-      <h2 class="s-title" style="max-width:600px;margin:0 auto .75rem">Dati che parlano.<br>Suggerimenti che trasformano.</h2>
-      <p class="s-sub" style="max-width:500px;margin:0 auto">Il primo gestionale sportivo italiano con intelligenza artificiale integrata di serie. Zero plugin, zero extra.</p>
+  <div class="ai-orb ai-orb-1"></div>
+  <div class="ai-orb ai-orb-2"></div>
+  <div class="inner" style="position:relative;z-index:1">
+
+    <!-- header -->
+    <div class="ai-header-wrap fade-up">
+      <div class="eyebrow" style="display:flex;justify-content:center;margin-bottom:1rem">
+        <div class="ai-gemini-badge"><div class="ai-gemini-dot"></div> Powered by Google Gemini 2.0 Flash</div>
+      </div>
+      <h2 class="s-title">Dati che parlano.<br>Suggerimenti che trasformano.</h2>
+      <p class="s-sub">Il primo gestionale sportivo italiano con AI integrata di serie — analisi in tempo reale, insight azionabili ogni mattina.</p>
     </div>
-    <div class="ai-inner-card">
-      <div class="ai-head-row">
-        <div class="ai-head-left">
-          <div class="ai-badge">⚡ Powered by Google Gemini 2.0 Flash</div>
-          <h3 class="s-title" style="color:#fff;font-family:var(--font-display)">Il tuo club,<br>analizzato in tempo reale.</h3>
-          <p class="s-sub" style="color:rgba(255,255,255,0.5);max-width:420px">Ogni mattina ricevi una lista di azioni concrete: chi chiamare, quali slot riempire, quali soci rischiano di andarsene.</p>
+
+    <!-- 2-col layout -->
+    <div class="ai-layout">
+
+      <!-- LEFT: terminal -->
+      <div class="ai-terminal">
+        <div class="ai-term-bar">
+          <div class="ai-term-dots">
+            <div class="ai-term-dot r"></div>
+            <div class="ai-term-dot y"></div>
+            <div class="ai-term-dot g"></div>
+          </div>
+          <div class="ai-term-label">anytimes-ai · live stream</div>
+          <div class="ai-term-live"><div class="ai-term-live-dot"></div>LIVE</div>
+        </div>
+        <div class="ai-term-body" id="aiTermBody" style="position:relative">
+          <div class="ai-scan"></div>
+          <span class="ai-cursor" id="aiCursor"></span>
         </div>
       </div>
-      <div class="ai-grid">
-        <div class="ai-card"><span class="ai-icon">🗓️</span><h4>Agenda Insights</h4><p>Azioni concrete ogni mattina: chi chiamare, slot da riempire, soci da re-ingaggiare.</p><span class="ai-tag">daily briefing</span></div>
-        <div class="ai-card"><span class="ai-icon">👤</span><h4>Player Metrics</h4><p>Segmentazione automatica in 6 profili: Premium, Attivo, In crescita, In calo, A rischio, Dormiente.</p><span class="ai-tag">churn prediction</span></div>
-        <div class="ai-card"><span class="ai-icon">🤝</span><h4>Smart Match</h4><p>Suggerisce le combinazioni di giocatori più compatibili per livello, abitudini e affinità sociale.</p><span class="ai-tag">compatibility score</span></div>
-        <div class="ai-card"><span class="ai-icon">📊</span><h4>Company Insights</h4><p>Dashboard aggregata: revenue, churn risk tiers, distribuzione sport, top spenders e fasce orarie.</p><span class="ai-tag">club health score</span></div>
+
+      <!-- RIGHT: 4 moduli -->
+      <div class="ai-mods">
+        <div class="ai-mod">
+          <div class="ai-mod-scan"></div>
+          <div class="ai-mod-icon">🧠</div>
+          <h4>AI Insight</h4>
+          <p>Analisi settimanale della struttura. Slot da riempire, soci a rischio, revenue trend — tutto in un briefing mattutino.</p>
+          <span class="ai-mod-tag">daily briefing</span>
+        </div>
+        <div class="ai-mod">
+          <div class="ai-mod-scan" style="animation-delay:1s"></div>
+          <div class="ai-mod-icon">📈</div>
+          <h4>Player Metrics</h4>
+          <p>Segmentazione automatica dei soci in 6 profili. Churn prediction, LTV e frequenza di gioco per ogni giocatore.</p>
+          <span class="ai-mod-tag">churn prediction</span>
+        </div>
+        <div class="ai-mod">
+          <div class="ai-mod-scan" style="animation-delay:2s"></div>
+          <div class="ai-mod-icon">⚡</div>
+          <h4>Smart Match</h4>
+          <p>Abbina i giocatori per skill level, abitudini e compatibilità sociale. Partite più equilibrate, più soddisfazione.</p>
+          <span class="ai-mod-tag">skill-based matching</span>
+        </div>
+        <div class="ai-mod">
+          <div class="ai-mod-scan" style="animation-delay:3s"></div>
+          <div class="ai-mod-icon">🏢</div>
+          <h4>Company Insight</h4>
+          <p>KPI, forecast ricavi, distribuzione sport e club health score. La dashboard che ogni gestore vorrebbe avere.</p>
+          <span class="ai-mod-tag">club health score</span>
+        </div>
       </div>
-    </div>
+
+    </div><!-- /ai-layout -->
   </div>
 </section>
 
@@ -471,6 +623,66 @@ const io = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.08 });
 document.querySelectorAll('.fade-up, .fb, .pc, .who-card').forEach(el => io.observe(el));
+
+// AI mod cards stagger
+const aiModObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const mods = e.target.querySelectorAll('.ai-mod');
+    mods.forEach((m, i) => setTimeout(() => m.classList.add('visible'), i * 100));
+    aiModObs.unobserve(e.target);
+  });
+}, { threshold: 0.1 });
+const aiModsEl = document.querySelector('.ai-mods');
+if (aiModsEl) aiModObs.observe(aiModsEl);
+
+// AI Terminal stream
+const termLines = [
+  { time:'09:01:03', mod:'insight', modLabel:'AI-INSIGHT ', val:'Analisi completata \u2014 214 soci processati', cls:'ai' },
+  { time:'09:01:04', mod:'metrics', modLabel:'PLAYER-MET  ', val:'3 soci in stato "A rischio churn"', cls:'warn' },
+  { time:'09:01:04', mod:'metrics', modLabel:'PLAYER-MET  ', val:'top_player: "Marco R." \u2192 score 94/100', cls:'good' },
+  { time:'09:01:05', mod:'insight', modLabel:'AI-INSIGHT ', val:'Slot vuoti domani: 11 (10:00\u201312:00)', cls:'warn' },
+  { time:'09:01:06', mod:'match',   modLabel:'SMART-MATCH ', val:'Match suggerito: Luca B. \u2194 Andrea M.', cls:'ai' },
+  { time:'09:01:06', mod:'match',   modLabel:'SMART-MATCH ', val:'compatibility_score: 0.91', cls:'num' },
+  { time:'09:01:07', mod:'company', modLabel:'COMPANY-INS ', val:'Revenue MTD: \u20ac12.840 (+8.3%)', cls:'good' },
+  { time:'09:01:08', mod:'insight', modLabel:'AI-INSIGHT ', val:'Azione consigliata: promo slot 11:30', cls:'ai' },
+  { time:'09:01:09', mod:'metrics', modLabel:'PLAYER-MET  ', val:'Nuovo socio Premium rilevato: Giorgia F.', cls:'good' },
+  { time:'09:01:10', mod:'company', modLabel:'COMPANY-INS ', val:'Churn risk tier HIGH: 3 profili', cls:'warn' },
+  { time:'09:01:11', mod:'match',   modLabel:'SMART-MATCH ', val:'Torneo consigliato: categoria B (8 players)', cls:'ai' },
+  { time:'09:01:12', mod:'insight', modLabel:'AI-INSIGHT ', val:'Club health score: 87/100 \u2191', cls:'good' },
+];
+
+const modColors = { insight:'insight', metrics:'metrics', match:'match', company:'company' };
+let lineIdx = 0;
+let termStarted = false;
+
+function addLine() {
+  const body = document.getElementById('aiTermBody');
+  const cursor = document.getElementById('aiCursor');
+  if (!body || !cursor) return;
+  if (lineIdx >= termLines.length) { lineIdx = 0; body.innerHTML = '<div class="ai-scan"></div><span class="ai-cursor" id="aiCursor"></span>'; }
+  const d = termLines[lineIdx++];
+  const line = document.createElement('div');
+  line.className = 'ai-term-line';
+  line.innerHTML = `<span class="atl-time">[${d.time}]</span><span class="atl-mod ${modColors[d.mod]}">${d.modLabel}</span><span class="atl-val ${d.cls}">${d.val}</span>`;
+  body.insertBefore(line, cursor);
+  requestAnimationFrame(() => line.classList.add('show'));
+  // keep max 9 lines
+  const lines = body.querySelectorAll('.ai-term-line');
+  if (lines.length > 9) lines[0].remove();
+}
+
+const termObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !termStarted) {
+      termStarted = true;
+      addLine();
+      setInterval(addLine, 1400);
+    }
+  });
+}, { threshold: 0.2 });
+const termEl = document.querySelector('.ai-terminal');
+if (termEl) termObs.observe(termEl);
 </script>
 </body>
 </html>
