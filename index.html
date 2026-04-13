@@ -319,6 +319,11 @@
 /* integrations */
 [data-theme="light"] .int-chip{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.09);color:rgba(0,0,0,0.6)}
 [data-theme="light"] .int-chip:hover{background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.15)}
+/* AI section — rimane sempre dark, testi sempre bianchi */
+[data-theme="light"] .ai-section .s-title{color:#fff!important}
+[data-theme="light"] .ai-section .s-sub{color:rgba(255,255,255,0.45)!important}
+[data-theme="light"] .ai-section .ai-header-wrap .s-title{color:#fff!important}
+[data-theme="light"] .ai-section .ai-header-wrap .s-sub{color:rgba(255,255,255,0.45)!important}
 
 @media(max-width:960px){
   .hero{grid-template-columns:1fr;gap:3rem}
@@ -416,39 +421,45 @@
     <div class="feat-bento">
       <div class="fb wide">
         <div class="fb-icon">📅</div>
-        <h3>Prenotazioni in tempo reale</h3>
-        <p>Agenda multi-campo con vista orizzontale e verticale. Prezzi dinamici per fascia oraria. Partite aperte: i giocatori si aggiungono a campi già prenotati direttamente dall'app.</p>
-        <div class="fb-tags"><span class="ftag">multi-campo</span><span class="ftag">app mobile</span><span class="ftag">prezzi dinamici</span><span class="ftag">partite aperte</span></div>
+        <h3>Dashboard: tutto il club in un colpo d'occhio</h3>
+        <p>Agenda multi-campo con prezzi dinamici per fascia oraria e categoria utente. Partite e allenamenti aperti: i giocatori si uniscono da soli dall'app senza chiamare la reception. Pagamenti integrati con pacchetti, borsellino digitale in struttura e Stripe online.</p>
+        <div class="fb-tags"><span class="ftag">multi-campo</span><span class="ftag">prezzi dinamici</span><span class="ftag">partite aperte</span><span class="ftag">borsellino digitale</span></div>
       </div>
       <div class="fb">
         <div class="fb-icon">🏆</div>
         <h3>Tornei e campionati</h3>
-        <p>Gironi, eliminazione diretta, americano. Tabelloni automatici e classifiche live visibili dall'app dei giocatori.</p>
-        <div class="fb-tags"><span class="ftag">gironi</span><span class="ftag">live ranking</span></div>
+        <p>Gironi, eliminazione diretta, americano, multi-tabellone. Iscrizioni online, tabelloni automatici e classifiche live direttamente nell'app dei giocatori — zero carta, zero WhatsApp.</p>
+        <div class="fb-tags"><span class="ftag">multi-tabellone</span><span class="ftag">iscrizioni online</span><span class="ftag">classifiche live</span></div>
       </div>
       <div class="fb">
         <div class="fb-icon">🎓</div>
-        <h3>Academy e corsi</h3>
-        <p>Iscrizioni mensili, a ingressi o ibride. Tracciamento presenze e storico per ogni utente, integrato con il calendario.</p>
-        <div class="fb-tags"><span class="ftag">presenze</span><span class="ftag">iscrizioni flessibili</span></div>
+        <h3>Accademie e corsi</h3>
+        <p>Iscrizioni mensili, a ingressi o ibride — scegli tu. Presenze tracciate in automatico, storico completo per ogni atleta, tutto sincronizzato con il calendario del club.</p>
+        <div class="fb-tags"><span class="ftag">presenze auto</span><span class="ftag">iscrizioni ibride</span><span class="ftag">storico atleti</span></div>
       </div>
       <div class="fb">
         <div class="fb-icon">💳</div>
-        <h3>Abbonamenti e pagamenti</h3>
-        <p>Pacchetti personalizzati, Stripe integrato, contabilità automatica, gestione ASD completa.</p>
-        <div class="fb-tags"><span class="ftag">stripe</span><span class="ftag">contabilità</span></div>
+        <h3>Pacchetti e pagamenti</h3>
+        <p>Crea pacchetti su misura, ricarica il borsellino digitale, incassa in struttura o via Stripe. Ogni transazione registrata, zero riconciliazioni manuali.</p>
+        <div class="fb-tags"><span class="ftag">stripe</span><span class="ftag">borsellino</span><span class="ftag">pacchetti custom</span></div>
       </div>
       <div class="fb">
         <div class="fb-icon">🏅</div>
-        <h3>Ranking e comunità</h3>
-        <p>Matchmaking automatico, sistema di amicizie e ranking per sport. Costruisce la community attorno al tuo club.</p>
-        <div class="fb-tags"><span class="ftag">matchmaking</span><span class="ftag">community</span></div>
+        <h3>Ranking e community</h3>
+        <p>Ranking per sport del circolo, sistema di amicizie, sfide dirette. Trasforma i tuoi soci in una community attiva che torna a giocare — e porta altri giocatori con sé.</p>
+        <div class="fb-tags"><span class="ftag">ranking</span><span class="ftag">sfide</span><span class="ftag">community</span></div>
       </div>
       <div class="fb">
+        <div class="fb-icon">📊</div>
+        <h3>Contabilità e report</h3>
+        <p>Monitora ogni pagamento, tieni traccia degli arretrati per socio, gestisci inventario e uscite. Una pagina report dedicata per capire l'andamento del tuo club in tempo reale.</p>
+        <div class="fb-tags"><span class="ftag">arretrati</span><span class="ftag">inventario</span><span class="ftag">report live</span></div>
+      </div>
+      <div class="fb wide">
         <div class="fb-icon">⚙️</div>
-        <h3>Gestione club completa</h3>
-        <p>QR access, certificati medici, notifiche WhatsApp/Telegram, meteo per campo, statistiche avanzate sui soci.</p>
-        <div class="fb-tags"><span class="ftag">QR</span><span class="ftag">WhatsApp</span><span class="ftag">meteo</span></div>
+        <h3>Gestione club completa — e molto di più</h3>
+        <p>Certificati medici, libro soci, notifiche automatiche, statistiche avanzate per ogni utente. Crea e gestisci eventi, carica i tuoi sponsor direttamente in piattaforma. Tutto quello che serve per far funzionare un club serio, in un unico posto.</p>
+        <div class="fb-tags"><span class="ftag">certificati medici</span><span class="ftag">libro soci</span><span class="ftag">notifiche</span><span class="ftag">sponsor</span><span class="ftag">eventi</span></div>
       </div>
     </div>
   </div>
