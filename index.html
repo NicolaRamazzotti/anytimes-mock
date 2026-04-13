@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<script>document.documentElement.dataset.theme=localStorage.getItem('at-theme')||'dark'</script>
 <style>
 /* ── HERO ── */
 .hero{padding:clamp(5rem,10vw,8rem) clamp(1.5rem,5vw,3.5rem) 0;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.1fr;gap:5rem;align-items:center}
@@ -290,6 +291,35 @@
 .fade-up .s-sub{opacity:0;transition:opacity .6s .38s}
 .fade-up.visible .s-sub{opacity:1}
 
+/* ── LIGHT THEME: index.html overrides ── */
+[data-theme="light"] .hero-h1{color:#0D0D0D}
+[data-theme="light"] .hero-h1 .dim{color:rgba(0,0,0,0.28)}
+[data-theme="light"] .hero-p{color:rgba(0,0,0,0.52)}
+[data-theme="light"] .hero-social-proof .proof-text{color:rgba(0,0,0,0.45)}
+[data-theme="light"] .hero-social-proof .proof-text strong{color:rgba(0,0,0,0.75)}
+[data-theme="light"] .dash-shell{border-color:rgba(0,0,0,0.1);box-shadow:0 40px 80px rgba(0,0,0,.12),0 0 0 1px rgba(0,0,0,.06)}
+/* feat bento */
+[data-theme="light"] .feat-bento{background:rgba(0,0,0,0.07);border-color:rgba(0,0,0,0.07)}
+[data-theme="light"] .fb{background:#fff}
+[data-theme="light"] .fb:hover{background:#F7F5F1}
+[data-theme="light"] .fb h3{color:#0D0D0D}
+[data-theme="light"] .fb p{color:rgba(0,0,0,0.5)}
+[data-theme="light"] .fb-icon{background:rgba(247,88,63,0.09);border-color:rgba(247,88,63,0.18)}
+[data-theme="light"] .ftag{background:rgba(0,0,0,0.04);color:rgba(0,0,0,0.42);border-color:rgba(0,0,0,0.08)}
+/* who section */
+[data-theme="light"] .who-card.dark-card{background:#fff;border-color:rgba(0,0,0,0.09)}
+[data-theme="light"] .who-card.dark-card h3{color:#0D0D0D}
+[data-theme="light"] .who-card.dark-card p{color:rgba(0,0,0,0.52)}
+[data-theme="light"] .who-card.dark-card .who-list li{color:rgba(0,0,0,0.65)}
+[data-theme="light"] .who-card.dark-card .who-eyebrow{color:rgba(0,0,0,0.4)}
+[data-theme="light"] .who-card.dark-card .wcheck{background:rgba(0,0,0,0.06);color:rgba(0,0,0,0.55)}
+[data-theme="light"] .app-pill{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.1);color:rgba(0,0,0,0.6)}
+/* pricing — il piano dark resta scuro come accento */
+[data-theme="light"] .pc.dark-pc{background:#0D0D0D!important}
+/* integrations */
+[data-theme="light"] .int-chip{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.09);color:rgba(0,0,0,0.6)}
+[data-theme="light"] .int-chip:hover{background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.15)}
+
 @media(max-width:960px){
   .hero{grid-template-columns:1fr;gap:3rem}
   .feat-bento{grid-template-columns:repeat(2,1fr)}
@@ -321,6 +351,7 @@
     <li><a href="blog.html">Blog</a></li>
   </ul>
   <div class="nav-right">
+    <button class="theme-toggle" aria-label="Attiva tema chiaro"></button>
     <button class="btn-nav-ghost">Accedi</button>
     <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
   </div>
@@ -379,8 +410,8 @@
   <div class="inner">
     <div class="fade-up">
       <div class="eyebrow">Funzionalità</div>
-      <h2 class="s-title" style="color:#fff;max-width:560px">Tutto ciò che serve per far girare il tuo club</h2>
-      <p class="s-sub" style="color:rgba(255,255,255,0.45);max-width:480px">7 moduli integrati, un'unica piattaforma. Niente più fogli Excel, niente più app separate.</p>
+      <h2 class="s-title" style="max-width:560px">Tutto ciò che serve per far girare il tuo club</h2>
+      <p class="s-sub" style="max-width:480px">7 moduli integrati, un’unica piattaforma. Niente più fogli Excel, niente più app separate.</p>
     </div>
     <div class="feat-bento">
       <div class="fb wide">
@@ -499,7 +530,7 @@
   <div class="inner">
     <div class="fade-up">
       <div class="eyebrow">Per chi è</div>
-      <h2 class="s-title" style="color:#fff">Una piattaforma,<br>due esperienze.</h2>
+      <h2 class="s-title">Una piattaforma,<br>due esperienze.</h2>
     </div>
     <div class="who-grid">
       <div class="who-card light">
@@ -595,7 +626,7 @@
 <section class="section int-section" style="padding-top:3rem;padding-bottom:3rem">
   <div class="inner" style="text-align:center">
     <div class="eyebrow">Integrazioni</div>
-    <h2 class="s-title" style="color:#fff">Connesso con gli strumenti<br>che già usi</h2>
+    <h2 class="s-title">Connesso con gli strumenti<br>che già usi</h2>
     <div class="int-grid">
       <div class="int-chip"><div class="int-dot" style="background:#635bff"></div>Stripe</div>
       <div class="int-chip"><div class="int-dot" style="background:#4285f4"></div>Google Gemini 2.0</div>
@@ -720,5 +751,6 @@ document.querySelectorAll('.fb, .who-card').forEach(card => {
   });
 });
 </script>
+<script src="shared.js"></script>
 </body>
 </html>

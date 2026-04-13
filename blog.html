@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<script>document.documentElement.dataset.theme=localStorage.getItem('at-theme')||'dark'</script>
 <style>
 /* ── BLOG SECTION ── */
 .blog-section{background:var(--dark);padding:0 clamp(1.5rem,5vw,3.5rem) clamp(4rem,8vw,7rem)}
@@ -89,8 +90,29 @@
 .nl-btn:hover{background:var(--brand-dark)}
 .nl-note{font-size:11px;color:rgba(255,255,255,0.25);margin-top:.75rem}
 
+/* ── LIGHT THEME ── */
+[data-theme="light"] .cat-btn{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.1);color:rgba(0,0,0,0.55)}
+[data-theme="light"] .cat-btn:hover{background:rgba(0,0,0,0.08);color:#0D0D0D}
+[data-theme="light"] .featured-post{background:#fff;border-color:rgba(0,0,0,0.09)}
+[data-theme="light"] .fp-img{background:linear-gradient(135deg,rgba(247,88,63,0.08),rgba(247,88,63,0.02))}
+[data-theme="light"] .fp-title{color:#0D0D0D}
+[data-theme="light"] .fp-excerpt{color:rgba(0,0,0,0.52)}
+[data-theme="light"] .fp-author-name{color:rgba(0,0,0,0.55)}
+[data-theme="light"] .fp-date{color:rgba(0,0,0,0.3)}
+[data-theme="light"] .post-card{background:#fff;border-color:rgba(0,0,0,0.09)}
+[data-theme="light"] .post-card:hover{border-color:rgba(0,0,0,0.18)}
+[data-theme="light"] .pc-title{color:#0D0D0D}
+[data-theme="light"] .pc-excerpt{color:rgba(0,0,0,0.5)}
+[data-theme="light"] .pc-date{color:rgba(0,0,0,0.3)}
+[data-theme="light"] .btn-load-more{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.12);color:rgba(0,0,0,0.6)}
+[data-theme="light"] .btn-load-more:hover{background:rgba(0,0,0,0.09);color:#0D0D0D}
+[data-theme="light"] .nl-inner h3{color:#0D0D0D}
+[data-theme="light"] .nl-inner p{color:rgba(0,0,0,0.5)}
+[data-theme="light"] .nl-input{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.12);color:#0D0D0D}
+[data-theme="light"] .nl-input::placeholder{color:rgba(0,0,0,0.3)}
+[data-theme="light"] .nl-note{color:rgba(0,0,0,0.3)}
+
 @media(max-width:960px){
-  .featured-post{grid-template-columns:1fr}
   .fp-img-wrap{height:240px}
   .posts-grid{grid-template-columns:repeat(2,1fr)}
 }
@@ -112,6 +134,7 @@
     <li><a href="blog.html" class="active">Blog</a></li>
   </ul>
   <div class="nav-right">
+    <button class="theme-toggle" aria-label="Attiva tema chiaro"></button>
     <button class="btn-nav-ghost">Accedi</button>
     <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
   </div>
@@ -120,7 +143,7 @@
 <!-- PAGE HERO -->
 <div class="page-hero fade-up">
   <div class="eyebrow">Blog & News</div>
-  <h1 class="s-title" style="color:#fff">Risorse per gestori<br>di club sportivi.</h1>
+  <h1 class="s-title">Risorse per gestori<br>di club sportivi.</h1>
   <p class="s-sub">Strategie, guide pratiche e aggiornamenti dal mondo dei gestionali sportivi. Scritto da chi lavora con i club ogni giorno.</p>
 </div>
 
@@ -304,5 +327,6 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
   });
 });
 </script>
+<script src="shared.js"></script>
 </body>
 </html>

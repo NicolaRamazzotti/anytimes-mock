@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<script>document.documentElement.dataset.theme=localStorage.getItem('at-theme')||'dark'</script>
 <style>
 
 /* ── HERO ── */
@@ -195,7 +196,6 @@
 .rm-card p{font-size:13px;color:var(--text-muted-dark);line-height:1.7;font-weight:300}
 
 @media(max-width:960px){
-  .feat-cards{grid-template-columns:repeat(2,1fr)}
   .feat-card.wide{grid-column:span 1}
   .ai-cards-grid{grid-template-columns:1fr}
   .stats-inner{grid-template-columns:repeat(2,1fr)}
@@ -207,6 +207,34 @@
   .roadmap-grid{grid-template-columns:1fr}
   .cat-tab span{display:none}
 }
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] .feat-hero .s-title{color:#0D0D0D!important}
+[data-theme="light"] .feat-hero .s-sub{color:rgba(0,0,0,0.52)!important}
+[data-theme="light"] .cat-tabs-section{background:rgba(245,244,240,0.94)!important;border-bottom-color:rgba(0,0,0,0.08)!important}
+[data-theme="light"] .cat-tab{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.09);color:rgba(0,0,0,0.5)}
+[data-theme="light"] .cat-tab:hover{background:rgba(0,0,0,0.07);color:rgba(0,0,0,0.8)}
+[data-theme="light"] .cat-title{color:#0D0D0D}
+[data-theme="light"] .cat-count{color:rgba(0,0,0,0.3)}
+[data-theme="light"] .cat-line{background:rgba(0,0,0,0.09)}
+[data-theme="light"] .feat-cards{background:rgba(0,0,0,0.07)}
+[data-theme="light"] .feat-card{background:#fff}
+[data-theme="light"] .feat-card:hover{background:#F7F5F1}
+[data-theme="light"] .feat-card h3{color:#0D0D0D}
+[data-theme="light"] .feat-card p{color:rgba(0,0,0,0.5)}
+[data-theme="light"] .ftag{background:rgba(0,0,0,0.04);color:rgba(0,0,0,0.42);border-color:rgba(0,0,0,0.08)}
+[data-theme="light"] .fc-sub{color:rgba(0,0,0,0.45)}
+[data-theme="light"] .stat-num{color:#0D0D0D}
+[data-theme="light"] .stat-label{color:rgba(0,0,0,0.45)}
+[data-theme="light"] .int-chip{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.09);color:rgba(0,0,0,0.6)}
+[data-theme="light"] .int-chip:hover{background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.15)}
+/* AI big section — rimane sempre dark, testi sempre bianchi */
+[data-theme="light"] .ai-big-section{background:#0c0a14}
+[data-theme="light"] .ai-big-section .s-title{color:#fff!important}
+[data-theme="light"] .ai-big-section .s-sub{color:rgba(255,255,255,0.5)!important}
+[data-theme="light"] .ai-feat-card h3{color:#fff!important}
+[data-theme="light"] .ai-feat-card p{color:rgba(255,255,255,0.5)!important}
+[data-theme="light"] .ai-feat-label{color:rgba(255,255,255,0.25)!important}
 </style>
 </head>
 <body>
@@ -222,6 +250,7 @@
     <li><a href="blog.html">Blog</a></li>
   </ul>
   <div class="nav-right">
+    <button class="theme-toggle" aria-label="Attiva tema chiaro"></button>
     <button class="btn-nav-ghost">Accedi</button>
     <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
   </div>
@@ -664,5 +693,6 @@ sections.forEach(s => {
   if (el) scrollObserver.observe(el);
 });
 </script>
+<script src="shared.js"></script>
 </body>
 </html>

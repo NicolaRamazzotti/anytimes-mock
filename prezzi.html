@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<script>document.documentElement.dataset.theme=localStorage.getItem('at-theme')||'dark'</script>
 <style>
 /* ── PRICING PAGE ── */
 .pricing-page{background:var(--off-white)}
@@ -110,8 +111,19 @@
 .trust-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-muted-dark);font-weight:400}
 .trust-icon{font-size:18px}
 
+/* ── LIGHT THEME ── */
+[data-theme="light"] .billing-toggle .toggle-label{color:rgba(0,0,0,0.5)}
+[data-theme="light"] .billing-toggle .toggle-label.active{color:#0D0D0D}
+[data-theme="light"] .price-card.light{background:#fff;border-color:rgba(0,0,0,0.1)}
+[data-theme="light"] .price-card.light:hover{box-shadow:0 12px 40px rgba(0,0,0,.08)}
+[data-theme="light"] .compare-section{background:var(--dark-2)}
+[data-theme="light"] .compare-table th{color:rgba(0,0,0,0.45);border-bottom-color:rgba(0,0,0,0.09)}
+[data-theme="light"] .compare-table th:not(:first-child){color:#0D0D0D}
+[data-theme="light"] .compare-table td{color:rgba(0,0,0,0.65);border-bottom-color:rgba(0,0,0,0.05)}
+[data-theme="light"] .compare-table tr:hover td{background:rgba(0,0,0,0.02)}
+[data-theme="light"] .check-no{color:rgba(0,0,0,0.18)}
+
 @media(max-width:960px){
-  .pricing-cards{grid-template-columns:1fr;max-width:440px;margin:0 auto}
   .faq-cols{grid-template-columns:1fr}
 }
 </style>
@@ -128,6 +140,7 @@
     <li><a href="blog.html">Blog</a></li>
   </ul>
   <div class="nav-right">
+    <button class="theme-toggle" aria-label="Attiva tema chiaro"></button>
     <button class="btn-nav-ghost">Accedi</button>
     <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
   </div>
@@ -274,7 +287,7 @@
         </thead>
         <tbody>
           <tr class="cat-row"><td colspan="4">Prenotazioni & Agenda</td></tr>
-          <tr><td>Campi gestibili</td><td>Fino a 4</td><td style="color:#fff">Illimitati</td><td>Illimitati</td></tr>
+          <tr><td>Campi gestibili</td><td>Fino a 4</td><td>Illimitati</td><td>Illimitati</td></tr>
           <tr><td>Prenotazioni online (web + app)</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
           <tr><td>Partite aperte</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
           <tr><td>Prezzi dinamici per fascia oraria</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
@@ -414,5 +427,6 @@ toggle.addEventListener('change', () => {
   });
 });
 </script>
+<script src="shared.js"></script>
 </body>
 </html>

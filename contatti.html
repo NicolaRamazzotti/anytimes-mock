@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<script>document.documentElement.dataset.theme=localStorage.getItem('at-theme')||'dark'</script>
 <style>
 /* ── CONTACT LAYOUT ── */
 .contact-section{background:var(--dark);padding:clamp(2rem,5vw,4rem) clamp(1.5rem,5vw,3.5rem) clamp(4rem,8vw,7rem)}
@@ -84,8 +85,30 @@
 .resp-chip{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border-light);border-radius:var(--r);padding:10px 18px;font-size:13px;color:#3a3a3a;font-weight:500}
 .resp-dot{width:8px;height:8px;border-radius:50%;background:#4ade80}
 
+/* ── LIGHT THEME ── */
+[data-theme="light"] .contact-form-wrap{background:#fff;border-color:rgba(0,0,0,0.09)}
+[data-theme="light"] .form-title{color:#0D0D0D}
+[data-theme="light"] .form-subtitle{color:rgba(0,0,0,0.45)}
+[data-theme="light"] .field label{color:rgba(0,0,0,0.6)}
+[data-theme="light"] .field input,
+[data-theme="light"] .field select,
+[data-theme="light"] .field textarea{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.12);color:#0D0D0D}
+[data-theme="light"] .field input::placeholder,
+[data-theme="light"] .field textarea::placeholder{color:rgba(0,0,0,0.3)}
+[data-theme="light"] .field select{color:rgba(0,0,0,0.7)}
+[data-theme="light"] .privacy-note{color:rgba(0,0,0,0.35)}
+[data-theme="light"] .info-label{color:rgba(0,0,0,0.4)}
+[data-theme="light"] .info-text{color:rgba(0,0,0,0.7)}
+[data-theme="light"] .info-text strong{color:#0D0D0D}
+[data-theme="light"] .social-pill{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.1);color:rgba(0,0,0,0.6)}
+[data-theme="light"] .social-pill:hover{background:rgba(0,0,0,0.08);color:#0D0D0D}
+[data-theme="light"] .faq-item{background:#fff;border-color:rgba(0,0,0,0.09)}
+[data-theme="light"] .faq-q{color:#0D0D0D}
+[data-theme="light"] .faq-q:hover{background:rgba(0,0,0,0.02)}
+[data-theme="light"] .faq-arrow{color:rgba(0,0,0,0.3)}
+[data-theme="light"] .faq-a{color:rgba(0,0,0,0.55)}
+
 @media(max-width:960px){
-  .contact-grid{grid-template-columns:1fr;gap:2.5rem}
   .faq-grid{grid-template-columns:1fr}
 }
 @media(max-width:600px){
@@ -105,6 +128,7 @@
     <li><a href="blog.html">Blog</a></li>
   </ul>
   <div class="nav-right">
+    <button class="theme-toggle" aria-label="Attiva tema chiaro"></button>
     <button class="btn-nav-ghost">Accedi</button>
     <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
   </div>
@@ -113,7 +137,7 @@
 <!-- PAGE HERO -->
 <div class="page-hero fade-up">
   <div class="eyebrow">Contatti</div>
-  <h1 class="s-title" style="color:#fff">Parliamo del tuo club.</h1>
+  <h1 class="s-title">Parliamo del tuo club.</h1>
   <p class="s-sub">Il nostro team risponde entro poche ore. Ti mostriamo Anytimes in azione sul tuo caso reale, nessun pitch generico.</p>
 </div>
 
@@ -211,7 +235,7 @@
   <div class="inner">
     <div class="fade-up" style="text-align:center;margin-bottom:0">
       <div class="eyebrow">FAQ</div>
-      <h2 class="s-title" style="color:#fff;margin:0 auto .75rem">Domande frequenti</h2>
+      <h2 class="s-title" style="margin:0 auto .75rem">Domande frequenti</h2>
     </div>
     <div class="faq-grid">
       <div class="faq-item">
@@ -272,5 +296,6 @@ document.querySelectorAll('.faq-q').forEach(q => {
   });
 });
 </script>
+<script src="shared.js"></script>
 </body>
 </html>

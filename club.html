@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<script>document.documentElement.dataset.theme=localStorage.getItem('at-theme')||'dark'</script>
 <style>
 
 /* ── HERO ── */
@@ -188,8 +189,29 @@
   100%{opacity:0;transform:scale(3)}
 }
 
+/* ── LIGHT THEME ── */
+[data-theme="light"] .clubs-hero .s-title{color:#0D0D0D!important}
+[data-theme="light"] .clubs-hero .s-sub{color:rgba(0,0,0,0.52)!important}
+[data-theme="light"] .hero-count{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.09);color:rgba(0,0,0,0.5)}
+[data-theme="light"] .hero-count strong{color:#0D0D0D}
+[data-theme="light"] .search-input{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.12);color:#0D0D0D}
+[data-theme="light"] .search-input::placeholder{color:rgba(0,0,0,0.3)}
+[data-theme="light"] .sf-btn{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.09);color:rgba(0,0,0,0.5)}
+[data-theme="light"] .sf-btn:hover{background:rgba(0,0,0,0.07);color:rgba(0,0,0,0.8)}
+[data-theme="light"] .club-card{background:#fff;border-color:rgba(0,0,0,0.09)}
+[data-theme="light"] .club-card:hover{border-color:rgba(0,0,0,0.2);box-shadow:0 16px 48px rgba(0,0,0,.1)}
+[data-theme="light"] .cc-name{color:#0D0D0D}
+[data-theme="light"] .cc-location{color:rgba(0,0,0,0.4)}
+[data-theme="light"] .cc-sport-tag{background:rgba(0,0,0,0.04);color:rgba(0,0,0,0.5);border-color:rgba(0,0,0,0.07)}
+[data-theme="light"] .cc-desc{color:rgba(0,0,0,0.5)}
+[data-theme="light"] .cc-meta-item{color:rgba(0,0,0,0.35)}
+[data-theme="light"] .cc-btn-app{background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.12);color:rgba(0,0,0,0.6)}
+[data-theme="light"] .cc-btn-app:hover{background:rgba(0,0,0,0.09);color:#0D0D0D}
+[data-theme="light"] .join-left h3{color:#0D0D0D}
+[data-theme="light"] .join-left p{color:rgba(0,0,0,0.5)}
+[data-theme="light"] .map-placeholder{background:#F7F5F1;border-color:rgba(0,0,0,0.08)}
+
 @media(max-width:960px){
-  .clubs-grid{grid-template-columns:repeat(2,1fr)}
   .join-inner{flex-direction:column;align-items:flex-start}
   .join-actions{width:100%}
 }
@@ -213,6 +235,7 @@
     <li><a href="blog.html">Blog</a></li>
   </ul>
   <div class="nav-right">
+    <button class="theme-toggle" aria-label="Attiva tema chiaro"></button>
     <button class="btn-nav-ghost">Accedi</button>
     <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
   </div>
@@ -665,5 +688,6 @@ function applyFilters() {
   document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
 }
 </script>
+<script src="shared.js"></script>
 </body>
 </html>
