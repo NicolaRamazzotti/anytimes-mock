@@ -122,6 +122,22 @@ La finestra stile macOS nell'hero usa:
 
 ---
 
+## Sistema tema chiaro/scuro
+
+- Toggle `data-theme="dark|light"` su `<html>`, persistito in `localStorage('at-theme')`, inizializzato in `<head>` prima del CSS
+- **`shared.css`** contiene i token di override in `[data-theme="light"] :root { … }` + override component-level
+- **Regola fondamentale**: ogni volta che si crea una nuova sezione bisogna considerare **entrambi i temi**
+  - Se la sezione usa `background:var(--dark)` o `background:var(--off-white)` → si adatta automaticamente ai token
+  - Se la sezione usa un **background hardcoded** (es. `background:#0D0D0D`, `#06040e`, gradiente custom) → è una **dark island fissa** → aggiungere sempre nel blocco `[data-theme="light"]` della pagina gli override espliciti con `!important` per testi/bordi
+  - Se la sezione usa `background:var(--off-white)` e ha testi con colori espliciti inline (es. `color:rgba(13,13,13,0.6)`) → sostituire con variabili CSS (`var(--text-muted-dark)`, `var(--dark)`) che si aggiornano col tema
+- **Checklist per ogni nuova sezione**:
+  1. Il background usa token CSS o è hardcoded?
+  2. I testi usano `color:var(--white)` / `var(--dark)` o colori letterali?
+  3. Bordi e separatori usano `var(--border-dark)` / `var(--border-light)`?
+  4. Se hardcoded: aggiungere override nel blocco `[data-theme="light"]` page-level
+
+---
+
 ## Todo / Next steps
 
 - [ ] Sostituire i `href="#"` delle card club con URL reali (webapp + App Store + Play Store)

@@ -291,6 +291,106 @@
 .fade-up .s-sub{opacity:0;transition:opacity .6s .38s}
 .fade-up.visible .s-sub{opacity:1}
 
+/* ── MANIFESTO STRIP ── */
+.manifesto-strip{background:var(--off-white);padding:3.5rem 1.5rem;border-top:1px solid var(--border-light);border-bottom:1px solid var(--border-light)}
+.manifesto-inner{max-width:680px;margin:0 auto;text-align:center}
+.manifesto-quote{display:block;font-family:var(--font-display);font-size:3.5rem;font-weight:800;color:var(--brand);line-height:.55;margin-bottom:.9rem;opacity:.55}
+.manifesto-inner p{font-size:1.05rem;color:var(--text-muted-dark);line-height:1.9;font-weight:300}
+.manifesto-inner p strong{color:var(--dark);font-weight:500}
+.manifesto-inner p em{color:var(--brand);font-style:normal}
+
+/* ── NOT JUST A GESTIONALE ── */
+.notjust-section{background:var(--off-white)}
+.notjust-section .eyebrow{color:var(--brand)}
+.notjust-section .s-title{color:#0D0D0D}
+.notjust-section .s-sub{color:rgba(0,0,0,0.52)}
+.nj-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.nj-cta{margin-top:2rem}
+.nj-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
+.nj-stat{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:var(--r-lg);padding:1.75rem;text-align:center;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s,box-shadow .25s}
+.nj-stat.visible{opacity:1;transform:translateY(0)}
+.nj-stat.visible:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.09)}
+.nj-stat-num{font-family:var(--font-display);font-size:2.6rem;font-weight:800;color:var(--brand);letter-spacing:-1px;line-height:1}
+.nj-stat-label{font-size:12px;color:rgba(0,0,0,0.45);margin-top:.4rem}
+.nj-stat-wide{grid-column:span 2}
+
+/* ── APP BRANDIZZATA ── */
+.branded-section{background:#0D0D0D;overflow:hidden;position:relative}
+.branded-section::before{content:'';position:absolute;top:-30%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(247,88,63,0.07) 0%,transparent 65%);pointer-events:none}
+.branded-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.phone-col{display:flex;justify-content:center;align-items:center;padding:2rem 0;perspective:1200px}
+.phone-wrap{position:relative;opacity:0;transform:translateY(24px);transition:opacity .8s .15s cubic-bezier(.16,1,.3,1),transform .8s .15s cubic-bezier(.16,1,.3,1)}
+.phone-wrap.visible{opacity:1;transform:translateY(0)}
+.phone-glow{position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(247,88,63,0.22) 0%,transparent 70%);filter:blur(35px);pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);z-index:0}
+.phone-outer{animation:phoneFloat 7s ease-in-out infinite;transform-style:preserve-3d;transform:rotateY(-10deg) rotateX(4deg);position:relative;z-index:1}
+@keyframes phoneFloat{0%,100%{transform:rotateY(-10deg) rotateX(4deg) translateY(0)}50%{transform:rotateY(-10deg) rotateX(4deg) translateY(-12px)}}
+.iphone{width:220px;height:448px;background:#080808;border-radius:44px;border:2px solid rgba(255,255,255,0.14);box-shadow:0 0 0 6px #111,0 0 0 8px rgba(255,255,255,0.04),inset 0 0 0 1px rgba(255,255,255,0.04),0 60px 120px rgba(0,0,0,.8),0 20px 40px rgba(0,0,0,.5);overflow:hidden;position:relative}
+.iphone::before{content:'';position:absolute;left:-9px;top:90px;width:3px;height:26px;background:rgba(255,255,255,0.1);border-radius:2px;box-shadow:0 38px 0 rgba(255,255,255,0.1)}
+.iphone::after{content:'';position:absolute;right:-9px;top:110px;width:3px;height:50px;background:rgba(255,255,255,0.1);border-radius:2px}
+.iphone-island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:80px;height:24px;background:#000;border-radius:20px;z-index:20}
+.iphone-slides{display:flex;width:300%;height:100%;animation:appSlide 12s ease-in-out infinite}
+@keyframes appSlide{0%,26%{transform:translateX(0)}33%,59%{transform:translateX(-33.333%)}66%,92%{transform:translateX(-66.666%)}99%,100%{transform:translateX(0)}}
+.iphone-slide{width:calc(100%/3);height:100%;flex-shrink:0;padding:48px 14px 18px;overflow:hidden;display:flex;flex-direction:column;gap:6px}
+/* app UI elements */
+.app-header{border-radius:12px;padding:11px 13px;background:var(--brand);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.app-logo-circle{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;font-family:var(--font-display);flex-shrink:0;letter-spacing:-.3px}
+.app-club-name{font-size:13px;font-weight:700;color:#fff;font-family:var(--font-display);line-height:1.1}
+.app-club-sub{font-size:9px;color:rgba(255,255,255,0.65)}
+.app-quick-btn{border-radius:10px;background:rgba(247,88,63,0.13);border:1px solid rgba(247,88,63,0.22);padding:10px 12px;font-size:10px;font-weight:600;color:var(--brand-mid);font-family:var(--font-display);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.app-section-label{font-size:8px;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,0.28);margin-top:2px;flex-shrink:0}
+.app-booking-card{border-radius:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.07);padding:8px 10px;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.abc-dot{width:7px;height:7px;border-radius:50%;background:var(--brand);flex-shrink:0}
+.abc-info{flex:1;min-width:0}
+.abc-title{font-size:10px;font-weight:600;color:rgba(255,255,255,0.8);font-family:var(--font-display)}
+.abc-time{font-size:8px;color:rgba(255,255,255,0.3)}
+.abc-chip{font-size:8px;background:rgba(74,222,128,0.15);color:#4ade80;border-radius:4px;padding:2px 6px;white-space:nowrap;flex-shrink:0}
+/* slide 2: calendar */
+.app-cal-month{font-size:10px;font-weight:700;color:rgba(255,255,255,0.8);font-family:var(--font-display);flex-shrink:0}
+.app-cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;flex-shrink:0}
+.acd{text-align:center;font-size:7px;color:rgba(255,255,255,0.25);padding:2px 0}
+.app-cal-nums{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;flex-shrink:0}
+.acn{text-align:center;font-size:8px;color:rgba(255,255,255,0.45);padding:3px 2px;border-radius:4px}
+.acn.today{background:var(--brand);color:#fff;font-weight:600}
+.acn.sel{background:rgba(247,88,63,0.15);color:var(--brand-mid)}
+.app-slots-label{font-size:8px;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,0.28);flex-shrink:0}
+.app-slots-row{display:flex;flex-wrap:wrap;gap:3px;flex-shrink:0}
+.aslot{font-size:8px;padding:4px 7px;border-radius:5px;font-family:monospace;font-weight:600}
+.aslot.free{background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.18)}
+.aslot.busy{background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.18);border:1px solid rgba(255,255,255,0.05)}
+.aslot.sel{background:var(--brand);color:#fff;border:none}
+.app-confirm-btn{border-radius:10px;background:var(--brand);padding:10px 12px;font-size:10px;font-weight:600;color:#fff;font-family:var(--font-display);text-align:center;margin-top:auto;flex-shrink:0}
+/* slide 3: ranking */
+.app-rank-card{border-radius:12px;background:linear-gradient(135deg,rgba(247,88,63,0.18),rgba(247,88,63,0.05));border:1px solid rgba(247,88,63,0.18);padding:12px 13px;flex-shrink:0}
+.arc-label{font-size:8px;text-transform:uppercase;letter-spacing:.8px;color:rgba(255,255,255,0.35);margin-bottom:3px}
+.arc-name{font-family:var(--font-display);font-size:14px;font-weight:800;color:#fff;margin-bottom:2px}
+.arc-level{display:inline-block;background:var(--brand);color:#fff;font-size:8px;font-weight:600;padding:2px 7px;border-radius:4px;margin-bottom:7px}
+.arc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px}
+.arc-stat{text-align:center}
+.arc-stat-val{font-size:13px;font-weight:700;color:#fff;font-family:var(--font-display)}
+.arc-stat-l{font-size:7px;color:rgba(255,255,255,0.3)}
+.app-rank-list{display:flex;flex-direction:column;gap:4px}
+.arl{display:flex;align-items:center;gap:6px;padding:6px 9px;border-radius:7px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)}
+.arl-pos{font-size:8px;font-weight:700;color:rgba(255,255,255,0.3);width:12px;text-align:right;flex-shrink:0}
+.arl-av{width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,0.08);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px}
+.arl-name{font-size:9px;font-weight:500;color:rgba(255,255,255,0.65);flex:1;font-family:var(--font-display)}
+.arl-pts{font-size:8px;color:var(--brand-mid);font-family:monospace}
+.arl.me{background:rgba(247,88,63,0.1);border-color:rgba(247,88,63,0.18)}
+.arl.me .arl-name{color:#fff}
+/* branded text */
+.branded-text .eyebrow{color:var(--brand)}
+.branded-text .s-title{color:#fff}
+.branded-text .s-sub{color:rgba(255,255,255,0.5)}
+.branded-list{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin:1.75rem 0}
+.branded-list li{font-size:13.5px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:10px;line-height:1.5}
+.bl-dot{width:5px;height:5px;border-radius:50%;background:var(--brand);flex-shrink:0}
+.branded-stores{display:flex;gap:10px;flex-wrap:wrap}
+.store-btn{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.11);border-radius:10px;padding:10px 18px;transition:all .2s;cursor:pointer}
+.store-btn:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.2);transform:translateY(-2px)}
+.store-btn-icon{font-size:20px;line-height:1}
+.store-btn-text{display:flex;flex-direction:column;gap:1px}
+.store-btn-small{font-size:9px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.8px}
+.store-btn-name{font-size:13px;color:#fff;font-weight:500;font-family:var(--font-body)}
+
 /* ── LIGHT THEME: index.html overrides ── */
 [data-theme="light"] .hero-h1{color:#0D0D0D}
 [data-theme="light"] .hero-h1 .dim{color:rgba(0,0,0,0.28)}
@@ -324,6 +424,14 @@
 [data-theme="light"] .ai-section .s-sub{color:rgba(255,255,255,0.45)!important}
 [data-theme="light"] .ai-section .ai-header-wrap .s-title{color:#fff!important}
 [data-theme="light"] .ai-section .ai-header-wrap .s-sub{color:rgba(255,255,255,0.45)!important}
+/* App Brandizzata — sempre dark island */
+[data-theme="light"] .branded-section .s-title{color:#fff!important}
+[data-theme="light"] .branded-section .s-sub{color:rgba(255,255,255,0.5)!important}
+[data-theme="light"] .branded-section .branded-list li{color:rgba(255,255,255,0.6)!important}
+[data-theme="light"] .branded-section .store-btn-name{color:#fff!important}
+[data-theme="light"] .branded-section .store-btn-small{color:rgba(255,255,255,0.4)!important}
+/* Not-just — sfondo chiaro, testi già dark */
+[data-theme="light"] .nj-stat{background:rgba(0,0,0,0.03);border-color:rgba(0,0,0,0.06)}
 
 @media(max-width:960px){
   .hero{grid-template-columns:1fr;gap:3rem}
@@ -334,6 +442,9 @@
   .who-grid{grid-template-columns:1fr}
   .pricing-grid{grid-template-columns:1fr;max-width:440px;margin-left:auto;margin-right:auto}
   .dash-layout{grid-template-columns:120px 1fr}
+  .nj-grid{grid-template-columns:1fr;gap:3rem}
+  .branded-grid{grid-template-columns:1fr}
+  .phone-col{order:-1}
 }
 @media(max-width:600px){
   .feat-bento{grid-template-columns:1fr}
@@ -410,6 +521,14 @@
   </div>
 </div>
 
+<!-- MANIFESTO STRIP -->
+<section class="manifesto-strip">
+  <div class="manifesto-inner fade-up">
+    <span class="manifesto-quote">"</span>
+    <p>Anytimes è un gestionale SaaS per <strong>padel club, tennis, pickleball</strong> e centri multisport — progettato per aiutare club, circoli e centri sportivi a gestire l'intera attività in modo <em>semplice, professionale e altamente personalizzabile</em>. Grazie all'app personalizzata del club, aumenta la fidelizzazione dei soci, semplifica e automatizza la gestione quotidiana.</p>
+  </div>
+</section>
+
 <!-- FEATURES -->
 <section class="section features-section" id="features">
   <div class="inner">
@@ -460,6 +579,34 @@
         <h3>Gestione club completa — e molto di più</h3>
         <p>Certificati medici, libro soci, notifiche automatiche, statistiche avanzate per ogni utente. Crea e gestisci eventi, carica i tuoi sponsor direttamente in piattaforma. Tutto quello che serve per far funzionare un club serio, in un unico posto.</p>
         <div class="fb-tags"><span class="ftag">certificati medici</span><span class="ftag">libro soci</span><span class="ftag">notifiche</span><span class="ftag">sponsor</span><span class="ftag">eventi</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NON UN SEMPLICE GESTIONALE -->
+<section class="section notjust-section" id="philosophy">
+  <div class="inner">
+    <div class="nj-grid">
+      <div class="fade-up">
+        <div class="eyebrow">La nostra filosofia</div>
+        <h2 class="s-title">Non un semplice<br>gestionale</h2>
+        <p class="s-sub" style="max-width:400px">AnyTimes è una piattaforma SaaS in costante sviluppo, costruita insieme ai gestori di club sportivi. Ogni aggiornamento nasce da esigenze reali e feedback diretti.</p>
+        <div class="nj-cta"><a href="chi-siamo.html" class="btn-primary">Scopri chi siamo →</a></div>
+      </div>
+      <div class="nj-stats">
+        <div class="nj-stat">
+          <div class="nj-stat-num">800+</div>
+          <div class="nj-stat-label">Club gestiti</div>
+        </div>
+        <div class="nj-stat">
+          <div class="nj-stat-num">6k+</div>
+          <div class="nj-stat-label">Prenotazioni al giorno</div>
+        </div>
+        <div class="nj-stat nj-stat-wide">
+          <div class="nj-stat-num">∞</div>
+          <div class="nj-stat-label">Aggiornamenti inclusi nel piano</div>
+        </div>
       </div>
     </div>
   </div>
@@ -534,6 +681,134 @@
 
     </div><!-- /ai-layout -->
   </div>
+</section>
+
+<!-- APP BRANDIZZATA -->
+<section class="section branded-section" id="app">
+  <div class="inner">
+    <div class="branded-grid">
+
+      <!-- iPhone mock -->
+      <div class="phone-col">
+        <div class="phone-wrap">
+          <div class="phone-glow"></div>
+          <div class="phone-outer">
+            <div class="iphone">
+              <div class="iphone-island"></div>
+              <div class="iphone-slides">
+
+                <!-- Slide 1: Home club -->
+                <div class="iphone-slide" style="background:#080808">
+                  <div class="app-header">
+                    <div class="app-logo-circle">PR</div>
+                    <div>
+                      <div class="app-club-name">Padel Roma</div>
+                      <div class="app-club-sub">Il tuo club · Prati</div>
+                    </div>
+                  </div>
+                  <div class="app-quick-btn">✦ Prenota un campo <span style="color:var(--brand)">→</span></div>
+                  <div class="app-quick-btn" style="background:rgba(92,50,234,0.12);border-color:rgba(92,50,234,0.2);color:#a5b4fc">🏆 Tornei attivi <span style="color:#a5b4fc">→</span></div>
+                  <div class="app-section-label">Prossime prenotazioni</div>
+                  <div class="app-booking-card">
+                    <div class="abc-dot"></div>
+                    <div class="abc-info">
+                      <div class="abc-title">Campo 2 — Padel</div>
+                      <div class="abc-time">Dom 14 apr · 10:30</div>
+                    </div>
+                    <span class="abc-chip">Confermato</span>
+                  </div>
+                  <div class="app-booking-card">
+                    <div class="abc-dot" style="background:#a5b4fc"></div>
+                    <div class="abc-info">
+                      <div class="abc-title">Allenamento Academy</div>
+                      <div class="abc-time">Lun 15 apr · 18:00</div>
+                    </div>
+                    <span class="abc-chip">Iscritto</span>
+                  </div>
+                </div>
+
+                <!-- Slide 2: Prenotazione campo -->
+                <div class="iphone-slide" style="background:#080808">
+                  <div class="app-cal-month">Aprile 2026</div>
+                  <div class="app-cal-days">
+                    <div class="acd">L</div><div class="acd">M</div><div class="acd">M</div><div class="acd">G</div><div class="acd">V</div><div class="acd">S</div><div class="acd">D</div>
+                  </div>
+                  <div class="app-cal-nums">
+                    <div class="acn">7</div><div class="acn">8</div><div class="acn">9</div><div class="acn">10</div><div class="acn">11</div><div class="acn">12</div><div class="acn">13</div>
+                    <div class="acn today">14</div><div class="acn sel">15</div><div class="acn">16</div><div class="acn">17</div><div class="acn">18</div><div class="acn">19</div><div class="acn">20</div>
+                  </div>
+                  <div class="app-slots-label">Slot disponibili — Campo 1</div>
+                  <div class="app-slots-row">
+                    <div class="aslot busy">09:00</div>
+                    <div class="aslot free">10:30</div>
+                    <div class="aslot free">12:00</div>
+                    <div class="aslot sel">14:00</div>
+                    <div class="aslot free">15:30</div>
+                    <div class="aslot busy">17:00</div>
+                    <div class="aslot free">18:30</div>
+                    <div class="aslot busy">20:00</div>
+                  </div>
+                  <div class="app-confirm-btn">Conferma prenotazione →</div>
+                </div>
+
+                <!-- Slide 3: Ranking -->
+                <div class="iphone-slide" style="background:#080808">
+                  <div class="app-rank-card">
+                    <div class="arc-label">Il tuo profilo</div>
+                    <div class="arc-name">Marco R.</div>
+                    <div class="arc-level">Intermedio · 3.2</div>
+                    <div class="arc-stats">
+                      <div class="arc-stat"><div class="arc-stat-val">42</div><div class="arc-stat-l">Partite</div></div>
+                      <div class="arc-stat"><div class="arc-stat-val">28</div><div class="arc-stat-l">Vittorie</div></div>
+                      <div class="arc-stat"><div class="arc-stat-val">#7</div><div class="arc-stat-l">Ranking</div></div>
+                    </div>
+                  </div>
+                  <div class="app-section-label">Classifica del club</div>
+                  <div class="app-rank-list">
+                    <div class="arl"><div class="arl-pos">1</div><div class="arl-av">👑</div><div class="arl-name">Luca F.</div><div class="arl-pts">1.240 pt</div></div>
+                    <div class="arl"><div class="arl-pos">2</div><div class="arl-av">🎯</div><div class="arl-name">Sara M.</div><div class="arl-pts">1.180 pt</div></div>
+                    <div class="arl me"><div class="arl-pos">7</div><div class="arl-av">⭐</div><div class="arl-name">Marco R.</div><div class="arl-pts">880 pt</div></div>
+                  </div>
+                </div>
+
+              </div><!-- /iphone-slides -->
+            </div><!-- /iphone -->
+          </div><!-- /phone-outer -->
+        </div><!-- /phone-wrap -->
+      </div><!-- /phone-col -->
+
+      <!-- Testo -->
+      <div class="branded-text fade-up">
+        <div class="eyebrow">App Brandizzata</div>
+        <h2 class="s-title">Il tuo club.<br>La tua app.</h2>
+        <p class="s-sub">Oltre alla Web App base, puoi avere la tua presenza ufficiale negli store. Un'app completamente personalizzata con il tuo logo, i tuoi colori e il nome del club.</p>
+        <ul class="branded-list">
+          <li><span class="bl-dot"></span>App iOS personalizzata su App Store</li>
+          <li><span class="bl-dot"></span>App Android personalizzata su Google Play</li>
+          <li><span class="bl-dot"></span>Logo, colori e nome del tuo club</li>
+          <li><span class="bl-dot"></span>Presenza ufficiale negli store</li>
+          <li><span class="bl-dot"></span>Diventi un brand digitale, non solo un centro sportivo</li>
+        </ul>
+        <div class="branded-stores">
+          <div class="store-btn">
+            <div class="store-btn-icon">🍎</div>
+            <div class="store-btn-text">
+              <span class="store-btn-small">Scarica su</span>
+              <span class="store-btn-name">App Store</span>
+            </div>
+          </div>
+          <div class="store-btn">
+            <div class="store-btn-icon">▶</div>
+            <div class="store-btn-text">
+              <span class="store-btn-small">Disponibile su</span>
+              <span class="store-btn-name">Google Play</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /branded-grid -->
+  </div><!-- /inner -->
 </section>
 
 <!-- PER CHI È -->
@@ -687,7 +962,7 @@ const io = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.08 });
-document.querySelectorAll('.fade-up, .fb, .pc, .who-card').forEach(el => io.observe(el));
+document.querySelectorAll('.fade-up, .fb, .pc, .who-card, .phone-wrap, .nj-stat').forEach(el => io.observe(el));
 
 // AI mod cards stagger
 const aiModObs = new IntersectionObserver(entries => {
