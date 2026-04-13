@@ -1,0 +1,131 @@
+# Anytimes — Mock Sito Istituzionale
+
+Progetto mock del sito marketing per **Anytimes**, gestionale SaaS per centri sportivi (padel, tennis, fitness).
+
+---
+
+## Struttura file
+
+```
+index.html          Homepage con hero, video mock, features bento, AI section, pricing, CTA
+funzionalita.html   Pagina funzionalità con bento grid per categoria + sezione AI
+club.html           Elenco club con filtro/ricerca, card prenota + badge App Store/Play
+prezzi.html         Piani con toggle mensile/annuale, tabella comparativa, FAQ
+chi-siamo.html      Pagina about team
+blog.html           Blog con featured post, griglia articoli, newsletter
+contatti.html       Form contatto + info
+shared.css          Design system condiviso (variabili, nav, footer, bottoni, utility)
+assets/logo.png     Logo icona brand (svg-like, sfondo trasparente)
+assets/video.mp4    Video demo dashboard — usato nell'hero della homepage
+```
+
+---
+
+## Design system
+
+### Font
+- **Display / Titoli**: `Syne` (wght 400–800) — `var(--font-display)`
+- **Body / UI**: `Inter` (wght 300–500) — `var(--font-body)`
+
+### Palette
+| Token | Valore | Uso |
+|---|---|---|
+| `--brand` | `#F7583F` | CTA primari, accenti |
+| `--brand-dark` | `#D43E27` | Hover bottoni brand |
+| `--brand-mid` | `#F87B66` | Testi su dark |
+| `--dark` | `#0D0D0D` | Background principale |
+| `--dark-card` | `#161616` | Card su sfondo dark |
+| `--dark-2` | `#1A1A1A` | Strip secondarie |
+| `--off-white` | `#F5F4F0` | Sezioni chiare |
+| `--border-dark` | `rgba(255,255,255,0.09)` | Bordi su dark |
+| `--border-light` | `#E8E6E0` | Bordi su light |
+
+### Border radius
+- `--r`: 12px (bottoni, input)
+- `--r-lg`: 20px (card medie)
+- `--r-xl`: 28px (card grandi, sezioni)
+
+---
+
+## Convenzioni HTML/CSS
+
+- **Nessun framework CSS** — tutto vanilla CSS in `shared.css` + `<style>` page-level
+- **Nomi classi**: BEM-like abbreviato (es. `.cc-body`, `.fp-title`, `.sf-btn`)
+- **Animazioni entrata**: classe `.fade-up` o `.feat-card` con `opacity:0 + translateY(14px)` → aggiunta `.visible` via `IntersectionObserver`
+- **Sezioni alternate**: `background:var(--dark)` e `background:var(--off-white)` a strati
+- **Responsive**: breakpoint a `960px` (tablet) e `600px` (mobile), media query in fondo a ogni `<style>`
+- **JS**: vanilla, inline in fondo al body. Solo per animazioni, filtri e toggle — niente dipendenze esterne
+
+---
+
+## Componenti riutilizzabili (in shared.css)
+
+| Classe | Descrizione |
+|---|---|
+| `.btn-primary` | Bottone brand arancio |
+| `.btn-secondary` | Bottone ghost su dark |
+| `.btn-ghost-outline` | Outline brand |
+| `.btn-nav-cta` | Bottone nav "Richiedi demo" |
+| `.page-hero` | Hero centrato per pagine interne |
+| `.cta-section` + `.cta-inner` | Sezione CTA finale dark con glow |
+| `.section` + `.inner` | Container sezione (max 1200px) |
+| `.eyebrow` | Label uppercase brand sopra titolo |
+| `.s-title` | Titolo sezione (Syne 800) |
+| `.s-sub` | Sottotitolo sezione |
+| `.logo-strip` | Strip loghi clienti |
+| `footer` + `.footer-inner` | Footer standard |
+
+---
+
+## Nav — voci e ordine
+
+```
+Logo | Funzionalità | Club | Chi siamo | Prezzi | Blog   [Accedi]  [Richiedi demo →]
+```
+
+- Link attivo: classe `active` sul `<a>` corrispondente
+- Logo: `<a class="logo"><img src="assets/logo.png">any<span>times</span></a>`
+
+---
+
+## Pagina Club (`club.html`)
+
+- Ogni `<div class="club-card">` ha attributi `data-sports="padel tennis..."` e `data-name="nome città..."` per il filtro JS
+- Il bottone **Prenota** linka alla webapp del circolo (`href` da aggiornare con URL reale)
+- I badge **iOS / Android** nella cover e il bottone **App** nelle azioni vanno aggiunti solo ai club che hanno l'app mobile — basta aggiungere il blocco `.cc-app-badges` e `.cc-btn-app` con gli URL reali di App Store / Google Play
+
+---
+
+## Pagina Funzionalità — moduli AI
+
+I 4 moduli AI sono nella sezione `#ai` di `funzionalita.html`:
+1. **AI Insight** — analisi dati struttura, insight settimanali
+2. **Player Metrics** — statistiche avanzate per giocatore
+3. **Smart Match** — abbinamento match per skill level
+4. **Company Insight** — KPI, forecast, churn, LTV
+
+---
+
+## Hero homepage — video
+
+La finestra stile macOS nell'hero usa:
+```html
+<div class="dash-shell">
+  <div class="dash-titlebar">…</div>
+  <video autoplay muted loop playsinline>
+    <source src="assets/video.mp4" type="video/mp4">
+  </video>
+</div>
+```
+- `muted` è obbligatorio per l'autoplay su tutti i browser
+- Il file sorgente è `assets/video.mp4`
+
+---
+
+## Todo / Next steps
+
+- [ ] Sostituire i `href="#"` delle card club con URL reali (webapp + App Store + Play Store)
+- [ ] Aggiungere immagini/foto reali dei club in `assets/clubs/`
+- [ ] Collegare form contatti a backend / Formspree
+- [ ] SEO: meta description e og:image per ogni pagina
+- [ ] Favicon dal logo

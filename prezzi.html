@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prezzi — Anytimes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── PRICING PAGE ── */
+.pricing-page{background:var(--off-white)}
+
+/* ── TOGGLE MENSILE/ANNUO ── */
+.billing-toggle{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:2rem}
+.toggle-label{font-size:14px;color:rgba(0,0,0,0.5);font-weight:400}
+.toggle-label.active{color:var(--dark);font-weight:500}
+.toggle-wrap{position:relative;width:46px;height:26px;cursor:pointer}
+.toggle-input{opacity:0;width:0;height:0;position:absolute}
+.toggle-slider{position:absolute;inset:0;background:#d4d0ca;border-radius:13px;transition:background .2s}
+.toggle-slider::before{content:'';position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle-input:checked + .toggle-slider{background:var(--brand)}
+.toggle-input:checked + .toggle-slider::before{transform:translateX(20px)}
+.toggle-badge{background:rgba(247,88,63,0.1);border:1px solid rgba(247,88,63,0.2);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600;color:var(--brand-dark)}
+
+/* ── PRICING CARDS ── */
+.pricing-grid-wrap{padding:3rem clamp(1.5rem,5vw,3.5rem) 0;max-width:1200px;margin:0 auto}
+.pricing-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.price-card{border-radius:var(--r-xl);padding:2.5rem;position:relative;opacity:0;transform:translateY(16px);transition:opacity .5s,transform .5s,box-shadow .25s}
+.price-card.visible{opacity:1;transform:translateY(0)}
+.price-card.light{background:#fff;border:1px solid var(--border-light)}
+.price-card.featured{background:var(--dark);border:2px solid var(--brand);box-shadow:0 0 0 4px rgba(247,88,63,0.08)}
+.price-card:hover:not(.featured){box-shadow:0 12px 40px rgba(0,0,0,.1)}
+.price-card.featured:hover{box-shadow:0 0 0 4px rgba(247,88,63,0.12),0 20px 50px rgba(0,0,0,.4)}
+.popular-tag{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--brand);color:#fff;font-size:11px;font-weight:600;padding:4px 20px;border-radius:20px;white-space:nowrap}
+.plan-tier{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.4rem}
+.light .plan-tier{color:var(--brand)}
+.featured .plan-tier{color:rgba(255,255,255,0.45)}
+.plan-name{font-family:var(--font-display);font-size:1.8rem;font-weight:800;letter-spacing:-.8px;margin-bottom:.3rem}
+.light .plan-name{color:var(--dark)}
+.featured .plan-name{color:#fff}
+.plan-desc{font-size:13px;line-height:1.6;margin-bottom:1.75rem;font-weight:300}
+.light .plan-desc{color:var(--text-muted-dark)}
+.featured .plan-desc{color:rgba(255,255,255,0.5)}
+.price-row{display:flex;align-items:flex-end;gap:4px;margin-bottom:.3rem}
+.price-amount{font-family:var(--font-display);font-size:3rem;font-weight:800;letter-spacing:-2px;line-height:1}
+.light .price-amount{color:var(--dark)}
+.featured .price-amount{color:#fff}
+.price-currency{font-family:var(--font-display);font-size:1.3rem;font-weight:600;padding-bottom:6px}
+.light .price-currency{color:var(--dark)}
+.featured .price-currency{color:#fff}
+.price-period{font-size:13px;font-weight:400;padding-bottom:6px}
+.light .price-period{color:var(--text-muted-dark)}
+.featured .price-period{color:rgba(255,255,255,0.4)}
+.price-annual-note{font-size:11px;margin-bottom:1.75rem}
+.light .price-annual-note{color:rgba(0,0,0,0.35)}
+.featured .price-annual-note{color:rgba(255,255,255,0.3)}
+.green-note{color:#16a34a !important;font-weight:500}
+.divider{height:1px;margin-bottom:1.5rem}
+.light .divider{background:var(--border-light)}
+.featured .divider{background:rgba(255,255,255,0.1)}
+.feature-list{list-style:none;display:flex;flex-direction:column;gap:.7rem;margin-bottom:2rem}
+.feature-list li{font-size:13px;display:flex;align-items:flex-start;gap:10px;line-height:1.4}
+.light .feature-list li{color:#3a3a3a}
+.featured .feature-list li{color:rgba(255,255,255,0.7)}
+.feature-list li.muted{opacity:.5}
+.fcheck{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px}
+.light .fcheck{background:rgba(247,88,63,0.1);color:var(--brand)}
+.featured .fcheck{background:rgba(247,88,63,0.2);color:var(--brand-mid)}
+.fcheck.no{background:rgba(0,0,0,0.06) !important;color:rgba(0,0,0,0.25) !important}
+.plan-btn{width:100%;padding:14px;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .2s}
+.light .plan-btn{background:transparent;color:var(--brand-dark);border:1.5px solid var(--brand)}
+.light .plan-btn:hover{background:var(--brand);color:#fff}
+.featured .plan-btn{background:var(--brand);color:#fff;border:none}
+.featured .plan-btn:hover{background:var(--brand-dark);transform:translateY(-1px)}
+
+/* ── COMPARE TABLE ── */
+.compare-section{background:var(--dark);padding:clamp(4rem,7vw,6rem) clamp(1.5rem,5vw,3.5rem)}
+.compare-section .s-title{color:#fff}
+.compare-section .eyebrow{color:var(--brand)}
+.table-wrap{overflow-x:auto;margin-top:3rem}
+.compare-table{width:100%;border-collapse:collapse;min-width:680px}
+.compare-table th{font-family:var(--font-display);font-size:13px;font-weight:700;padding:1rem 1.25rem;text-align:left;color:rgba(255,255,255,0.4);border-bottom:1px solid rgba(255,255,255,0.08)}
+.compare-table th:not(:first-child){text-align:center;color:#fff}
+.compare-table th.th-featured{color:var(--brand-mid)}
+.compare-table td{padding:1rem 1.25rem;font-size:13px;color:rgba(255,255,255,0.6);border-bottom:1px solid rgba(255,255,255,0.05)}
+.compare-table td:not(:first-child){text-align:center;font-weight:500}
+.compare-table tr:hover td{background:rgba(255,255,255,0.02)}
+.check-yes{color:#4ade80;font-size:16px}
+.check-no{color:rgba(255,255,255,0.15);font-size:16px}
+.cat-row td{font-family:var(--font-display);font-weight:700;font-size:11px;color:var(--brand);text-transform:uppercase;letter-spacing:1.5px;padding-top:1.75rem;padding-bottom:.5rem}
+
+/* ── FAQ ── */
+.faq-section{background:var(--off-white);padding:clamp(4rem,7vw,6rem) clamp(1.5rem,5vw,3.5rem)}
+.faq-section .s-title{color:var(--dark)}
+.faq-section .eyebrow{color:var(--brand)}
+.faq-cols{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:3rem}
+.faq-item{background:#fff;border:1px solid var(--border-light);border-radius:var(--r-lg);overflow:hidden}
+.faq-q{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.5rem;cursor:pointer;font-size:14px;font-weight:500;color:var(--dark);font-family:var(--font-display);transition:background .2s;user-select:none}
+.faq-q:hover{background:rgba(0,0,0,.02)}
+.faq-arrow{font-size:12px;color:rgba(0,0,0,.3);transition:transform .25s;flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;font-size:13px;color:var(--text-muted-dark);line-height:1.75;font-weight:300;padding:0 1.5rem}
+.faq-item.open .faq-a{max-height:200px;padding:0 1.5rem 1.25rem}
+
+/* ── TRUST STRIP ── */
+.trust-strip{background:var(--off-white);padding:2rem clamp(1.5rem,5vw,3.5rem);border-top:1px solid var(--border-light)}
+.trust-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:center;gap:3rem;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-muted-dark);font-weight:400}
+.trust-icon{font-size:18px}
+
+@media(max-width:960px){
+  .pricing-cards{grid-template-columns:1fr;max-width:440px;margin:0 auto}
+  .faq-cols{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><img src="assets/logo.png" alt="Anytimes">any<span>times</span></a>
+  <ul class="nav-links">
+    <li><a href="funzionalita.html">Funzionalità</a></li>
+    <li><a href="club.html">Club</a></li>
+    <li><a href="chi-siamo.html">Chi siamo</a></li>
+    <li><a href="prezzi.html" class="active">Prezzi</a></li>
+    <li><a href="blog.html">Blog</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-nav-ghost">Accedi</button>
+    <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero fade-up" style="background:var(--off-white)">
+  <div class="eyebrow" style="color:var(--brand)">Prezzi</div>
+  <h1 class="s-title" style="color:var(--dark)">Prezzi trasparenti.<br>Nessuna sorpresa.</h1>
+  <p class="s-sub" style="color:var(--text-muted-dark)">Un prezzo mensile fisso, tutto incluso. Nessun costo per transazione, nessun extra nascosto, supporto in ogni piano.</p>
+  <!-- BILLING TOGGLE -->
+  <div class="billing-toggle">
+    <span class="toggle-label active" id="lbl-monthly">Mensile</span>
+    <label class="toggle-wrap">
+      <input type="checkbox" class="toggle-input" id="billing-toggle">
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="toggle-label" id="lbl-annual">Annuale</span>
+    <span class="toggle-badge">-20%</span>
+  </div>
+</div>
+
+<!-- PRICING CARDS -->
+<div class="pricing-page">
+  <div class="pricing-grid-wrap">
+    <div class="pricing-cards">
+
+      <!-- STARTER -->
+      <div class="price-card light">
+        <div class="plan-tier">Base</div>
+        <div class="plan-name">Starter</div>
+        <p class="plan-desc">Per club che vogliono digitalizzare prenotazioni e gestione soci.</p>
+        <div class="price-row">
+          <span class="price-currency">€</span>
+          <span class="price-amount" data-monthly="79" data-annual="63">79</span>
+          <span class="price-period">/mese</span>
+        </div>
+        <div class="price-annual-note" id="note-starter">oppure €948/anno (nessuno sconto)</div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li><span class="fcheck">✓</span>Agenda multi-campo (fino a 4 campi)</li>
+          <li><span class="fcheck">✓</span>Prenotazioni online e da app</li>
+          <li><span class="fcheck">✓</span>App iOS e Android per i soci</li>
+          <li><span class="fcheck">✓</span>Gestione utenti illimitati</li>
+          <li><span class="fcheck">✓</span>Pagamenti via Stripe</li>
+          <li><span class="fcheck">✓</span>Partite aperte</li>
+          <li><span class="fcheck">✓</span>Notifiche push e email</li>
+          <li><span class="fcheck no">✓</span><span style="opacity:.4">Tornei e campionati</span></li>
+          <li><span class="fcheck no">✓</span><span style="opacity:.4">Academy e corsi</span></li>
+          <li><span class="fcheck no">✓</span><span style="opacity:.4">AI Insights</span></li>
+        </ul>
+        <button class="plan-btn">Inizia con Starter</button>
+      </div>
+
+      <!-- PRO (FEATURED) -->
+      <div class="price-card featured">
+        <div class="popular-tag">Più scelto</div>
+        <div class="plan-tier">Pro</div>
+        <div class="plan-name">Professionale</div>
+        <p class="plan-desc">Per club attivi con tornei, academy e contabilità integrata.</p>
+        <div class="price-row">
+          <span class="price-currency">€</span>
+          <span class="price-amount" data-monthly="149" data-annual="119">149</span>
+          <span class="price-period">/mese</span>
+        </div>
+        <div class="price-annual-note" id="note-pro">oppure €1.788/anno (nessuno sconto)</div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li><span class="fcheck">✓</span>Tutto di Starter, campi illimitati</li>
+          <li><span class="fcheck">✓</span>Tornei e campionati (gironi, eliminazione diretta, americano)</li>
+          <li><span class="fcheck">✓</span>Academy con gestione presenze</li>
+          <li><span class="fcheck">✓</span>Abbonamenti e pacchetti personalizzati</li>
+          <li><span class="fcheck">✓</span>Contabilità e report automatici</li>
+          <li><span class="fcheck">✓</span>Ranking e matchmaking</li>
+          <li><span class="fcheck">✓</span>Notifiche WhatsApp e Telegram</li>
+          <li><span class="fcheck">✓</span>Branding personalizzato</li>
+          <li><span class="fcheck no">✓</span><span style="opacity:.45">AI Insights (Gemini)</span></li>
+          <li><span class="fcheck no">✓</span><span style="opacity:.45">Controllo accessi QR</span></li>
+        </ul>
+        <button class="plan-btn">Inizia con Pro</button>
+      </div>
+
+      <!-- ALL-IN-ONE -->
+      <div class="price-card light">
+        <div class="plan-tier">Enterprise</div>
+        <div class="plan-name">All-in-One</div>
+        <p class="plan-desc">Per strutture ambiziose che vogliono il massimo della tecnologia.</p>
+        <div class="price-row">
+          <span class="price-currency">€</span>
+          <span class="price-amount" data-monthly="249" data-annual="199">249</span>
+          <span class="price-period">/mese</span>
+        </div>
+        <div class="price-annual-note" id="note-aio">oppure €2.988/anno (nessuno sconto)</div>
+        <div class="divider"></div>
+        <ul class="feature-list">
+          <li><span class="fcheck">✓</span>Tutto di Pro, senza limiti</li>
+          <li><span class="fcheck">✓</span>AI Insights completi (Gemini 2.0)</li>
+          <li><span class="fcheck">✓</span>Briefing AI giornaliero</li>
+          <li><span class="fcheck">✓</span>Player Metrics e churn prediction</li>
+          <li><span class="fcheck">✓</span>Controllo accessi QR tornelli</li>
+          <li><span class="fcheck">✓</span>Gestione certificati medici</li>
+          <li><span class="fcheck">✓</span>Statistiche avanzate sui soci</li>
+          <li><span class="fcheck">✓</span>Account manager dedicato</li>
+          <li><span class="fcheck">✓</span>SLA supporto prioritario 24h</li>
+          <li><span class="fcheck">✓</span>Onboarding personalizzato</li>
+        </ul>
+        <button class="plan-btn">Contattaci per All-in-One</button>
+      </div>
+    </div>
+
+    <!-- TRUST NOTE -->
+    <div style="text-align:center;padding:2rem 0 1rem">
+      <p style="font-size:12px;color:var(--text-muted-dark)">Prova gratuita di 30 giorni · Nessuna carta di credito · Disdici quando vuoi</p>
+    </div>
+  </div>
+</div>
+
+<!-- TRUST STRIP -->
+<div class="trust-strip">
+  <div class="trust-inner">
+    <div class="trust-item"><span class="trust-icon">🛡️</span>Pagamento sicuro via Stripe</div>
+    <div class="trust-item"><span class="trust-icon">📞</span>Supporto in italiano</div>
+    <div class="trust-item"><span class="trust-icon">🔄</span>Puoi cambiare piano in qualsiasi momento</div>
+    <div class="trust-item"><span class="trust-icon">🇮🇹</span>Dati ospitati in EU</div>
+  </div>
+</div>
+
+<!-- COMPARE TABLE -->
+<section class="compare-section">
+  <div class="inner">
+    <div class="fade-up">
+      <div class="eyebrow">Confronto piani</div>
+      <h2 class="s-title">Tutto nel dettaglio</h2>
+    </div>
+    <div class="table-wrap">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th style="width:40%">Funzionalità</th>
+            <th>Starter</th>
+            <th class="th-featured">Pro</th>
+            <th>All-in-One</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cat-row"><td colspan="4">Prenotazioni & Agenda</td></tr>
+          <tr><td>Campi gestibili</td><td>Fino a 4</td><td style="color:#fff">Illimitati</td><td>Illimitati</td></tr>
+          <tr><td>Prenotazioni online (web + app)</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Partite aperte</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Prezzi dinamici per fascia oraria</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+
+          <tr class="cat-row"><td colspan="4">App & Soci</td></tr>
+          <tr><td>App iOS e Android</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Ranking e statistiche giocatori</td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Matchmaking automatico</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Branding personalizzato</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+
+          <tr class="cat-row"><td colspan="4">Competizioni</td></tr>
+          <tr><td>Tornei e campionati</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Academy e corsi</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Abbonamenti e pacchetti</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Contabilità e report</td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+
+          <tr class="cat-row"><td colspan="4">AI & Avanzato</td></tr>
+          <tr><td>AI Insights (Gemini 2.0)</td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Briefing AI giornaliero</td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Controllo accessi QR</td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td></tr>
+          <tr><td>Account manager dedicato</td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="inner">
+    <div class="fade-up" style="text-align:center">
+      <div class="eyebrow">Domande</div>
+      <h2 class="s-title">Tutto chiaro sui prezzi</h2>
+    </div>
+    <div class="faq-cols">
+      <div class="faq-item">
+        <div class="faq-q">Ci sono costi nascosti o per transazione?<span class="faq-arrow">▼</span></div>
+        <div class="faq-a">No. Il prezzo mensile è fisso. Non addebitiamo commissioni sulle prenotazioni né costi per il numero di soci o transazioni Stripe.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Posso cambiare piano in qualsiasi momento?<span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Sì, upgrade e downgrade sono immediati. Il cambio viene proratizzato sui giorni rimanenti del mese corrente.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Il periodo di prova è davvero gratuito?<span class="faq-arrow">▼</span></div>
+        <div class="faq-a">30 giorni completamente gratuiti, senza carta di credito. Puoi usare tutte le funzionalità del piano Pro. Al termine scegli se continuare.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Come funziona lo sconto annuale?<span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Scegliendo la fatturazione annuale si ottiene il 20% di sconto rispetto al mensile. Fattura emessa una volta all'anno.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Il supporto è incluso in tutti i piani?<span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Sì. Chat e email per Starter e Pro, con risposte entro 4–8 ore lavorative. Il piano All-in-One include un account manager dedicato e SLA a 24h.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Offrite prezzi speciali per club ASD/SSD?<span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Sì, esiste una tariffa agevolata per associazioni sportive dilettantistiche. Contattaci per i dettagli.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="cta-section">
+  <div class="cta-inner fade-up">
+    <h2>Inizia gratis.<br>Senza sorprese.</h2>
+    <p>30 giorni di prova gratuita su piano Pro. Nessuna carta di credito richiesta.</p>
+    <div class="cta-btns">
+      <a href="contatti.html"><button class="btn-cta-main">Richiedi demo gratuita →</button></a>
+      <button class="btn-cta-ghost">Hai domande? Scrivici</button>
+    </div>
+    <p class="cta-note">Nessuna carta di credito · Setup &lt;24h · Disdici quando vuoi</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="foot-logo"><img src="assets/logo.png" alt="Anytimes">any<span>times</span></div>
+    <div class="foot-links">
+      <a href="chi-siamo.html">Chi siamo</a>
+      <a href="prezzi.html">Prezzi</a>
+      <a href="blog.html">Blog</a>
+      <a href="contatti.html">Contatti</a>
+      <a href="#">Privacy</a>
+    </div>
+    <div class="foot-copy">© 2026 Anytimes · Gestionale per centri sportivi</div>
+  </div>
+</footer>
+
+<script>
+// Intersection observer
+const io = new IntersectionObserver(e => {
+  e.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('visible');
+    const siblings = entry.target.parentElement.querySelectorAll('.price-card');
+    if (siblings.length > 1) siblings.forEach((s, i) => setTimeout(() => s.classList.add('visible'), i * 100));
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.fade-up, .price-card').forEach(el => io.observe(el));
+
+// FAQ accordion
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    const item = q.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
+
+// Billing toggle
+const toggle = document.getElementById('billing-toggle');
+const amounts = document.querySelectorAll('.price-amount');
+const lblMonthly = document.getElementById('lbl-monthly');
+const lblAnnual = document.getElementById('lbl-annual');
+const notes = {
+  'note-starter': { monthly: 'oppure €948/anno (nessuno sconto)', annual: '≡ €63/mese · fatturato €756/anno' },
+  'note-pro':     { monthly: 'oppure €1.788/anno (nessuno sconto)', annual: '≡ €119/mese · fatturato €1.428/anno' },
+  'note-aio':     { monthly: 'oppure €2.988/anno (nessuno sconto)', annual: '≡ €199/mese · fatturato €2.388/anno' }
+};
+
+toggle.addEventListener('change', () => {
+  const isAnnual = toggle.checked;
+  lblMonthly.classList.toggle('active', !isAnnual);
+  lblAnnual.classList.toggle('active', isAnnual);
+  amounts.forEach(el => {
+    el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
+  });
+  Object.entries(notes).forEach(([id, text]) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.textContent = isAnnual ? text.annual : text.monthly;
+      el.classList.toggle('green-note', isAnnual);
+    }
+  });
+});
+</script>
+</body>
+</html>

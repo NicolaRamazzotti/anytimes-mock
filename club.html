@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Club — Anytimes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+
+/* ── HERO ── */
+.clubs-hero{
+  padding:clamp(5rem,10vw,7.5rem) clamp(1.5rem,5vw,3.5rem) clamp(3rem,5vw,4rem);
+  max-width:1200px;margin:0 auto;text-align:center;position:relative;
+}
+.clubs-hero::before{
+  content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:900px;height:500px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(247,88,63,0.09) 0%,transparent 65%);
+  pointer-events:none;
+}
+.clubs-hero .eyebrow{display:block;position:relative}
+.clubs-hero .s-title{color:#fff;max-width:720px;margin:0 auto .9rem;position:relative}
+.clubs-hero .s-sub{color:rgba(255,255,255,0.5);max-width:560px;margin:0 auto 2.5rem;position:relative}
+.hero-count{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:6px 16px;font-size:12px;color:rgba(255,255,255,0.5);font-weight:400;position:relative}
+.hero-count strong{color:#fff;font-weight:600}
+
+/* ── SEARCH + FILTER BAR ── */
+.filter-bar-section{
+  padding:0 clamp(1.5rem,5vw,3.5rem) 3rem;
+  max-width:1200px;margin:0 auto;
+}
+.filter-bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:220px}
+.search-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:14px;opacity:.4;pointer-events:none}
+.search-input{
+  width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--r);padding:11px 14px 11px 40px;
+  font-size:13px;color:#fff;font-family:var(--font-body);outline:none;
+  transition:border-color .2s;
+}
+.search-input::placeholder{color:rgba(255,255,255,0.3)}
+.search-input:focus{border-color:rgba(247,88,63,0.4)}
+.sport-filters{display:flex;gap:7px;flex-wrap:wrap}
+.sf-btn{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);
+  border-radius:20px;padding:8px 18px;
+  font-size:12px;font-weight:500;color:rgba(255,255,255,0.5);
+  cursor:pointer;font-family:var(--font-body);transition:all .2s;
+}
+.sf-btn:hover{background:rgba(255,255,255,0.09);color:rgba(255,255,255,0.8)}
+.sf-btn.active{background:rgba(247,88,63,0.12);border-color:rgba(247,88,63,0.3);color:var(--brand-mid)}
+
+/* ── CLUBS GRID ── */
+.clubs-section{background:var(--dark);padding:0 clamp(1.5rem,5vw,3.5rem) clamp(5rem,8vw,7rem)}
+.clubs-inner{max-width:1200px;margin:0 auto}
+.clubs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+
+/* ── CLUB CARD ── */
+.club-card{
+  background:var(--dark-card);border:1px solid var(--border-dark);
+  border-radius:var(--r-xl);overflow:hidden;
+  display:flex;flex-direction:column;
+  opacity:0;transform:translateY(16px);
+  transition:opacity .5s,transform .5s,border-color .25s,box-shadow .25s;
+}
+.club-card.visible{opacity:1;transform:translateY(0)}
+.club-card:hover{border-color:rgba(255,255,255,0.16);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+
+/* card cover */
+.cc-cover{
+  height:130px;display:flex;align-items:center;justify-content:center;
+  font-size:52px;position:relative;overflow:hidden;flex-shrink:0;
+}
+.cc-cover-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 40%,rgba(22,22,22,0.6) 100%);
+}
+.cc-app-badges{
+  position:absolute;top:10px;right:10px;
+  display:flex;flex-direction:column;gap:5px;
+}
+.cc-app-badge{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:6px;padding:4px 9px;
+  font-size:10px;font-weight:500;color:rgba(255,255,255,0.8);
+  text-decoration:none;transition:all .2s;white-space:nowrap;
+}
+.cc-app-badge:hover{background:rgba(0,0,0,0.85);border-color:rgba(255,255,255,0.3)}
+.cc-app-badge svg{flex-shrink:0}
+
+/* card body */
+.cc-body{padding:1.5rem;flex:1;display:flex;flex-direction:column}
+.cc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.5rem;gap:.5rem}
+.cc-name{font-family:var(--font-display);font-size:16px;font-weight:700;color:#fff;letter-spacing:-.3px;line-height:1.2}
+.cc-verified{
+  flex-shrink:0;width:20px;height:20px;border-radius:50%;
+  background:rgba(247,88,63,0.15);border:1px solid rgba(247,88,63,0.25);
+  display:flex;align-items:center;justify-content:center;font-size:9px;margin-top:2px;
+}
+.cc-location{display:flex;align-items:center;gap:5px;font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:.85rem}
+.cc-sport-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:1rem}
+.cc-sport-tag{
+  font-size:10px;padding:3px 9px;border-radius:5px;font-weight:500;
+  background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.4);
+  border:1px solid rgba(255,255,255,0.07);font-family:var(--font-body);
+}
+.cc-sport-tag.padel{background:rgba(99,91,255,0.1);color:#a5b4fc;border-color:rgba(99,91,255,0.2)}
+.cc-sport-tag.tennis{background:rgba(74,222,128,0.1);color:#86efac;border-color:rgba(74,222,128,0.2)}
+.cc-sport-tag.pickleball{background:rgba(251,191,36,0.1);color:#fde68a;border-color:rgba(251,191,36,0.2)}
+.cc-sport-tag.calcio{background:rgba(34,197,94,0.1);color:#86efac;border-color:rgba(34,197,94,0.2)}
+.cc-desc{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.7;font-weight:300;flex:1;margin-bottom:1.25rem}
+.cc-meta{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.cc-meta-item{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.3)}
+
+/* card actions */
+.cc-actions{display:flex;gap:8px;margin-top:auto}
+.cc-btn-book{
+  flex:1;background:var(--brand);color:#fff;border:none;
+  padding:11px 16px;border-radius:var(--r);
+  font-size:13px;font-weight:500;cursor:pointer;
+  font-family:var(--font-body);transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  text-decoration:none;
+}
+.cc-btn-book:hover{background:var(--brand-dark);transform:translateY(-1px)}
+.cc-btn-app{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--r);padding:11px 14px;
+  font-size:12px;font-weight:500;color:rgba(255,255,255,0.6);
+  cursor:pointer;font-family:var(--font-body);transition:all .2s;
+  text-decoration:none;white-space:nowrap;
+}
+.cc-btn-app:hover{background:rgba(255,255,255,0.1);color:#fff}
+
+/* ── BECOME A CLUB CTA ── */
+.join-band{
+  background:var(--dark-2);border-top:1px solid var(--border-dark);border-bottom:1px solid var(--border-dark);
+  padding:clamp(3rem,5vw,4rem) clamp(1.5rem,5vw,3.5rem);
+}
+.join-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;
+}
+.join-left .eyebrow{color:var(--brand);display:block;margin-bottom:.4rem}
+.join-left h3{font-family:var(--font-display);font-size:1.6rem;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:.4rem}
+.join-left p{font-size:14px;color:rgba(255,255,255,0.45);font-weight:300;max-width:480px;line-height:1.7}
+.join-actions{display:flex;gap:10px;flex-shrink:0;flex-wrap:wrap}
+
+/* ── MAP PLACEHOLDER ── */
+.map-section{background:var(--dark);padding:clamp(4rem,7vw,6rem) clamp(1.5rem,5vw,3.5rem)}
+.map-inner{max-width:1200px;margin:0 auto}
+.map-section .eyebrow{color:var(--brand)}
+.map-section .s-title{color:#fff;margin-bottom:2.5rem}
+.map-placeholder{
+  height:340px;background:var(--dark-card);border:1px solid var(--border-dark);
+  border-radius:var(--r-xl);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.75rem;
+  position:relative;overflow:hidden;
+}
+.map-placeholder::before{
+  content:'';position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 30% 55%, rgba(247,88,63,0.07) 0%, transparent 40%),
+    radial-gradient(circle at 70% 35%, rgba(99,91,255,0.05) 0%, transparent 40%),
+    radial-gradient(circle at 55% 70%, rgba(34,197,94,0.05) 0%, transparent 30%);
+}
+.map-dots{position:absolute;inset:0;pointer-events:none}
+.map-dot{
+  position:absolute;width:10px;height:10px;border-radius:50%;
+  background:var(--brand);border:2px solid rgba(247,88,63,0.3);
+  box-shadow:0 0 0 6px rgba(247,88,63,0.08);
+}
+.map-dot::after{
+  content:'';position:absolute;inset:-5px;border-radius:50%;
+  border:1px solid rgba(247,88,63,0.2);animation:ping 2.5s ease-out infinite;
+}
+.map-label{font-size:13px;color:rgba(255,255,255,0.35);position:relative;z-index:1}
+.map-label strong{color:#fff}
+
+@keyframes ping{
+  0%{opacity:.8;transform:scale(1)}
+  100%{opacity:0;transform:scale(3)}
+}
+
+@media(max-width:960px){
+  .clubs-grid{grid-template-columns:repeat(2,1fr)}
+  .join-inner{flex-direction:column;align-items:flex-start}
+  .join-actions{width:100%}
+}
+@media(max-width:600px){
+  .clubs-grid{grid-template-columns:1fr}
+  .filter-bar{flex-direction:column;align-items:stretch}
+  .sport-filters{width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="index.html"><img src="assets/logo.png" alt="Anytimes">any<span>times</span></a>
+  <ul class="nav-links">
+    <li><a href="funzionalita.html">Funzionalità</a></li>
+    <li><a href="club.html" class="active">Club</a></li>
+    <li><a href="chi-siamo.html">Chi siamo</a></li>
+    <li><a href="prezzi.html">Prezzi</a></li>
+    <li><a href="blog.html">Blog</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-nav-ghost">Accedi</button>
+    <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="clubs-hero">
+  <div class="eyebrow">La rete Anytimes</div>
+  <h1 class="s-title">I club che hanno già<br>scelto Anytimes</h1>
+  <p class="s-sub">Scopri i circoli sportivi che usano Anytimes ogni giorno. Prenota un campo, iscriviti a un corso o scarica l'app del tuo club preferito.</p>
+  <div class="hero-count">
+    <span>🏅</span> <strong>9 club</strong> attivi in tutta Italia
+  </div>
+</div>
+
+<!-- SEARCH + FILTER -->
+<div class="filter-bar-section">
+  <div class="filter-bar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" type="text" placeholder="Cerca club per nome o città..." id="clubSearch">
+    </div>
+    <div class="sport-filters">
+      <button class="sf-btn active" data-filter="all">Tutti</button>
+      <button class="sf-btn" data-filter="padel">Padel</button>
+      <button class="sf-btn" data-filter="tennis">Tennis</button>
+      <button class="sf-btn" data-filter="pickleball">Pickleball</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLUBS GRID -->
+<div class="clubs-section">
+  <div class="clubs-inner">
+    <div class="clubs-grid" id="clubsGrid">
+
+      <!-- 1. Padel Dome -->
+      <div class="club-card" data-sports="padel" data-name="padel dome cura carpignano pavia">
+        <div class="cc-cover" style="background:linear-gradient(135deg,rgba(99,91,255,0.25),rgba(99,91,255,0.06))">
+          🏟️
+          <div class="cc-cover-overlay"></div>
+          <!-- ha l'app -->
+          <div class="cc-app-badges">
+            <a href="#" class="cc-app-badge" title="App Store">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              iOS
+            </a>
+            <a href="#" class="cc-app-badge" title="Google Play">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/></svg>
+              Android
+            </a>
+          </div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-top">
+            <div class="cc-name">Padel Dome</div>
+            <div class="cc-verified">✦</div>
+          </div>
+          <div class="cc-location">📍 Cura Carpignano, Pavia</div>
+          <div class="cc-sport-tags">
+            <span class="cc-sport-tag padel">Padel</span>
+          </div>
+          <p class="cc-desc">Campi da padel coperti di ultima generazione nel cuore della provincia di Pavia. Il punto di riferimento per gli appassionati di padel della zona.</p>
+          <div class="cc-meta">
+            <div class="cc-meta-item">🏟️ <span>4 campi</span></div>
+            <div class="cc-meta-item">🕐 <span>Aperto 7/7</span></div>
+          </div>
+          <div class="cc-actions">
+            <a href="#" class="cc-btn-book" target="_blank" rel="noopener">📅 Prenota</a>
+            <a href="#" class="cc-btn-app" target="_blank" rel="noopener">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              App
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Padel Park Belgioioso -->
+      <div class="club-card" data-sports="padel" data-name="padel park belgioioso pavia">
+        <div class="cc-cover" style="background:linear-gradient(135deg,rgba(99,91,255,0.2),rgba(74,222,128,0.08))">
+          🌿
+          <div class="cc-cover-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-top">
+            <div class="cc-name">Padel Park Belgioioso</div>
+            <div class="cc-verified">✦</div>
+          </div>
+          <div class="cc-location">📍 Belgioioso, Pavia</div>
+          <div class="cc-sport-tags">
+            <span class="cc-sport-tag padel">Padel</span>
+          </div>
+          <p class="cc-desc">Centro padel moderno immerso nel verde, nel cuore di Belgioioso. Struttura all'avanguardia con campi di ultima generazione.</p>
+          <div class="cc-meta">
+            <div class="cc-meta-item">🏟️ <span>3 campi</span></div>
+            <div class="cc-meta-item">🌳 <span>Area verde</span></div>
+          </div>
+          <div class="cc-actions">
+            <a href="#" class="cc-btn-book" target="_blank" rel="noopener">📅 Prenota</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. MartinPadel -->
+      <div class="club-card" data-sports="padel pickleball" data-name="martinpadel martinsicuro abruzzo pickleball">
+        <div class="cc-cover" style="background:linear-gradient(135deg,rgba(251,191,36,0.2),rgba(247,88,63,0.08))">
+          🎾
+          <div class="cc-cover-overlay"></div>
+          <!-- ha l'app -->
+          <div class="cc-app-badges">
+            <a href="#" class="cc-app-badge" title="App Store">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              iOS
+            </a>
+            <a href="#" class="cc-app-badge" title="Google Play">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.37.6 1.23 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/></svg>
+              Android
+            </a>
+          </div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-top">
+            <div class="cc-name">MartinPadel</div>
+            <div class="cc-verified">✦</div>
+          </div>
+          <div class="cc-location">📍 Martinsicuro, Abruzzo</div>
+          <div class="cc-sport-tags">
+            <span class="cc-sport-tag padel">Padel</span>
+            <span class="cc-sport-tag pickleball">Pickleball</span>
+          </div>
+          <p class="cc-desc">Il centro di padel e pickleball di riferimento in Abruzzo. Una struttura multi-sport pensata per atleti di ogni livello.</p>
+          <div class="cc-meta">
+            <div class="cc-meta-item">🏟️ <span>5 campi</span></div>
+            <div class="cc-meta-item">🏓 <span>Pickleball</span></div>
+          </div>
+          <div class="cc-actions">
+            <a href="#" class="cc-btn-book" target="_blank" rel="noopener">📅 Prenota</a>
+            <a href="#" class="cc-btn-app" target="_blank" rel="noopener">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              App
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Hub 4.0 Rovato -->
+      <div class="club-card" data-sports="padel" data-name="hub 4.0 rovato brescia lombardia">
+        <div class="cc-cover" style="background:linear-gradient(135deg,rgba(34,197,94,0.18),rgba(99,91,255,0.08))">
+          ⚡
+          <div class="cc-cover-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-top">
+            <div class="cc-name">Hub 4.0 Rovato</div>
+            <div class="cc-verified">✦</div>
+          </div>
+          <div class="cc-location">📍 Rovato, Brescia</div>
+          <div class="cc-sport-tags">
+            <span class="cc-sport-tag padel">Padel</span>
+          </div>
+          <p class="cc-desc">Il paradiso del padel in Lombardia. Struttura di eccellenza a Brescia con campi indoor di ultimissima generazione e spogliatoi premium.</p>
+          <div class="cc-meta">
+            <div class="cc-meta-item">🏟️ <span>6 campi</span></div>
+            <div class="cc-meta-item">🔒 <span>Indoor</span></div>
+          </div>
+          <div class="cc-actions">
+            <a href="#" class="cc-btn-book" target="_blank" rel="noopener">📅 Prenota</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Blu Padel Fabro -->
+      <div class="club-card" data-sports="padel" data-name="blu padel fabro umbria terni">
+        <div class="cc-cover" style="background:linear-gradient(135deg,rgba(59,130,246,0.2),rgba(99,91,255,0.06))">
+          💙
+          <div class="cc-cover-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-top">
+            <div class="cc-name">Blu Padel Fabro</div>
+            <div class="cc-verified">✦</div>
+          </div>
+          <div class="cc-location">📍 Fabro, Terni</div>
+          <div class="cc-sport-tags">
+            <span class="cc-sport-tag padel">Padel</span>
+          </div>
+          <p class="cc-desc">Uno scenario incantevole dove la passione per il padel si fonde con la bellezza naturale dell'Umbria meridionale. Un'esperienza unica.</p>
+          <div class="cc-meta">
+            <div class="cc-meta-item">🏟️ <span>3 campi</span></div>
+            <div class="cc-meta-item">🌄 <span>Vista panoramica</span></div>
+          </div>
+          <div class="cc-actions">
+            <a href="#" class="cc-btn-book" target="_blank" rel="noopener">📅 Prenota</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Gubbiano Padel -->
+      <div class="club-card" data-sports="padel" data-name="gubbiano padel cascia umbria">
+        <div class="cc-cover" style="background:linear-gradient(135deg,rgba(247,88,63,0.18),rgba(251,191,36,0.06))">
+          🏔️
+          <div class="cc-cover-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-top">
+            <div class="cc-name">Gubbiano Padel</div>
+            <div class="cc-verified">✦</div>
+          </div>
+          <div class="cc-location">📍 Cascia, Perugia</div>
+          <div class="cc-sport-tags">
+            <span class="cc-sport-tag padel">Padel</span>
+          </div>
+          <p class="cc-desc">Dove l'emozione del padel incontra la bellezza di Cascia, Umbria. Struttura immersa nel verde con campi in posizione panoramica mozzafiato.</p>
+          <div class="cc-meta">
+            <div class="cc-meta-item">🏟️ <span>2 campi</span></div>
+            <div class="cc-meta-item">🌿 <span>Circondato dal verde</span></div>
+          </div>
+          <div class="cc-actions">
+            <a href="#" class="cc-btn-book" target="_blank" rel="noopener">📅 Prenota</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Smash Padel Club Montefalco -->
+      <div class="club-card" data-sports="padel" data-name="smash padel club montefalco umbria perugia">
+        <div class="cc-cover" style="background:linear-gradient(135deg,rgba(247,88,63,0.2),rgba(139,92,246,0.08))">
+          🏅
+          <div class="cc-cover-overlay"></div>
+          <!-- ha l'app -->
+          <div class="cc-app-badges">
+            <a href="#" class="cc-app-badge" title="App Store">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              iOS
+            </a>
+          </div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-top">
+            <div class="cc-name">Smash Padel Montefalco</div>
+            <div class="cc-verified">✦</div>
+          </div>
+          <div class="cc-location">📍 Montefalco, Perugia</div>
+          <div class="cc-sport-tags">
+            <span class="cc-sport-tag padel">Padel</span>
+          </div>
+          <p class="cc-desc">Campo da padel di ultima generazione immerso nel verde delle pittoresche colline umbre. Un'oasi sportiva nel cuore dell'Umbria.</p>
+          <div class="cc-meta">
+            <div class="cc-meta-item">🏟️ <span>3 campi</span></div>
+            <div class="cc-meta-item">🌾 <span>Colline umbre</span></div>
+          </div>
+          <div class="cc-actions">
+            <a href="#" class="cc-btn-book" target="_blank" rel="noopener">📅 Prenota</a>
+            <a href="#" class="cc-btn-app" target="_blank" rel="noopener">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              App
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Gualdo Padel -->
+      <div class="club-card" data-sports="padel" data-name="gualdo padel gualdo tadino umbria perugia">
+        <div class="cc-cover" style="background:linear-gradient(135deg,rgba(74,222,128,0.15),rgba(59,130,246,0.07))">
+          🌲
+          <div class="cc-cover-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-top">
+            <div class="cc-name">Gualdo Padel</div>
+            <div class="cc-verified">✦</div>
+          </div>
+          <div class="cc-location">📍 Gualdo Tadino, Perugia</div>
+          <div class="cc-sport-tags">
+            <span class="cc-sport-tag padel">Padel</span>
+          </div>
+          <p class="cc-desc">Il luogo di riferimento per gli amanti del padel a Gualdo Tadino. Struttura moderna con istruttori certificati e disponibilità online 24/7.</p>
+          <div class="cc-meta">
+            <div class="cc-meta-item">🏟️ <span>2 campi</span></div>
+            <div class="cc-meta-item">🎓 <span>Corsi disponibili</span></div>
+          </div>
+          <div class="cc-actions">
+            <a href="#" class="cc-btn-book" target="_blank" rel="noopener">📅 Prenota</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. H2O Sparta Padel -->
+      <div class="club-card" data-sports="padel" data-name="h2o sparta padel acquasparta terni umbria">
+        <div class="cc-cover" style="background:linear-gradient(135deg,rgba(59,130,246,0.22),rgba(34,197,94,0.07))">
+          💧
+          <div class="cc-cover-overlay"></div>
+        </div>
+        <div class="cc-body">
+          <div class="cc-top">
+            <div class="cc-name">H2O Sparta Padel</div>
+            <div class="cc-verified">✦</div>
+          </div>
+          <div class="cc-location">📍 Acquasparta, Terni</div>
+          <div class="cc-sport-tags">
+            <span class="cc-sport-tag padel">Padel</span>
+          </div>
+          <p class="cc-desc">Nel cuore di Acquasparta, H2O Sparta Padel è un luogo dove il padel incontra l'eccellenza. Impianto completo con reception, bar e area relax.</p>
+          <div class="cc-meta">
+            <div class="cc-meta-item">🏟️ <span>4 campi</span></div>
+            <div class="cc-meta-item">☕ <span>Bar & relax</span></div>
+          </div>
+          <div class="cc-actions">
+            <a href="#" class="cc-btn-book" target="_blank" rel="noopener">📅 Prenota</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /clubs-grid -->
+
+    <!-- empty state -->
+    <div id="emptyState" style="display:none;text-align:center;padding:4rem 0">
+      <div style="font-size:48px;margin-bottom:1rem">🔍</div>
+      <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:.5rem">Nessun club trovato</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.4)">Prova con un altro nome o sport</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MAP -->
+<section class="map-section">
+  <div class="map-inner">
+    <div class="eyebrow">Dove siamo</div>
+    <h2 class="s-title">9 club in tutta Italia</h2>
+    <div class="map-placeholder">
+      <div class="map-dots">
+        <!-- Pavia -->
+        <div class="map-dot" style="top:22%;left:24%;animation-delay:0s"></div>
+        <div class="map-dot" style="top:24%;left:25.5%;animation-delay:.4s"></div>
+        <!-- Abruzzo -->
+        <div class="map-dot" style="top:44%;left:56%;animation-delay:.2s"></div>
+        <!-- Brescia -->
+        <div class="map-dot" style="top:20%;left:28%;animation-delay:.6s"></div>
+        <!-- Umbria / Terni -->
+        <div class="map-dot" style="top:50%;left:44%;animation-delay:.3s"></div>
+        <div class="map-dot" style="top:52%;left:43%;animation-delay:.7s"></div>
+        <div class="map-dot" style="top:48%;left:46%;animation-delay:.1s"></div>
+        <div class="map-dot" style="top:54%;left:42%;animation-delay:.5s"></div>
+        <div class="map-dot" style="top:56%;left:44%;animation-delay:.9s"></div>
+      </div>
+      <span style="font-size:32px;position:relative;z-index:1">🗺️</span>
+      <p class="map-label">Presenti in <strong>Lombardia, Abruzzo e Umbria</strong> — in espansione</p>
+    </div>
+  </div>
+</section>
+
+<!-- DIVENTA CLUB -->
+<div class="join-band">
+  <div class="join-inner">
+    <div class="join-left">
+      <div class="eyebrow">Sei un gestore?</div>
+      <h3>Porta il tuo club su Anytimes</h3>
+      <p>Unisciti alla rete di circoli sportivi che usano Anytimes per gestire prenotazioni, soci e pagamenti. Setup in meno di 24 ore.</p>
+    </div>
+    <div class="join-actions">
+      <a href="contatti.html" class="btn-primary">Richiedi demo →</a>
+      <a href="prezzi.html" class="btn-secondary">Vedi i piani</a>
+    </div>
+  </div>
+</div>
+
+<!-- CTA FINALE -->
+<div class="cta-section">
+  <div class="cta-inner fade-up">
+    <h2>Il tuo sport, sempre<br>a portata di click.</h2>
+    <p>Prenota un campo, iscriviti a un torneo o contatta il tuo club in pochi secondi.</p>
+    <div class="cta-btns">
+      <a href="contatti.html"><button class="btn-cta-main">Richiedi demo gratuita →</button></a>
+      <a href="funzionalita.html"><button class="btn-cta-ghost">Scopri le funzionalità</button></a>
+    </div>
+    <p class="cta-note">Nessuna carta di credito · Setup &lt;24h · Supporto incluso</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="foot-logo"><img src="assets/logo.png" alt="Anytimes">any<span>times</span></div>
+    <div class="foot-links">
+      <a href="funzionalita.html">Funzionalità</a>
+      <a href="club.html">Club</a>
+      <a href="prezzi.html">Prezzi</a>
+      <a href="chi-siamo.html">Chi siamo</a>
+      <a href="blog.html">Blog</a>
+      <a href="contatti.html">Contatti</a>
+    </div>
+    <div class="foot-copy">© 2026 Anytimes Srls — P.IVA 03894070543</div>
+  </div>
+</footer>
+
+<script>
+// Intersection Observer
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const cards = e.target.querySelectorAll ? e.target.querySelectorAll('.club-card') : null;
+    if (e.target.classList.contains('club-card')) {
+      e.target.classList.add('visible');
+    } else if (cards) {
+      cards.forEach((c, i) => setTimeout(() => c.classList.add('visible'), i * 60));
+    } else {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.club-card, .fade-up').forEach(el => io.observe(el));
+
+// Sport filter
+const sfBtns = document.querySelectorAll('.sf-btn');
+let activeFilter = 'all';
+
+sfBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    sfBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    applyFilters();
+  });
+});
+
+// Search
+const searchInput = document.getElementById('clubSearch');
+searchInput.addEventListener('input', applyFilters);
+
+function applyFilters() {
+  const q = searchInput.value.toLowerCase().trim();
+  const cards = document.querySelectorAll('.club-card');
+  let visible = 0;
+
+  cards.forEach(card => {
+    const sports = card.dataset.sports || '';
+    const name = card.dataset.name || '';
+    const matchSport = activeFilter === 'all' || sports.includes(activeFilter);
+    const matchSearch = !q || name.includes(q);
+
+    if (matchSport && matchSearch) {
+      card.style.display = '';
+      visible++;
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  document.getElementById('emptyState').style.display = visible === 0 ? 'block' : 'none';
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anytimes — Il gestionale per centri sportivi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── HERO ── */
+.hero{padding:clamp(5rem,10vw,8rem) clamp(1.5rem,5vw,3.5rem) 0;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1.1fr;gap:5rem;align-items:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(247,88,63,0.12);border:1px solid rgba(247,88,63,0.25);color:var(--brand-mid);font-size:12px;font-weight:500;padding:5px 14px;border-radius:20px;margin-bottom:1.75rem;font-family:var(--font-body)}
+.badge-pulse{width:6px;height:6px;background:var(--brand);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+.hero-h1{font-family:var(--font-display);font-size:clamp(2.8rem,5.5vw,4.2rem);font-weight:800;line-height:1.05;letter-spacing:-2px;color:var(--white);margin-bottom:1.5rem}
+.hero-h1 .accent{color:var(--brand)}
+.hero-h1 .dim{color:rgba(255,255,255,0.4)}
+.hero-p{font-size:1.05rem;color:rgba(255,255,255,0.55);line-height:1.8;margin-bottom:2.5rem;font-weight:300;max-width:460px}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.hero-social-proof{display:flex;align-items:center;gap:12px;margin-top:2rem}
+.avatars{display:flex}
+.av{width:32px;height:32px;border-radius:50%;border:2px solid var(--dark);margin-left:-9px}
+.av:first-child{margin-left:0}
+.proof-text{font-size:12px;color:rgba(255,255,255,0.45)}
+.proof-text strong{color:rgba(255,255,255,0.75)}
+
+/* ── DASHBOARD MOCK ── */
+.dash-shell{background:var(--dark-card);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r-xl);overflow:hidden;box-shadow:0 40px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);animation:float 7s ease-in-out infinite}
+.dash-titlebar{background:#111;border-bottom:1px solid rgba(255,255,255,0.07);padding:12px 18px;display:flex;align-items:center;gap:12px}
+.tl-dots{display:flex;gap:6px}
+.tl{width:11px;height:11px;border-radius:50%}
+.tl-r{background:#FC6058}.tl-y{background:#FEC02F}.tl-g{background:#2BC840}
+.urlbar{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:4px 12px;font-size:11px;color:rgba(255,255,255,0.35);font-family:monospace;margin:0 12px}
+.dash-layout{display:grid;grid-template-columns:150px 1fr}
+.dash-sidebar{background:#0F0F0F;border-right:1px solid rgba(255,255,255,0.06);padding:14px 10px}
+.ds-logo{font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--white);padding:0 6px 12px;border-bottom:1px solid rgba(255,255,255,0.07);margin-bottom:10px;letter-spacing:-.3px}
+.ds-logo span{color:var(--brand)}
+.ds-item{display:flex;align-items:center;gap:7px;padding:7px 8px;border-radius:7px;font-size:10px;color:rgba(255,255,255,0.4);margin-bottom:2px;cursor:pointer;transition:all .15s}
+.ds-item.active{background:rgba(247,88,63,0.12);color:var(--brand-mid);font-weight:500}
+.ds-item:hover:not(.active){background:rgba(255,255,255,0.04)}
+.ds-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.dash-main{padding:16px}
+.dm-header{font-size:12px;font-weight:500;color:rgba(255,255,255,0.7);margin-bottom:12px;font-family:var(--font-display)}
+.stats-g{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.sc{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:10px}
+.sc-l{font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.sc-v{font-size:17px;font-weight:600;color:var(--white);font-family:var(--font-display)}
+.sc-d{font-size:9px;margin-top:2px}
+.up{color:#4ade80}.warn{color:#fbbf24}
+.ag-label{font-size:9px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.slots{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.sl{border-radius:5px;padding:5px 6px;font-size:9px;font-weight:500}
+.sl-ok{background:rgba(247,88,63,0.15);color:var(--brand-mid)}
+.sl-free{background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.25)}
+.sl-vip{background:rgba(99,91,255,0.15);color:#a5b4fc}
+
+/* ── FEATURES BENTO ── */
+.features-section{background:var(--dark)}
+.feat-bento{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:1px;background:var(--border-dark);border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--border-dark);margin-top:3.5rem}
+.fb{background:var(--dark-card);padding:2rem 1.75rem;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s,background .3s}
+.fb.visible{opacity:1;transform:translateY(0)}
+.fb:hover{background:#1E1E1E}
+.fb.wide{grid-column:span 2}
+.fb-icon{width:38px;height:38px;border-radius:10px;background:rgba(247,88,63,0.12);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:1.25rem;border:1px solid rgba(247,88,63,0.2)}
+.fb h3{font-family:var(--font-display);font-size:16px;font-weight:700;margin-bottom:.6rem;color:var(--white)}
+.fb p{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.7;font-weight:300}
+.fb-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:1rem}
+.ftag{font-size:10px;padding:3px 9px;border-radius:5px;background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.35);border:1px solid rgba(255,255,255,0.08);font-family:monospace}
+
+/* ── AI SECTION ── */
+.ai-section{background:var(--off-white)}
+.ai-section .s-title{color:var(--dark)}
+.ai-section .s-sub{color:var(--text-muted-dark)}
+.ai-section .eyebrow{color:var(--brand)}
+.ai-inner-card{background:var(--dark);border-radius:var(--r-xl);padding:clamp(2.5rem,5vw,4rem);margin-top:3.5rem;position:relative;overflow:hidden}
+.ai-inner-card::before{content:'';position:absolute;top:-120px;right:-120px;width:500px;height:500px;background:radial-gradient(circle,rgba(247,88,63,0.07) 0%,transparent 70%)}
+.ai-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.8rem;position:relative;z-index:1}
+.ai-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--r-lg);padding:1.5rem;transition:all .25s}
+.ai-card:hover{background:rgba(255,255,255,0.07);transform:translateY(-3px);border-color:rgba(247,88,63,0.2)}
+.ai-icon{font-size:22px;margin-bottom:.9rem;display:block}
+.ai-card h4{font-family:var(--font-display);font-size:14px;font-weight:700;color:#fff;margin-bottom:.4rem}
+.ai-card p{font-size:12px;color:rgba(255,255,255,0.5);line-height:1.7;font-weight:300}
+.ai-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(247,88,63,0.1);border:1px solid rgba(247,88,63,0.2);border-radius:20px;padding:6px 14px;font-size:12px;color:var(--brand-mid);font-weight:500;margin-bottom:2rem}
+.ai-head-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2.5rem;flex-wrap:wrap;gap:1rem}
+.ai-head-left .s-title{color:#fff}
+.ai-head-left .s-sub{color:rgba(255,255,255,0.55);max-width:460px}
+.ai-tag{display:inline-block;margin-top:.75rem;background:rgba(247,88,63,0.1);border:1px solid rgba(247,88,63,0.15);border-radius:5px;padding:2px 9px;font-size:10px;color:var(--brand-mid);font-family:monospace}
+
+/* ── WHO ── */
+.who-section{background:var(--dark)}
+.who-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:3.5rem}
+.who-card{border-radius:var(--r-xl);padding:3rem;border:1px solid var(--border-dark);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
+.who-card.visible{opacity:1;transform:translateY(0)}
+.who-card.light{background:var(--off-white);border-color:var(--border-light)}
+.who-card.dark-card{background:var(--dark-card);border-color:rgba(255,255,255,0.08)}
+.who-eyebrow{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.75rem}
+.who-card.light .who-eyebrow{color:var(--brand)}
+.who-card.dark-card .who-eyebrow{color:rgba(255,255,255,0.4)}
+.who-card h3{font-family:var(--font-display);font-size:1.6rem;font-weight:800;letter-spacing:-0.8px;margin-bottom:.75rem;line-height:1.2}
+.who-card.light h3{color:var(--dark)}
+.who-card.dark-card h3{color:#fff}
+.who-card p{font-size:14px;line-height:1.75;font-weight:300;margin-bottom:1.5rem}
+.who-card.light p{color:var(--text-muted-dark)}
+.who-card.dark-card p{color:rgba(255,255,255,0.5)}
+.who-list{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.who-list li{font-size:13px;display:flex;align-items:center;gap:10px}
+.who-card.light .who-list li{color:#3a3a3a}
+.who-card.dark-card .who-list li{color:rgba(255,255,255,0.65)}
+.wcheck{width:18px;height:18px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.who-card.light .wcheck{background:rgba(247,88,63,0.1);color:var(--brand)}
+.who-card.dark-card .wcheck{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7)}
+.app-row{display:flex;gap:8px;margin-top:1.5rem}
+.app-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:8px 16px;font-size:12px;color:rgba(255,255,255,0.7);font-weight:500;transition:all .2s}
+.app-pill:hover{background:rgba(255,255,255,0.1)}
+
+/* ── PRICING ── */
+.pricing-section{background:var(--off-white)}
+.pricing-section .s-title{color:var(--dark)}
+.pricing-section .s-sub{color:var(--text-muted-dark)}
+.pricing-section .eyebrow{color:var(--brand)}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-top:3.5rem}
+.pc{border-radius:var(--r-xl);padding:2.25rem;position:relative;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s,box-shadow .25s}
+.pc.visible{opacity:1;transform:translateY(0)}
+.pc.light{background:#fff;border:1px solid var(--border-light)}
+.pc.dark-pc{background:var(--dark);border:1px solid rgba(255,255,255,0.08)}
+.pc:hover{box-shadow:0 12px 40px rgba(0,0,0,.1)}
+.pc.dark-pc:hover{box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.pc-popular{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--brand);color:#fff;font-size:11px;font-weight:600;padding:4px 18px;border-radius:20px;white-space:nowrap;font-family:var(--font-body)}
+.pc-tier{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:.4rem}
+.pc.light .pc-tier{color:var(--brand)}
+.pc.dark-pc .pc-tier{color:rgba(255,255,255,0.4)}
+.pc-name{font-family:var(--font-display);font-size:1.6rem;font-weight:800;letter-spacing:-.5px;margin-bottom:.5rem}
+.pc.light .pc-name{color:var(--dark)}
+.pc.dark-pc .pc-name{color:#fff}
+.pc-desc{font-size:13px;line-height:1.6;margin-bottom:1.75rem;font-weight:300}
+.pc.light .pc-desc{color:var(--text-muted-dark)}
+.pc.dark-pc .pc-desc{color:rgba(255,255,255,0.45)}
+.pc-div{height:1px;margin-bottom:1.5rem}
+.pc.light .pc-div{background:var(--border-light)}
+.pc.dark-pc .pc-div{background:rgba(255,255,255,0.08)}
+.pc-list{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin-bottom:2.25rem}
+.pc-list li{font-size:13px;display:flex;align-items:flex-start;gap:9px;line-height:1.4}
+.pc.light .pc-list li{color:#3a3a3a}
+.pc.dark-pc .pc-list li{color:rgba(255,255,255,0.65)}
+.pch{width:17px;height:17px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;margin-top:1px}
+.pc.light .pch{background:rgba(247,88,63,0.1);color:var(--brand)}
+.pc.dark-pc .pch{background:rgba(247,88,63,0.15);color:var(--brand-mid)}
+.pc-btn{width:100%;padding:13px;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .2s}
+.pc.light .pc-btn{background:transparent;color:var(--brand-dark);border:1.5px solid var(--brand)}
+.pc.light .pc-btn:hover{background:var(--brand);color:#fff}
+.pc.dark-pc .pc-btn{background:var(--brand);color:#fff;border:none}
+.pc.dark-pc .pc-btn:hover{background:var(--brand-dark);transform:translateY(-1px)}
+
+/* ── INTEGRATIONS ── */
+.int-section{background:var(--dark)}
+.int-section .s-title{color:#fff}
+.int-section .eyebrow{color:var(--brand)}
+.int-grid{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:2.5rem}
+.int-chip{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.09);border-radius:var(--r);padding:11px 22px;font-size:13px;color:rgba(255,255,255,0.65);font-weight:500;transition:all .25s}
+.int-chip:hover{background:rgba(255,255,255,0.09);border-color:rgba(255,255,255,.18);transform:translateY(-2px)}
+.int-dot{width:8px;height:8px;border-radius:50%}
+
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;gap:3rem}
+  .feat-bento{grid-template-columns:repeat(2,1fr)}
+  .fb.wide{grid-column:span 1}
+  .ai-grid{grid-template-columns:repeat(2,1fr)}
+  .who-grid{grid-template-columns:1fr}
+  .pricing-grid{grid-template-columns:1fr;max-width:440px;margin-left:auto;margin-right:auto}
+  .dash-layout{grid-template-columns:120px 1fr}
+}
+@media(max-width:600px){
+  .feat-bento{grid-template-columns:1fr}
+  .ai-grid{grid-template-columns:1fr}
+  .stats-g{grid-template-columns:repeat(2,1fr)}
+  .slots{grid-template-columns:repeat(3,1fr)}
+  .hero-h1{letter-spacing:-1.5px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><img src="assets/logo.png" alt="Anytimes">any<span>times</span></a>
+  <ul class="nav-links">
+    <li><a href="funzionalita.html">Funzionalità</a></li>
+    <li><a href="club.html">Club</a></li>
+    <li><a href="chi-siamo.html">Chi siamo</a></li>
+    <li><a href="prezzi.html">Prezzi</a></li>
+    <li><a href="blog.html">Blog</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-nav-ghost">Accedi</button>
+    <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" style="padding-bottom:0">
+  <div>
+    <div class="hero-eyebrow"><span class="badge-pulse"></span>Nuovo: AI Insights con Gemini 2.0 Flash</div>
+    <h1 class="hero-h1">Il sistema<br><span class="accent">operativo</span><br>per il tuo<br><span class="dim">club sportivo.</span></h1>
+    <p class="hero-p">Prenotazioni, tornei, abbonamenti e pagamenti su un'unica piattaforma. Dal padel al tennis, dal calcetto al basket.</p>
+    <div class="hero-ctas">
+      <a href="contatti.html"><button class="btn-primary">Richiedi demo gratuita →</button></a>
+      <button class="btn-secondary">Scopri le funzionalità</button>
+    </div>
+    <div class="hero-social-proof">
+      <div class="avatars">
+        <div class="av" style="background:linear-gradient(135deg,#f7583f,#d43e27)"></div>
+        <div class="av" style="background:linear-gradient(135deg,#f7a23f,#d47a27)"></div>
+        <div class="av" style="background:linear-gradient(135deg,#3fa2f7,#277ad4)"></div>
+        <div class="av" style="background:linear-gradient(135deg,#8b3ff7,#6b1fd4)"></div>
+      </div>
+      <p class="proof-text"><strong>+200 club sportivi</strong> già attivi su Anytimes</p>
+    </div>
+  </div>
+  <div class="dash-shell">
+    <div class="dash-titlebar">
+      <div class="tl-dots"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div>
+      <div class="urlbar">app.anytimes.it/dashboard</div>
+    </div>
+    <video autoplay muted loop playsinline style="width:100%;display:block;aspect-ratio:16/9;object-fit:cover">
+      <source src="assets/video.mp4" type="video/mp4">
+    </video>
+  </div>
+</div>
+
+<!-- LOGO STRIP -->
+<div class="logo-strip" style="margin-top:4rem">
+  <div class="logo-track">
+    <span class="logo-chip">PADEL CLUB ROMA</span>
+    <span class="logo-chip">—</span>
+    <span class="logo-chip">TENNIS ACADEMY MILAN</span>
+    <span class="logo-chip">—</span>
+    <span class="logo-chip">SPORT CENTER NAPOLI</span>
+    <span class="logo-chip">—</span>
+    <span class="logo-chip">CALCETTO TORINO</span>
+    <span class="logo-chip">—</span>
+    <span class="logo-chip">PADEL FIRENZE</span>
+    <span class="logo-chip">—</span>
+    <span class="logo-chip">ARENA BOLOGNA</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section class="section features-section" id="features">
+  <div class="inner">
+    <div class="fade-up">
+      <div class="eyebrow">Funzionalità</div>
+      <h2 class="s-title" style="color:#fff;max-width:560px">Tutto ciò che serve per far girare il tuo club</h2>
+      <p class="s-sub" style="color:rgba(255,255,255,0.45);max-width:480px">7 moduli integrati, un'unica piattaforma. Niente più fogli Excel, niente più app separate.</p>
+    </div>
+    <div class="feat-bento">
+      <div class="fb wide">
+        <div class="fb-icon">📅</div>
+        <h3>Prenotazioni in tempo reale</h3>
+        <p>Agenda multi-campo con vista orizzontale e verticale. Prezzi dinamici per fascia oraria. Partite aperte: i giocatori si aggiungono a campi già prenotati direttamente dall'app.</p>
+        <div class="fb-tags"><span class="ftag">multi-campo</span><span class="ftag">app mobile</span><span class="ftag">prezzi dinamici</span><span class="ftag">partite aperte</span></div>
+      </div>
+      <div class="fb">
+        <div class="fb-icon">🏆</div>
+        <h3>Tornei e campionati</h3>
+        <p>Gironi, eliminazione diretta, americano. Tabelloni automatici e classifiche live visibili dall'app dei giocatori.</p>
+        <div class="fb-tags"><span class="ftag">gironi</span><span class="ftag">live ranking</span></div>
+      </div>
+      <div class="fb">
+        <div class="fb-icon">🎓</div>
+        <h3>Academy e corsi</h3>
+        <p>Iscrizioni mensili, a ingressi o ibride. Tracciamento presenze e storico per ogni utente, integrato con il calendario.</p>
+        <div class="fb-tags"><span class="ftag">presenze</span><span class="ftag">iscrizioni flessibili</span></div>
+      </div>
+      <div class="fb">
+        <div class="fb-icon">💳</div>
+        <h3>Abbonamenti e pagamenti</h3>
+        <p>Pacchetti personalizzati, Stripe integrato, contabilità automatica, gestione ASD completa.</p>
+        <div class="fb-tags"><span class="ftag">stripe</span><span class="ftag">contabilità</span></div>
+      </div>
+      <div class="fb">
+        <div class="fb-icon">🏅</div>
+        <h3>Ranking e comunità</h3>
+        <p>Matchmaking automatico, sistema di amicizie e ranking per sport. Costruisce la community attorno al tuo club.</p>
+        <div class="fb-tags"><span class="ftag">matchmaking</span><span class="ftag">community</span></div>
+      </div>
+      <div class="fb">
+        <div class="fb-icon">⚙️</div>
+        <h3>Gestione club completa</h3>
+        <p>QR access, certificati medici, notifiche WhatsApp/Telegram, meteo per campo, statistiche avanzate sui soci.</p>
+        <div class="fb-tags"><span class="ftag">QR</span><span class="ftag">WhatsApp</span><span class="ftag">meteo</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI INSIGHTS -->
+<section class="section ai-section" id="ai">
+  <div class="inner">
+    <div class="fade-up" style="text-align:center">
+      <div class="eyebrow" style="justify-content:center;display:flex">AI Insights</div>
+      <h2 class="s-title" style="max-width:600px;margin:0 auto .75rem">Dati che parlano.<br>Suggerimenti che trasformano.</h2>
+      <p class="s-sub" style="max-width:500px;margin:0 auto">Il primo gestionale sportivo italiano con intelligenza artificiale integrata di serie. Zero plugin, zero extra.</p>
+    </div>
+    <div class="ai-inner-card">
+      <div class="ai-head-row">
+        <div class="ai-head-left">
+          <div class="ai-badge">⚡ Powered by Google Gemini 2.0 Flash</div>
+          <h3 class="s-title" style="color:#fff;font-family:var(--font-display)">Il tuo club,<br>analizzato in tempo reale.</h3>
+          <p class="s-sub" style="color:rgba(255,255,255,0.5);max-width:420px">Ogni mattina ricevi una lista di azioni concrete: chi chiamare, quali slot riempire, quali soci rischiano di andarsene.</p>
+        </div>
+      </div>
+      <div class="ai-grid">
+        <div class="ai-card"><span class="ai-icon">🗓️</span><h4>Agenda Insights</h4><p>Azioni concrete ogni mattina: chi chiamare, slot da riempire, soci da re-ingaggiare.</p><span class="ai-tag">daily briefing</span></div>
+        <div class="ai-card"><span class="ai-icon">👤</span><h4>Player Metrics</h4><p>Segmentazione automatica in 6 profili: Premium, Attivo, In crescita, In calo, A rischio, Dormiente.</p><span class="ai-tag">churn prediction</span></div>
+        <div class="ai-card"><span class="ai-icon">🤝</span><h4>Smart Match</h4><p>Suggerisce le combinazioni di giocatori più compatibili per livello, abitudini e affinità sociale.</p><span class="ai-tag">compatibility score</span></div>
+        <div class="ai-card"><span class="ai-icon">📊</span><h4>Company Insights</h4><p>Dashboard aggregata: revenue, churn risk tiers, distribuzione sport, top spenders e fasce orarie.</p><span class="ai-tag">club health score</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PER CHI È -->
+<section class="section who-section">
+  <div class="inner">
+    <div class="fade-up">
+      <div class="eyebrow">Per chi è</div>
+      <h2 class="s-title" style="color:#fff">Una piattaforma,<br>due esperienze.</h2>
+    </div>
+    <div class="who-grid">
+      <div class="who-card light">
+        <div class="who-eyebrow">Per i gestori del club</div>
+        <h3>Il pannello admin che hai sempre voluto</h3>
+        <p>Potente e intuitivo. Gestisci campi, utenti, incassi e competizioni — da desktop o da mobile — con dati in tempo reale.</p>
+        <ul class="who-list">
+          <li><span class="wcheck">✓</span>Vista multi-campo con agenda live</li>
+          <li><span class="wcheck">✓</span>Contabilità e report automatici</li>
+          <li><span class="wcheck">✓</span>AI Insights ogni mattina</li>
+          <li><span class="wcheck">✓</span>Controllo accessi e QR tornelli</li>
+          <li><span class="wcheck">✓</span>Notifiche automatiche ai soci</li>
+        </ul>
+      </div>
+      <div class="who-card dark-card">
+        <div class="who-eyebrow">Per i giocatori</div>
+        <h3>Un'app che fa venire voglia di giocare</h3>
+        <p>Prenotazioni, sfide, tornei e ranking — tutto in un'app dedicata. Disponibile su iOS e Android, niente browser.</p>
+        <ul class="who-list">
+          <li><span class="wcheck">✓</span>Prenota un campo in 30 secondi</li>
+          <li><span class="wcheck">✓</span>Unisciti a partite aperte</li>
+          <li><span class="wcheck">✓</span>Ranking e statistiche personali</li>
+          <li><span class="wcheck">✓</span>Iscriviti ai tornei del club</li>
+          <li><span class="wcheck">✓</span>Trova avversari del tuo livello</li>
+        </ul>
+        <div class="app-row">
+          <div class="app-pill">🍎 App Store</div>
+          <div class="app-pill">▶ Google Play</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING PREVIEW -->
+<section class="section pricing-section" id="pricing">
+  <div class="inner">
+    <div class="fade-up" style="text-align:center">
+      <div class="eyebrow">Pricing</div>
+      <h2 class="s-title">Il piano giusto per il tuo club</h2>
+      <p class="s-sub" style="max-width:460px;margin:0 auto">Inizia con le basi, scala quando sei pronto. <a href="prezzi.html" style="color:var(--brand);text-decoration:none">Confronta tutti i piani →</a></p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pc light">
+        <div class="pc-tier">Base</div>
+        <div class="pc-name">Starter</div>
+        <div class="pc-desc">Per chi vuole iniziare: prenotazioni e gestione soci.</div>
+        <div class="pc-div"></div>
+        <ul class="pc-list">
+          <li><span class="pch">✓</span>Agenda multi-campo</li>
+          <li><span class="pch">✓</span>Prenotazioni online e da app</li>
+          <li><span class="pch">✓</span>Gestione utenti e soci</li>
+          <li><span class="pch">✓</span>App iOS e Android</li>
+          <li><span class="pch">✓</span>Pagamenti via Stripe</li>
+        </ul>
+        <button class="pc-btn">Attiva ora</button>
+      </div>
+      <div class="pc dark-pc">
+        <div class="pc-popular">Più scelto</div>
+        <div class="pc-tier">Pro</div>
+        <div class="pc-name">Professionale</div>
+        <div class="pc-desc">Per club attivi: tornei, academy e contabilità completa.</div>
+        <div class="pc-div"></div>
+        <ul class="pc-list">
+          <li><span class="pch">✓</span>Tutto di Starter</li>
+          <li><span class="pch">✓</span>Tornei e campionati</li>
+          <li><span class="pch">✓</span>Academy e corsi</li>
+          <li><span class="pch">✓</span>Abbonamenti e pacchetti</li>
+          <li><span class="pch">✓</span>Contabilità integrata</li>
+          <li><span class="pch">✓</span>Ranking e matchmaking</li>
+        </ul>
+        <button class="pc-btn">Inizia con Pro</button>
+      </div>
+      <div class="pc light">
+        <div class="pc-tier">Enterprise</div>
+        <div class="pc-name">All-in-One</div>
+        <div class="pc-desc">Per strutture ambiziose: AI Insights e controllo accessi.</div>
+        <div class="pc-div"></div>
+        <ul class="pc-list">
+          <li><span class="pch">✓</span>Tutto di Pro</li>
+          <li><span class="pch">✓</span>AI Insights completi</li>
+          <li><span class="pch">✓</span>Controllo accessi QR</li>
+          <li><span class="pch">✓</span>WhatsApp e Telegram</li>
+          <li><span class="pch">✓</span>Statistiche avanzate</li>
+        </ul>
+        <button class="pc-btn">Contattaci</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRAZIONI -->
+<section class="section int-section" style="padding-top:3rem;padding-bottom:3rem">
+  <div class="inner" style="text-align:center">
+    <div class="eyebrow">Integrazioni</div>
+    <h2 class="s-title" style="color:#fff">Connesso con gli strumenti<br>che già usi</h2>
+    <div class="int-grid">
+      <div class="int-chip"><div class="int-dot" style="background:#635bff"></div>Stripe</div>
+      <div class="int-chip"><div class="int-dot" style="background:#4285f4"></div>Google Gemini 2.0</div>
+      <div class="int-chip"><div class="int-dot" style="background:#25d366"></div>WhatsApp</div>
+      <div class="int-chip"><div class="int-dot" style="background:#229ed9"></div>Telegram</div>
+      <div class="int-chip"><div class="int-dot" style="background:#fff"></div>iOS &amp; Android</div>
+      <div class="int-chip"><div class="int-dot" style="background:#ea4335"></div>Email push</div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<div class="cta-section" id="cta">
+  <div class="cta-inner fade-up">
+    <h2>Pronto a portare il tuo club<br>al livello successivo?</h2>
+    <p>Demo gratuita — il nostro team ti guida nell'attivazione in meno di 24 ore.</p>
+    <div class="cta-btns">
+      <a href="contatti.html"><button class="btn-cta-main">Richiedi demo gratuita →</button></a>
+      <button class="btn-cta-ghost">Parla con il team</button>
+    </div>
+    <p class="cta-note">Nessuna carta di credito · Setup &lt;24h · Supporto incluso</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="foot-logo"><img src="assets/logo.png" alt="Anytimes">any<span>times</span></div>
+    <div class="foot-links">
+      <a href="chi-siamo.html">Chi siamo</a>
+      <a href="prezzi.html">Prezzi</a>
+      <a href="blog.html">Blog</a>
+      <a href="contatti.html">Contatti</a>
+      <a href="#">Privacy</a>
+    </div>
+    <div class="foot-copy">© 2026 Anytimes · Gestionale per centri sportivi</div>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add('visible');
+    const siblings = e.target.parentElement.querySelectorAll('.fb, .pc, .who-card');
+    if (siblings.length > 1) {
+      siblings.forEach((s, i) => setTimeout(() => s.classList.add('visible'), i * 80));
+    }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.fade-up, .fb, .pc, .who-card').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Anytimes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── BLOG SECTION ── */
+.blog-section{background:var(--dark);padding:0 clamp(1.5rem,5vw,3.5rem) clamp(4rem,8vw,7rem)}
+.blog-inner{max-width:1200px;margin:0 auto}
+
+/* ── CATEGORIE FILTER ── */
+.cat-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:3rem}
+.cat-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:7px 18px;font-size:12px;font-weight:500;color:rgba(255,255,255,0.55);cursor:pointer;font-family:var(--font-body);transition:all .2s}
+.cat-btn:hover{background:rgba(255,255,255,0.09);color:#fff}
+.cat-btn.active{background:var(--brand);border-color:var(--brand);color:#fff}
+
+/* ── FEATURED POST ── */
+.featured-post{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;
+  background:var(--dark-card);
+  border:1px solid var(--border-dark);
+  border-radius:var(--r-xl);
+  overflow:hidden;
+  margin-bottom:2rem;
+  opacity:0;transform:translateY(14px);
+  transition:opacity .6s,transform .6s;
+}
+.featured-post.visible{opacity:1;transform:translateY(0)}
+.featured-post:hover .fp-img{transform:scale(1.03)}
+.fp-img-wrap{overflow:hidden;height:360px}
+.fp-img{height:100%;width:100%;display:flex;align-items:center;justify-content:center;font-size:80px;background:linear-gradient(135deg,rgba(247,88,63,0.15),rgba(247,88,63,0.04));transition:transform .5s}
+.fp-body{padding:2.5rem;display:flex;flex-direction:column;justify-content:center}
+.fp-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(247,88,63,0.12);border:1px solid rgba(247,88,63,0.25);border-radius:20px;padding:4px 14px;font-size:11px;font-weight:500;color:var(--brand-mid);margin-bottom:1.25rem;width:fit-content}
+.fp-title{font-family:var(--font-display);font-size:1.7rem;font-weight:800;color:#fff;letter-spacing:-.8px;line-height:1.15;margin-bottom:.75rem}
+.fp-excerpt{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.7;font-weight:300;margin-bottom:1.5rem}
+.fp-meta{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.fp-author{display:flex;align-items:center;gap:8px}
+.fp-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#f7583f,#d43e27);font-size:12px;display:flex;align-items:center;justify-content:center}
+.fp-author-name{font-size:12px;color:rgba(255,255,255,0.55)}
+.fp-date{font-size:12px;color:rgba(255,255,255,0.3)}
+.fp-read-more{font-size:13px;font-weight:500;color:var(--brand-mid);text-decoration:none;margin-top:1.5rem;display:inline-flex;align-items:center;gap:5px;transition:gap .2s}
+.fp-read-more:hover{gap:9px}
+
+/* ── POSTS GRID ── */
+.posts-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:2.5rem}
+.post-card{
+  background:var(--dark-card);
+  border:1px solid var(--border-dark);
+  border-radius:var(--r-lg);
+  overflow:hidden;
+  opacity:0;transform:translateY(14px);
+  transition:opacity .5s,transform .5s,border-color .25s;
+  display:flex;flex-direction:column;
+}
+.post-card.visible{opacity:1;transform:translateY(0)}
+.post-card:hover{border-color:rgba(255,255,255,0.18)}
+.post-card:hover .pc-img{transform:scale(1.05)}
+.pc-img-wrap{height:160px;overflow:hidden}
+.pc-img{height:100%;width:100%;display:flex;align-items:center;justify-content:center;font-size:50px;transition:transform .4s}
+.pc-body{padding:1.5rem;flex:1;display:flex;flex-direction:column}
+.pc-cat{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--brand-mid);margin-bottom:.6rem}
+.pc-title{font-family:var(--font-display);font-size:15px;font-weight:700;color:#fff;letter-spacing:-.3px;line-height:1.3;margin-bottom:.6rem}
+.pc-excerpt{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.65;font-weight:300;flex:1;margin-bottom:1rem}
+.pc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto}
+.pc-date{font-size:11px;color:rgba(255,255,255,0.25)}
+.pc-link{font-size:12px;font-weight:500;color:var(--brand-mid);text-decoration:none;display:inline-flex;align-items:center;gap:4px;transition:gap .2s}
+.pc-link:hover{gap:7px}
+
+/* ── LOAD MORE ── */
+.load-more-wrap{text-align:center;padding:1rem 0 3rem}
+.btn-load-more{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);padding:13px 32px;border-radius:var(--r);font-size:14px;cursor:pointer;font-family:var(--font-body);transition:all .2s}
+.btn-load-more:hover{background:rgba(255,255,255,0.1);color:#fff}
+
+/* ── NEWSLETTER ── */
+.newsletter-band{background:var(--dark-2);border-top:1px solid var(--border-dark);border-bottom:1px solid var(--border-dark);padding:3rem clamp(1.5rem,5vw,3.5rem)}
+.nl-inner{max-width:580px;margin:0 auto;text-align:center}
+.nl-inner h3{font-family:var(--font-display);font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:-.5px;margin-bottom:.5rem}
+.nl-inner p{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:1.5rem;font-weight:300}
+.nl-form{display:flex;gap:10px;max-width:420px;margin:0 auto}
+.nl-input{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--r);padding:12px 16px;font-size:13px;color:#fff;font-family:var(--font-body);outline:none;transition:border-color .2s}
+.nl-input::placeholder{color:rgba(255,255,255,0.3)}
+.nl-input:focus{border-color:rgba(247,88,63,0.4)}
+.nl-btn{background:var(--brand);color:#fff;border:none;padding:12px 22px;border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;font-family:var(--font-body);transition:all .2s;white-space:nowrap}
+.nl-btn:hover{background:var(--brand-dark)}
+.nl-note{font-size:11px;color:rgba(255,255,255,0.25);margin-top:.75rem}
+
+@media(max-width:960px){
+  .featured-post{grid-template-columns:1fr}
+  .fp-img-wrap{height:240px}
+  .posts-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .posts-grid{grid-template-columns:1fr}
+  .nl-form{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="logo" href="index.html"><img src="assets/logo.png" alt="Anytimes">any<span>times</span></a>
+  <ul class="nav-links">
+    <li><a href="funzionalita.html">Funzionalità</a></li>
+    <li><a href="club.html">Club</a></li>
+    <li><a href="chi-siamo.html">Chi siamo</a></li>
+    <li><a href="prezzi.html">Prezzi</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="btn-nav-ghost">Accedi</button>
+    <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero fade-up">
+  <div class="eyebrow">Blog & News</div>
+  <h1 class="s-title" style="color:#fff">Risorse per gestori<br>di club sportivi.</h1>
+  <p class="s-sub">Strategie, guide pratiche e aggiornamenti dal mondo dei gestionali sportivi. Scritto da chi lavora con i club ogni giorno.</p>
+</div>
+
+<!-- BLOG CONTENT -->
+<div class="blog-section">
+  <div class="blog-inner">
+
+    <!-- FILTRI CATEGORIA -->
+    <div class="cat-bar">
+      <button class="cat-btn active">Tutti</button>
+      <button class="cat-btn">Gestione club</button>
+      <button class="cat-btn">Prenotazioni</button>
+      <button class="cat-btn">Tornei</button>
+      <button class="cat-btn">AI & Innovazione</button>
+      <button class="cat-btn">Casi studio</button>
+      <button class="cat-btn">News Anytimes</button>
+    </div>
+
+    <!-- FEATURED POST -->
+    <div class="featured-post">
+      <div class="fp-img-wrap"><div class="fp-img" style="background:linear-gradient(135deg,rgba(247,88,63,0.2),rgba(247,88,63,0.04))">🤖</div></div>
+      <div class="fp-body">
+        <div class="fp-badge">✦ AI & Innovazione</div>
+        <h2 class="fp-title">Come l'AI cambia la gestione dei club sportivi nel 2025</h2>
+        <p class="fp-excerpt">Da semplice calendario a sistema intelligente: come i club che usano l'AI fanno il 23% di revenue in più ogni mese. I dati reali dai nostri clienti.</p>
+        <div class="fp-meta">
+          <div class="fp-author">
+            <div class="fp-av">M</div>
+            <span class="fp-author-name">Marco Baldini</span>
+          </div>
+          <span class="fp-date">8 Aprile 2025 · 8 min lettura</span>
+        </div>
+        <a href="#" class="fp-read-more">Leggi l'articolo →</a>
+      </div>
+    </div>
+
+    <!-- POSTS GRID -->
+    <div class="posts-grid">
+      <div class="post-card">
+        <div class="pc-img-wrap"><div class="pc-img" style="background:linear-gradient(135deg,rgba(74,222,128,0.12),rgba(74,222,128,0.03))">📅</div></div>
+        <div class="pc-body">
+          <div class="pc-cat">Prenotazioni</div>
+          <div class="pc-title">Partite aperte: come aumentare il tasso di riempimento dei campi del 40%</div>
+          <p class="pc-excerpt">La funzione partite aperte di Anytimes trasforma gli slot vuoti in revenue. Ecco come configurarla al meglio per il tuo club.</p>
+          <div class="pc-footer">
+            <span class="pc-date">24 Mar 2025</span>
+            <a href="#" class="pc-link">Leggi →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="pc-img-wrap"><div class="pc-img" style="background:linear-gradient(135deg,rgba(99,91,255,0.15),rgba(99,91,255,0.04))">🏆</div></div>
+        <div class="pc-body">
+          <div class="pc-cat">Tornei</div>
+          <div class="pc-title">Guida completa all'organizzazione di un torneo di padel da zero</div>
+          <p class="pc-excerpt">Gironi, tabelloni, iscrizioni e comunicazione: tutto quello che devi sapere per organizzare un torneo di successo in meno di 30 minuti.</p>
+          <div class="pc-footer">
+            <span class="pc-date">16 Mar 2025</span>
+            <a href="#" class="pc-link">Leggi →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="pc-img-wrap"><div class="pc-img" style="background:linear-gradient(135deg,rgba(251,191,36,0.12),rgba(251,191,36,0.04))">💳</div></div>
+        <div class="pc-body">
+          <div class="pc-cat">Gestione club</div>
+          <div class="pc-title">Abbonamenti o ingressi singoli? I dati dicono qual è il modello più redditizio</div>
+          <p class="pc-excerpt">Analisi su 80 club: scopri che combinazione di pacchetti massimizza la retention dei soci e il lifetime value.</p>
+          <div class="pc-footer">
+            <span class="pc-date">8 Mar 2025</span>
+            <a href="#" class="pc-link">Leggi →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="pc-img-wrap"><div class="pc-img" style="background:linear-gradient(135deg,rgba(247,88,63,0.12),rgba(247,88,63,0.03))">📊</div></div>
+        <div class="pc-body">
+          <div class="pc-cat">Casi studio</div>
+          <div class="pc-title">Caso studio: come Super Padel Assisi ha raddoppiato le prenotazioni in 3 mesi</div>
+          <p class="pc-excerpt">Da 120 a 280 prenotazioni settimanali. Il percorso di un club da 4 campi che ha digitalizzato completamente la sua operatività.</p>
+          <div class="pc-footer">
+            <span class="pc-date">1 Mar 2025</span>
+            <a href="#" class="pc-link">Leggi →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="pc-img-wrap"><div class="pc-img" style="background:linear-gradient(135deg,rgba(34,158,217,0.12),rgba(34,158,217,0.03))">💬</div></div>
+        <div class="pc-body">
+          <div class="pc-cat">Gestione club</div>
+          <div class="pc-title">WhatsApp, Telegram o email: qual è il canale di notifica più efficace per i soci?</div>
+          <p class="pc-excerpt">Benchmark sui tassi di lettura e conversione dei 3 canali. I risultati ti sorprenderanno.</p>
+          <div class="pc-footer">
+            <span class="pc-date">20 Feb 2025</span>
+            <a href="#" class="pc-link">Leggi →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="post-card">
+        <div class="pc-img-wrap"><div class="pc-img" style="background:linear-gradient(135deg,rgba(247,88,63,0.15),rgba(255,255,255,0.02))">🚀</div></div>
+        <div class="pc-body">
+          <div class="pc-cat">News Anytimes</div>
+          <div class="pc-title">Anytimes 3.0: AI Insights, nuova agenda e app completamente rinnovata</div>
+          <p class="pc-excerpt">La più grande release della nostra storia. Scopri tutte le novità del nuovo piano All-in-One con intelligenza artificiale integrata.</p>
+          <div class="pc-footer">
+            <span class="pc-date">10 Feb 2025</span>
+            <a href="#" class="pc-link">Leggi →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOAD MORE -->
+    <div class="load-more-wrap">
+      <button class="btn-load-more">Carica altri articoli</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEWSLETTER -->
+<div class="newsletter-band">
+  <div class="nl-inner">
+    <h3>Newsletter per gestori di club</h3>
+    <p>Una volta a settimana: strategie pratiche, dati dal settore e aggiornamenti Anytimes. Niente spam.</p>
+    <div class="nl-form">
+      <input class="nl-input" type="email" placeholder="la-tua-email@club.it">
+      <button class="nl-btn">Iscriviti →</button>
+    </div>
+    <p class="nl-note">Puoi disiscriverti in qualsiasi momento · Nessuno spam · Mai</p>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<div class="cta-section">
+  <div class="cta-inner fade-up">
+    <h2>Prova Anytimes sul tuo club,<br>gratis per 30 giorni.</h2>
+    <p>Nessuna carta di credito. Setup in meno di 24 ore con il supporto del nostro team.</p>
+    <div class="cta-btns">
+      <a href="contatti.html"><button class="btn-cta-main">Richiedi demo gratuita →</button></a>
+      <a href="prezzi.html"><button class="btn-cta-ghost">Vedi tutti i piani</button></a>
+    </div>
+    <p class="cta-note">Nessuna carta di credito · Setup &lt;24h · Supporto incluso</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="foot-logo"><img src="assets/logo.png" alt="Anytimes">any<span>times</span></div>
+    <div class="foot-links">
+      <a href="chi-siamo.html">Chi siamo</a>
+      <a href="prezzi.html">Prezzi</a>
+      <a href="blog.html">Blog</a>
+      <a href="contatti.html">Contatti</a>
+      <a href="#">Privacy</a>
+    </div>
+    <div class="foot-copy">© 2026 Anytimes · Gestionale per centri sportivi</div>
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver(e => {
+  e.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    entry.target.classList.add('visible');
+    const siblings = entry.target.parentElement.querySelectorAll('.post-card');
+    if (siblings.length > 1) siblings.forEach((s, i) => setTimeout(() => s.classList.add('visible'), i * 70));
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.fade-up, .featured-post, .post-card').forEach(el => io.observe(el));
+
+// Category filter (visual only)
+document.querySelectorAll('.cat-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>
