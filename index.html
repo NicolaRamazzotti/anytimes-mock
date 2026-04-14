@@ -402,6 +402,19 @@
 [data-theme="dark"] .promise-section .s-title{color:#fff}
 [data-theme="dark"] .promise-section .s-sub{color:rgba(255,255,255,.5)}
 
+/* STEPS ONBOARDING */
+.steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:3.5rem;margin-bottom:4rem;position:relative}
+.steps-row::before{content:'';position:absolute;top:2rem;left:calc(16.66% + 1rem);right:calc(16.66% + 1rem);height:1px;background:repeating-linear-gradient(90deg,var(--brand) 0,var(--brand) 6px,transparent 6px,transparent 14px);opacity:.35;z-index:0}
+.step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 1.5rem;position:relative;z-index:1;opacity:0}
+.step-num{width:64px;height:64px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font:800 1.4rem/1 var(--font-display);color:#fff;margin-bottom:1.25rem;flex-shrink:0;box-shadow:0 0 0 8px rgba(247,88,63,.1)}
+.step-title{font:700 1rem/1.2 var(--font-display);color:var(--dark);margin-bottom:.5rem;letter-spacing:-.2px}
+.step-desc{font:300 .85rem/1.65 var(--font-body);color:rgba(13,13,13,.5);max-width:200px}
+.step-tag{margin-top:.75rem;display:inline-block;font-size:11px;font-weight:600;letter-spacing:.3px;background:rgba(247,88,63,.1);color:var(--brand);border-radius:20px;padding:4px 12px}
+[data-theme="dark"] .step-title{color:#fff}
+[data-theme="light"] .step-title{color:#0D0D0D!important}
+[data-theme="dark"] .step-desc{color:rgba(255,255,255,.42)}
+[data-theme="dark"] .steps-row::before{opacity:.25}
+
 /* CONFRONTO COMPETITOR */
 .vs-section{background:var(--off-white)}
 .vs-compare{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;align-items:start}
@@ -481,6 +494,8 @@
   .promise-card{grid-column:span 1}
   .testi-grid{grid-template-columns:1fr}
   .vs-compare{grid-template-columns:1fr}
+  .steps-row{grid-template-columns:1fr;gap:2.5rem}
+  .steps-row::before{display:none}
 }
 @media(max-width:600px){
   .feat-bento{grid-template-columns:1fr}
@@ -1184,6 +1199,29 @@
       <h2 class="s-title">Nessun compromesso.<br>Parola nostra.</h2>
       <p class="s-sub">Trasparenza totale, supporto reale, zero sorprese.</p>
     </div>
+
+    <!-- 3 passi onboarding -->
+    <div class="steps-row">
+      <div class="step" data-dir="left">
+        <div class="step-num">1</div>
+        <div class="step-title">Richiedi la demo</div>
+        <p class="step-desc">Ci scrivi, ti richiamiamo noi. Ti mostriamo la piattaforma in una call di 20 minuti, senza impegno.</p>
+        <span class="step-tag">Gratis &amp; senza fretta</span>
+      </div>
+      <div class="step" data-dir="center">
+        <div class="step-num">2</div>
+        <div class="step-title">Migrazione automatica</div>
+        <p class="step-desc">Importiamo tutti i tuoi utenti dal vecchio gestionale. I soci ricevono le credenziali in automatico — zero lavoro manuale.</p>
+        <span class="step-tag">Zero stress</span>
+      </div>
+      <div class="step" data-dir="right">
+        <div class="step-num">3</div>
+        <div class="step-title">Sei online in 1 ora</div>
+        <p class="step-desc">Agenda attiva, app live, prenotazioni aperte. Dal primo contatto alla prima prenotazione reale in meno di 60 minuti.</p>
+        <span class="step-tag">Pronti. Via.</span>
+      </div>
+    </div>
+
     <div class="promise-grid">
 
       <div class="promise-card" data-dir="left">
@@ -1403,6 +1441,39 @@ document.querySelectorAll('.fade-up, .pc, .apps-col').forEach(el => io.observe(e
 
   window.addEventListener('scroll', updateAiCards, { passive: true });
   updateAiCards();
+})();
+
+// Steps onboarding — staggered accordion scroll
+(function () {
+  const steps = Array.from(document.querySelectorAll('.steps-row .step'));
+
+  function getProgress(el, startOffset) {
+    const rect  = el.getBoundingClientRect();
+    const winH  = window.innerHeight;
+    const start = winH * 0.95 - startOffset;
+    const end   = winH * 0.28;
+    const top   = rect.top;
+    if (top >= start) return 0;
+    if (top <= end)   return 1;
+    return (start - top) / (start - end);
+  }
+
+  function easeInOutQuad(t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
+
+  function updateSteps() {
+    steps.forEach((step, i) => {
+      const p   = easeInOutQuad(Math.min(1, Math.max(0, getProgress(step, i * 90))));
+      const dir = step.dataset.dir;
+      const rot = 10 * (1 - p) * (dir === 'left' ? -1 : dir === 'right' ? 1 : 0);
+      const tx  = 26 * (1 - p) * (dir === 'left' ? -1 : dir === 'right' ? 1 : 0);
+      const ty  = dir === 'center' ? 32 * (1 - p) : 14 * (1 - p);
+      step.style.transform = `rotate(${rot}deg) translate3d(${tx}px,${ty}px,0)`;
+      step.style.opacity   = 0.1 + 0.9 * p;
+    });
+  }
+
+  window.addEventListener('scroll', updateSteps, { passive: true });
+  updateSteps();
 })();
 
 // Promise cards — accordion scroll effect (fisarmonica)
