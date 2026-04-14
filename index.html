@@ -71,12 +71,13 @@
 .ag-col-hd{padding:5px 6px;border-bottom:1px solid rgba(0,0,0,.08);border-right:1px solid rgba(0,0,0,.06);font-size:7.5px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:rgba(0,0,0,.48);background:#f8f8f6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ag-col-hd:last-child{border-right:none}
 .ag-col-hd span{display:block;font-size:6.5px;color:rgba(0,0,0,.3);font-weight:400;margin-top:1px}
-.ag-body{display:flex;height:272px;flex-shrink:0;overflow:hidden}
-.ag-times{position:relative;width:34px;flex-shrink:0;height:272px}
+.ag-body{display:flex;height:288px;flex-shrink:0;overflow:hidden}
+.ag-times{position:relative;width:34px;flex-shrink:0;height:288px}
 .ag-tl{position:absolute;right:4px;font-size:7px;color:rgba(0,0,0,.3);transform:translateY(-50%);line-height:1;white-space:nowrap}
-.ag-slot-col{flex:1;position:relative;height:272px;border-right:1px solid rgba(0,0,0,.06)}
+.ag-slot-col{flex:1;position:relative;height:288px;border-right:1px solid rgba(0,0,0,.06)}
 .ag-slot-col:last-child{border-right:none}
-.ag-slot{height:34px;border-bottom:1px solid rgba(0,0,0,.05);background:repeating-linear-gradient(45deg,#eae9e3 0,#eae9e3 2px,#f4f3ef 2px,#f4f3ef 7px)}
+.ag-slot{height:34px;background:#e8e7e1;border-radius:3px;margin:0 2px 2px}
+.ag-slot::before{content:attr(data-time);display:flex;align-items:center;justify-content:center;height:100%;font-size:7px;color:rgba(0,0,0,.28);line-height:1;font-family:var(--font-body);white-space:nowrap;letter-spacing:.2px}
 .ag-block{position:absolute;left:2px;right:2px;border-radius:4px;padding:4px 5px;z-index:2;overflow:hidden;opacity:0;transform:scale(.87) translateY(5px);transition:opacity .45s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
 .ag-block.ag-show{opacity:1;transform:none}
 .ag-block-lbl{font-size:8px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:rgba(0,0,0,.78)}
@@ -665,34 +666,34 @@
             <div class="ag-body">
               <div class="ag-times">
                 <span class="ag-tl" style="top:0">10:00</span>
-                <span class="ag-tl" style="top:34px">11:00</span>
-                <span class="ag-tl" style="top:68px">12:00</span>
-                <span class="ag-tl" style="top:102px">13:00</span>
-                <span class="ag-tl" style="top:136px">14:00</span>
-                <span class="ag-tl" style="top:170px">15:00</span>
-                <span class="ag-tl" style="top:204px">16:00</span>
-                <span class="ag-tl" style="top:238px">17:00</span>
-                <span class="ag-tl" style="top:272px">18:00</span>
+                <span class="ag-tl" style="top:36px">11:30</span>
+                <span class="ag-tl" style="top:72px">13:00</span>
+                <span class="ag-tl" style="top:108px">14:30</span>
+                <span class="ag-tl" style="top:144px">16:00</span>
+                <span class="ag-tl" style="top:180px">17:30</span>
+                <span class="ag-tl" style="top:216px">19:00</span>
+                <span class="ag-tl" style="top:252px">20:30</span>
+                <span class="ag-tl" style="top:288px">22:00</span>
               </div>
               <!-- Campo 1 -->
               <div class="ag-slot-col">
                 <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
-                <div class="ag-block ag-b-cyan" data-ag-i="1" style="top:51px;height:51px"><div class="ag-block-lbl">Giulio Perini</div><div class="ag-block-t">11:30 &ndash; 13:00</div></div>
-                <div class="ag-block ag-b-yellow" data-ag-i="5" style="top:153px;height:51px"><div class="ag-block-lbl">Ace Master X2</div><div class="ag-block-t">14:30 &ndash; 16:00</div></div>
-                <div class="ag-block ag-b-green" data-ag-i="6" style="top:204px;height:51px"><div class="ag-block-lbl">Andrea B.</div><div class="ag-block-t">16:00 &ndash; 17:30</div></div>
+                <div class="ag-block ag-b-cyan" data-ag-i="1" style="top:36px;height:34px"><div class="ag-block-lbl">Giulio Perini</div><div class="ag-block-t">11:30 &ndash; 13:00</div></div>
+                <div class="ag-block ag-b-yellow" data-ag-i="4" style="top:108px;height:34px"><div class="ag-block-lbl">Ace Master X2</div><div class="ag-block-t">14:30 &ndash; 16:00</div></div>
+                <div class="ag-block ag-b-green" data-ag-i="6" style="top:144px;height:34px"><div class="ag-block-lbl">Andrea B.</div><div class="ag-block-t">16:00 &ndash; 17:30</div></div>
               </div>
               <!-- Campo 2 -->
               <div class="ag-slot-col">
                 <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
-                <div class="ag-block ag-b-yellow" data-ag-i="2" style="top:51px;height:51px"><div class="ag-block-lbl">Ace Master X2</div><div class="ag-block-t">11:30 &ndash; 13:00</div></div>
-                <div class="ag-block ag-b-blue" data-ag-i="4" style="top:136px;height:51px"><div class="ag-block-lbl">Torneo Open</div><div class="ag-block-t">14:00 &ndash; 15:30</div></div>
-                <div class="ag-block ag-b-cyan" data-ag-i="7" style="top:221px;height:51px"><div class="ag-block-lbl">Prenotazione</div><div class="ag-block-t">16:30 &ndash; 18:00</div></div>
+                <div class="ag-block ag-b-yellow" data-ag-i="2" style="top:36px;height:34px"><div class="ag-block-lbl">Ace Master X2</div><div class="ag-block-t">11:30 &ndash; 13:00</div></div>
+                <div class="ag-block ag-b-blue" data-ag-i="5" style="top:108px;height:34px"><div class="ag-block-lbl">Torneo Open</div><div class="ag-block-t">14:30 &ndash; 16:00</div></div>
+                <div class="ag-block ag-b-cyan" data-ag-i="7" style="top:144px;height:34px"><div class="ag-block-lbl">Prenotazione</div><div class="ag-block-t">16:00 &ndash; 17:30</div></div>
               </div>
               <!-- Campo 3 Indoor -->
               <div class="ag-slot-col">
                 <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
-                <div class="ag-block ag-b-lblue" data-ag-i="0" style="top:34px;height:51px"><div class="ag-block-lbl">Giacomo Ramazzotti</div><div class="ag-block-t">11:00 &ndash; 12:30</div></div>
-                <div class="ag-block ag-b-royal" data-ag-i="3" style="top:136px;height:102px"><div class="ag-block-lbl">Partita aperta</div><div class="ag-block-t">14:00 &ndash; 17:00</div><div class="ag-block-tag">&#9679; 4 giocatori</div></div>
+                <div class="ag-block ag-b-lblue" data-ag-i="0" style="top:36px;height:34px"><div class="ag-block-lbl">Giacomo Ramazzotti</div><div class="ag-block-t">11:30 &ndash; 13:00</div></div>
+                <div class="ag-block ag-b-royal" data-ag-i="3" style="top:108px;height:70px"><div class="ag-block-lbl">Partita aperta</div><div class="ag-block-t">14:30 &ndash; 17:30</div><div class="ag-block-tag">&#9679; 4 giocatori</div></div>
               </div>
             </div>
             <!-- Toast -->
@@ -1918,6 +1919,15 @@ document.querySelectorAll('.fb, .who-card').forEach(card => {
 
   timers.push(setTimeout(cycle, 800));
 })();
+
+// Agenda slot time labels
+document.querySelectorAll('.ag-slot-col').forEach(col => {
+  col.querySelectorAll('.ag-slot').forEach((slot, i) => {
+    const toTime = m => `${String(Math.floor(m/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+    const start = 600 + i * 90;
+    slot.dataset.time = `${toTime(start)} \u2013 ${toTime(start + 90)}`;
+  });
+});
 </script>
 <script src="shared.js"></script>
 </body>
