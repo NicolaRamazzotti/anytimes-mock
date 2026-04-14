@@ -106,23 +106,17 @@
 .ai-gemini-dot{width:6px;height:6px;border-radius:50%;background:var(--ai);animation:pulse 2s ease-in-out infinite}
 /* main layout — orb hero centrato, cards sotto */
 .ai-visual{
-  display:flex;flex-direction:column;align-items:center;
-  position:relative;margin:2.5rem 0 4rem;
-  z-index:1;
-}
-.ai-visual-glow{
   position:absolute;
-  width:900px;height:700px;
-  background:radial-gradient(ellipse at 50% 50%,rgba(92,50,234,0.22) 0%,rgba(247,88,63,0.07) 42%,transparent 68%);
-  pointer-events:none;
   top:50%;left:50%;transform:translate(-50%,-50%);
   z-index:0;
+  pointer-events:none;
 }
-#aiBlob{display:block;width:600px;height:600px;max-width:90vw;position:relative;z-index:1}
+#aiBlob{display:block;width:1000px;height:1000px;max-width:100vw;opacity:0.55}
 .ai-gemini-note{
   font-size:10px;color:rgba(155,121,245,0.35);letter-spacing:1.2px;
   text-transform:uppercase;font-family:monospace;
-  margin-top:-.5rem;position:relative;z-index:1;
+  position:relative;z-index:1;
+  text-align:center;margin-bottom:2.5rem;
 }
 /* feature cards */
 
@@ -568,19 +562,19 @@
 <section class="section ai-section" id="ai">
   <div class="ai-orb ai-orb-1"></div>
   <div class="ai-orb ai-orb-2"></div>
+  <!-- Orb sfondo — temporaneamente disabilitato -->
+  <!--
+  <div class="ai-visual">
+    <canvas id="aiBlob" width="1000" height="1000"></canvas>
+  </div>
+  -->
   <div class="inner" style="position:relative;z-index:1">
 
     <!-- header -->
-    <div class="ai-header-wrap fade-up">
+    <div class="ai-header-wrap fade-up" style="position:relative;z-index:1">
       <span class="eyebrow">Intelligenza artificiale</span>
       <h2 class="s-title">Dati che parlano.<br>Suggerimenti che trasformano.</h2>
       <p class="s-sub">Il primo gestionale sportivo italiano con AI integrata di serie — analisi in tempo reale, insight azionabili ogni mattina.</p>
-    </div>
-
-    <!-- Orb hero -->
-    <div class="ai-visual">
-      <div class="ai-visual-glow"></div>
-      <canvas id="aiBlob" width="600" height="600"></canvas>
       <div class="ai-gemini-note">Powered by Google Gemini 2.0 Flash</div>
     </div>
 
@@ -588,6 +582,8 @@
     <div class="ai-mods">
 
         <div class="ai-mod ai-mod-left">
+          <div class="ai-mod-icon">🗓</div>
+          <h4>Agenda Insights</h4>
           <p class="ai-mod-lead">Un pannello laterale nell'agenda che ti dice ogni mattina esattamente cosa sta succedendo nel tuo centro — senza dover cercare niente. Cinque sezioni, tutte aggiornate in tempo reale sulla data che stai guardando.</p>
           <div class="ai-mod-rows">
             <div class="ai-mod-row">
@@ -630,6 +626,8 @@
         </div>
 
         <div class="ai-mod ai-mod-right">
+          <div class="ai-mod-icon">📊</div>
+          <h4>User Insights</h4>
           <p class="ai-mod-lead">La scheda completa di ogni giocatore del tuo centro. Apri il profilo di un socio e vedi subito chi è, quanto vale, come prenota e cosa fare per tenerlo attivo. Tutto in un'unica vista, con punteggi da 0 a 100 per ogni dimensione.</p>
 
           <div class="ai-mod-rows">
@@ -680,6 +678,8 @@
         </div>
 
         <div class="ai-mod ai-mod-left">
+          <div class="ai-mod-icon">⚡</div>
+          <h4>Player Recommendation</h4>
           <p class="ai-mod-lead">Quando stai creando una prenotazione e ti mancano giocatori, Anytimes ti suggerisce chi aggiungere — in base a chi si conosce già, chi gioca a quell'ora, a quel campo, con quel livello. Due modalità: scegli uno per uno o aggiungi un gruppo pronto con un clic.</p>
 
           <div class="ai-mod-rows">
@@ -716,6 +716,8 @@
         </div>
 
         <div class="ai-mod ai-mod-right">
+          <div class="ai-mod-icon">🏢</div>
+          <h4>Company Insights</h4>
           <p class="ai-mod-lead">La dashboard aggregata di tutto il club. Otto card che coprono ogni angolo della salute del tuo centro: dai soldi ai giocatori, dagli orari agli sport. Aperta ogni mattina, ti dice in 30 secondi come sta andando davvero.</p>
 
           <div class="ai-mod-rows">
