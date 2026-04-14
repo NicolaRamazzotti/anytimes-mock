@@ -140,73 +140,40 @@
 .ai-section{
   background:#06040e;
   position:relative;overflow:hidden;
+  padding-top:5rem;padding-bottom:6rem;
 }
 .ai-section::before{
   content:'';
   position:absolute;inset:0;
   background-image:
-    linear-gradient(rgba(92,50,234,0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(92,50,234,0.045) 1px, transparent 1px);
+    linear-gradient(rgba(92,50,234,0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(92,50,234,0.18) 1px, transparent 1px);
   background-size:48px 48px;
   pointer-events:none;
 }
-.ai-orb{
-  position:absolute;border-radius:50%;filter:blur(90px);pointer-events:none;
-}
-.ai-orb-1{width:600px;height:600px;background:rgba(92,50,234,0.16);top:-180px;left:-150px;}
-.ai-orb-2{width:480px;height:480px;background:rgba(92,50,234,0.1);bottom:-160px;right:-100px;}
-.ai-section .eyebrow{color:var(--ai-mid)}
-.ai-section .s-title{color:#fff}
-.ai-section .s-sub{color:rgba(255,255,255,0.45)}
-/* ai header */
-.ai-header-wrap{text-align:center;margin-bottom:3rem;position:relative;z-index:1}
-.ai-header-wrap .s-title{margin:0 auto .75rem;max-width:620px}
-.ai-header-wrap .s-sub{max-width:500px;margin:0 auto 1.5rem}
-/* main layout — orb hero centrato, cards sotto */
-.ai-visual{
-  position:absolute;
-  top:50%;left:50%;transform:translate(-50%,-50%);
-  z-index:0;
+.ai-section::after{
+  content:'';
+  position:absolute;top:-20%;right:-8%;width:650px;height:650px;
+  background:radial-gradient(circle,rgba(92,50,234,0.18) 0%,rgba(155,100,255,0.07) 40%,transparent 70%);
   pointer-events:none;
 }
-#aiBlob{display:block;width:1000px;height:1000px;max-width:100vw;opacity:0.55}
-/* feature cards */
+.ai-section .eyebrow{color:var(--ai-mid)}
+.ai-section .s-title{color:#fff}
+.ai-gradient-title{background:linear-gradient(115deg,#c4a8ff 0%,#9b78f5 35%,#F7583F 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ai-section .s-sub{color:rgba(255,255,255,0.45)}
+.ai-header-wrap{position:relative;z-index:1}
 
-.ai-mod{background:rgba(92,50,234,0.04);border:none;border-radius:var(--r-lg);padding:1.75rem;position:relative;overflow:hidden;will-change:transform,opacity;transition:background .3s,box-shadow .3s}
-.ai-mod-left{opacity:0.15;transform:rotate(-14deg) translateX(-36px);transform-origin:right center;animation:aiCardViolet 5s ease-in-out infinite}
-.ai-mod-right{opacity:0.15;transform:rotate(14deg) translateX(36px);transform-origin:left center;animation:aiCardOrange 5s ease-in-out infinite}
-@keyframes aiCardViolet{
-  0%,100%{box-shadow:0 0 0 1px rgba(92,50,234,0.45),0 0 28px rgba(92,50,234,0.08)}
-  50%    {box-shadow:0 0 0 1px rgba(247,88,63,0.40),0 0 28px rgba(247,88,63,0.07)}
-}
-@keyframes aiCardOrange{
-  0%,100%{box-shadow:0 0 0 1px rgba(247,88,63,0.40),0 0 28px rgba(247,88,63,0.07)}
-  50%    {box-shadow:0 0 0 1px rgba(92,50,234,0.45),0 0 28px rgba(92,50,234,0.08)}
-}
-.ai-mod::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at top left,rgba(92,50,234,0.1) 0%,transparent 60%);pointer-events:none}
-.ai-mod:hover{background:rgba(92,50,234,0.09);box-shadow:0 0 0 1px rgba(155,121,245,0.6),0 12px 40px rgba(92,50,234,0.22) !important}
-.ai-mod-icon{width:40px;height:40px;border-radius:10px;background:rgba(92,50,234,0.15);border:1px solid rgba(92,50,234,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:1rem;position:relative;z-index:1}
-.ai-mod h4{font-family:var(--font-display);font-size:15px;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:-.3px;position:relative;z-index:1}
-.ai-mod p{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.7;font-weight:300;position:relative;z-index:1;margin-bottom:.9rem}
-.ai-mod-cats{display:flex;flex-wrap:wrap;gap:5px;position:relative;z-index:1}
-.ai-mod-cat{font-size:9.5px;padding:3px 9px;border-radius:5px;background:rgba(92,50,234,0.1);border:1px solid rgba(92,50,234,0.2);color:var(--ai-mid);font-family:monospace;white-space:nowrap}
-.ai-mod-tag{display:inline-block;margin-top:.7rem;background:rgba(92,50,234,0.1);border:1px solid rgba(92,50,234,0.2);border-radius:5px;padding:2px 8px;font-size:9px;color:var(--ai-mid);font-family:monospace;position:relative;z-index:1}
-/* featured card + category rows */
-.ai-mods{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
-.ai-mod-lead{font-size:13px !important;color:rgba(255,255,255,0.60) !important;margin-bottom:1.4rem !important;line-height:1.7 !important}
-.ai-mod-rows{display:flex;flex-direction:column;gap:0;position:relative;z-index:1}
-.ai-mod-row{display:flex;align-items:flex-start;gap:12px;padding:13px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
-.ai-mod-row:last-child{border-bottom:none}
-.ai-mod-row-icon{font-size:18px;flex-shrink:0;width:26px;text-align:center;margin-top:1px}
-.ai-mod-row-body{display:flex;flex-direction:column;gap:3px}
-.ai-mod-row-body strong{font-size:12.5px;font-weight:600;color:#fff;font-family:var(--font-display)}
-.ai-mod-row-body span{font-size:11.5px;color:rgba(255,255,255,0.42);line-height:1.65;font-weight:300}
-.ai-mod-row--good .ai-mod-row-body strong{color:#4ade80}
-.ai-mod-row--warn .ai-mod-row-body strong{color:#fb923c}
-.ai-mod-row--cta .ai-mod-row-body strong{color:var(--ai-mid)}
-.ai-mod-note{margin-top:1.1rem;font-size:10.5px;color:rgba(155,121,245,0.45);font-family:monospace;position:relative;z-index:1}
-
-/* ── WHO ── */
+/* ── AI GRID layout ── */
+.ai-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:1060px;margin:0 auto;position:relative;z-index:1}
+.ai-node{background:rgba(92,50,234,0.07);border:1px solid rgba(92,50,234,0.3);border-radius:16px;padding:1.4rem 1.6rem;backdrop-filter:blur(8px);transition:background .3s,box-shadow .3s,opacity .55s ease,transform .55s ease;opacity:0}
+.ai-node[data-dir="left"]{transform:translateX(-60px)}
+.ai-node[data-dir="right"]{transform:translateX(60px)}
+.ai-node.ai-node-in{opacity:1;transform:translateX(0)}
+.ai-node:hover{background:rgba(92,50,234,0.14);box-shadow:0 0 0 1px rgba(155,121,245,0.5),0 12px 32px rgba(92,50,234,0.25)}
+.ai-node-icon{width:40px;height:40px;border-radius:10px;background:rgba(155,121,245,0.15);border:1px solid rgba(155,121,245,0.25);display:flex;align-items:center;justify-content:center;margin-bottom:.85rem;flex-shrink:0}
+.ai-node-icon svg{stroke:rgba(155,121,245,1);width:20px;height:20px}
+.ai-node h4{font-family:var(--font-display);font-size:17px;font-weight:700;margin-bottom:.5rem;letter-spacing:-.4px;background:linear-gradient(115deg,#c4a8ff 0%,#9b78f5 35%,#F7583F 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ai-node p{font-size:13.5px;color:rgba(255,255,255,0.85);line-height:1.7;font-weight:300;margin:0}
 .who-section{background:var(--dark)}
 .who-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:3.5rem}
 .who-card{border-radius:var(--r-xl);padding:3rem;border:1px solid var(--border-dark);opacity:0;transition:box-shadow .3s;position:relative;isolation:isolate;overflow:hidden}
@@ -330,10 +297,11 @@
 .nj-stat-wide{grid-column:span 2}
 
 /* ── APP BRANDIZZATA ── */
-.branded-section{background:#0D0D0D;overflow:hidden;position:relative}
-.branded-section::before{content:'';position:absolute;top:-30%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(247,88,63,0.07) 0%,transparent 65%);pointer-events:none}
+.branded-section{background:var(--off-white);padding:clamp(4rem,8vw,7rem) clamp(1.5rem,5vw,3.5rem);position:relative}
+.branded-inner{background:#0D0D0D;border-radius:var(--r-xl);overflow:hidden;position:relative;max-width:1200px;margin:0 auto}
+.branded-inner::before{content:'';position:absolute;top:-30%;right:-10%;width:600px;height:600px;background:radial-gradient(circle,rgba(247,88,63,0.09) 0%,transparent 65%);pointer-events:none;z-index:0}
 .branded-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch}
-.branded-text{padding:clamp(4rem,8vw,7rem) clamp(2rem,5vw,4rem);display:flex;flex-direction:column;justify-content:center}
+.branded-text{padding:clamp(2.5rem,4vw,4rem) clamp(2rem,5vw,4rem);display:flex;flex-direction:column;justify-content:center}
 .apps-col{position:relative;overflow:hidden;opacity:0;transform:translateY(24px);transition:opacity .8s .15s cubic-bezier(.16,1,.3,1),transform .8s .15s cubic-bezier(.16,1,.3,1);perspective:1100px;perspective-origin:50% 50%}
 .apps-col.visible{opacity:1;transform:translateY(0)}
 .apps-col::before{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,#0D0D0D 0%,transparent 18%,transparent 82%,#0D0D0D 100%),linear-gradient(to right,transparent 75%,#0D0D0D 100%);pointer-events:none;z-index:2}
@@ -345,7 +313,7 @@
   65% {opacity:1}
   100%{opacity:1;transform:translate3d(0,0,0)}
 }
-.app-icon{width:168px;height:168px;border-radius:34px;background:#fff;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.app-icon{width:130px;height:130px;border-radius:26px;background:#fff;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 .app-icon img{width:100%;height:100%;object-fit:contain;padding:10px;display:block}
 /* app UI elements */
 .app-header{border-radius:12px;padding:11px 13px;background:var(--brand);display:flex;align-items:center;gap:10px;flex-shrink:0}
@@ -394,7 +362,7 @@
 .arl.me .arl-name{color:#fff}
 /* branded text */
 .branded-text .eyebrow{color:var(--brand)}
-.branded-text .s-title{color:#fff}
+.branded-text .s-title{color:#fff;font-size:clamp(1.6rem,3vw,2.4rem)!important}
 .branded-text .s-sub{color:rgba(255,255,255,0.5)}
 .branded-list{list-style:none;display:flex;flex-direction:column;gap:.65rem;margin:1.75rem 0}
 .branded-list li{font-size:13.5px;color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:10px;line-height:1.5}
@@ -442,6 +410,8 @@
 [data-theme="light"] .ai-section .ai-header-wrap .s-title{color:#fff!important}
 [data-theme="light"] .ai-section .ai-header-wrap .s-sub{color:rgba(255,255,255,0.45)!important}
 /* App Brandizzata — sempre dark island */
+[data-theme="light"] .branded-section{background:var(--off-white)!important}
+[data-theme="light"] .branded-inner{background:#0D0D0D!important}
 [data-theme="light"] .branded-section .s-title{color:#fff!important}
 [data-theme="light"] .branded-section .s-sub{color:rgba(255,255,255,0.5)!important}
 [data-theme="light"] .branded-section .branded-list li{color:rgba(255,255,255,0.6)!important}
@@ -857,239 +827,42 @@
 
 <!-- AI INSIGHTS -->
 <section class="section ai-section" id="ai">
-  <div class="ai-orb ai-orb-1"></div>
-  <div class="ai-orb ai-orb-2"></div>
-  <!-- Orb sfondo — temporaneamente disabilitato -->
-  <!--
-  <div class="ai-visual">
-    <canvas id="aiBlob" width="1000" height="1000"></canvas>
-  </div>
-  -->
   <div class="inner" style="position:relative;z-index:1">
-
-    <!-- header -->
-    <div class="ai-header-wrap fade-up" style="position:relative;z-index:1">
+    <div class="ai-header-wrap fade-up" style="text-align:center;margin-bottom:3.5rem">
       <span class="eyebrow">Intelligenza artificiale</span>
-      <h2 class="s-title">Dati che parlano.<br>Suggerimenti che trasformano.</h2>
-      <p class="s-sub">Il primo gestionale sportivo italiano con AI integrata di serie — analisi in tempo reale, insight azionabili ogni mattina.</p>
+      <h2 class="s-title ai-gradient-title">Dati che parlano.<br>Suggerimenti che trasformano.</h2>
+      <p class="s-sub" style="max-width:480px;margin:0 auto">Il primo gestionale sportivo italiano con AI integrata di serie — analisi in tempo reale, insight azionabili ogni mattina.</p>
     </div>
 
-    <!-- Feature cards -->
-    <div class="ai-mods">
-
-        <div class="ai-mod ai-mod-left">
-          <div class="ai-mod-icon">🗓</div>
-          <h4>Agenda Insights</h4>
-          <p class="ai-mod-lead">Un pannello laterale nell'agenda che ti dice ogni mattina esattamente cosa sta succedendo nel tuo centro — senza dover cercare niente. Cinque sezioni, tutte aggiornate in tempo reale sulla data che stai guardando.</p>
-          <div class="ai-mod-rows">
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">📋</span>
-              <div class="ai-mod-row-body">
-                <strong>Riepilogo</strong>
-                <span>Quante prenotazioni ci sono oggi, quanti giocatori arriveranno, quanti campi sono ancora liberi e a che percentuale sei di occupazione.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row ai-mod-row--good">
-              <span class="ai-mod-row-icon">✅</span>
-              <div class="ai-mod-row-body">
-                <strong>Buone notizie</strong>
-                <span>Cosa sta andando bene: gli slot più richiesti, i momenti di picco, i giocatori più attivi della settimana.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row ai-mod-row--warn">
-              <span class="ai-mod-row-icon">⚠️</span>
-              <div class="ai-mod-row-body">
-                <strong>Attenzione</strong>
-                <span>Cancellazioni recenti, campi a rischio di restare vuoti, giocatori che non vengono da un po' e potrebbero smettere.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">💡</span>
-              <div class="ai-mod-row-body">
-                <strong>Suggerimento slot</strong>
-                <span>Fasce orarie poco prenotate dove potresti intervenire: una promo, un'offerta last-minute, un invito mirato ai soci giusti.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row ai-mod-row--cta">
-              <span class="ai-mod-row-icon">💬</span>
-              <div class="ai-mod-row-body">
-                <strong>Re-engagement</strong>
-                <span>Lista dei giocatori inattivi con l'ultima partita, la frequenza, il livello e il segmento di appartenenza. Puoi contattarli con un clic — WhatsApp o chiamata, direttamente dal pannello.</span>
-              </div>
-            </div>
-          </div>
-          <div class="ai-mod-note">↻ Si aggiorna in base al giorno selezionato sull'agenda</div>
-        </div>
-
-        <div class="ai-mod ai-mod-right">
-          <div class="ai-mod-icon">📊</div>
-          <h4>User Insights</h4>
-          <p class="ai-mod-lead">La scheda completa di ogni giocatore del tuo centro. Apri il profilo di un socio e vedi subito chi è, quanto vale, come prenota e cosa fare per tenerlo attivo. Tutto in un'unica vista, con punteggi da 0 a 100 per ogni dimensione.</p>
-
-          <div class="ai-mod-rows">
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">🏷️</span>
-              <div class="ai-mod-row-body">
-                <strong>Intestazione rapida</strong>
-                <span>Segmento comportamentale del giocatore (Champion, At Risk, Lost, New…) con confidenza dell’analisi e anzianità nel club in mesi.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">💰</span>
-              <div class="ai-mod-row-body">
-                <strong>Valore Economico</strong>
-                <span>Spesa totale, ultimi 6 mesi e ultimi 30 giorni. Ticket medio a partita e quota pagata direttamente dall’utente rispetto allo split con gli altri giocatori.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">📅</span>
-              <div class="ai-mod-row-body">
-                <strong>Fedeltà</strong>
-                <span>Partite totali per finestra (30/90/180 gg), media mensile, cancellazioni, no-show, regolarità e trend. Include il livello di rischio churn calcolato dall’AI.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">🤝</span>
-              <div class="ai-mod-row-body">
-                <strong>Socialità</strong>
-                <span>Quante persone diverse ha giocato con lui, quante ha invitato, quante lo hanno invitato. Tornei, leghe e tasso da organizzatore.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">⏰</span>
-              <div class="ai-mod-row-body">
-                <strong>Abitudini</strong>
-                <span>Sport preferiti con livello, giorni e fasce orarie solite, tasso weekend, stagionalità. Per ogni sport, la lista dei compagni più frequenti.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row ai-mod-row--cta">
-              <span class="ai-mod-row-icon">✨</span>
-              <div class="ai-mod-row-body">
-                <strong>AI Summary</strong>
-                <span>Report narrativo generato su richiesta: panoramica del profilo, punti di forza, criticità e azioni concrete da applicare subito per coinvolgere di più quel giocatore.</span>
-              </div>
-            </div>
-          </div>
-          <div class="ai-mod-note">📁 Ogni scheda ha un punteggio da 0 a 100 — più alto è, più il giocatore è un asset per il club</div>
-        </div>
-
-        <div class="ai-mod ai-mod-left">
-          <div class="ai-mod-icon">⚡</div>
-          <h4>Player Recommendation</h4>
-          <p class="ai-mod-lead">Quando stai creando una prenotazione e ti mancano giocatori, Anytimes ti suggerisce chi aggiungere — in base a chi si conosce già, chi gioca a quell'ora, a quel campo, con quel livello. Due modalità: scegli uno per uno o aggiungi un gruppo pronto con un clic.</p>
-
-          <div class="ai-mod-rows">
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">🎯</span>
-              <div class="ai-mod-row-body">
-                <strong>Tab "Suggeriti" — giocatori compatibili</strong>
-                <span>Lista divisa in tre livelli: Ottimo, Buono, Possibile. Per ognuno: avatar, nome, contatti, tier (Gold, Silver…), segmento comportamentale e score di compatibilità 0–100% con cerchio colorato. Vedi anche lo storico condiviso con chi è già in prenotazione — quante partite hanno fatto insieme e quando è stata l'ultima.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row ai-mod-row--cta">
-              <span class="ai-mod-row-icon">✨</span>
-              <div class="ai-mod-row-body">
-                <strong>Tab "Match AI" — gruppi già formati</strong>
-                <span>Attiva solo quando mancano giocatori. L'AI propone interi gruppi pronti: percentuale di probabilità di riuscita, lista dei giocatori con segmento e tier, note su quanto si conoscono già e se sono tutti attivi di recente. Un clic su "Aggiungi tutti" e la prenotazione è completa.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">🔄</span>
-              <div class="ai-mod-row-body">
-                <strong>Aggiornamento in tempo reale</strong>
-                <span>Ogni volta che aggiungi o rimuovi un giocatore dalla prenotazione, i suggerimenti si ricalcolano istantaneamente tenendo conto dei nuovi giocatori in lista.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">🔍</span>
-              <div class="ai-mod-row-body">
-                <strong>Filtri su entrambe le tab</strong>
-                <span><strong style="color:rgba(255,255,255,0.7);font-weight:500">Perfect Match</strong> — privilegia chi gioca già spesso in quella fascia oraria e quello sport. &nbsp;<strong style="color:rgba(255,255,255,0.7);font-weight:500">Discovery</strong> — suggerisce chi non ha mai giocato con i selezionati, per allargare il gruppo. &nbsp;<strong style="color:rgba(255,255,255,0.7);font-weight:500">Filtro sesso</strong> — Tutti / M / F.</span>
-              </div>
-            </div>
-          </div>
-          <div class="ai-mod-note">⚡ Si apre direttamente dal form di prenotazione — zero cambio contesto per l'operatore</div>
-        </div>
-
-        <div class="ai-mod ai-mod-right">
-          <div class="ai-mod-icon">🏢</div>
-          <h4>Company Insights</h4>
-          <p class="ai-mod-lead">La dashboard aggregata di tutto il club. Otto card che coprono ogni angolo della salute del tuo centro: dai soldi ai giocatori, dagli orari agli sport. Aperta ogni mattina, ti dice in 30 secondi come sta andando davvero.</p>
-
-          <div class="ai-mod-rows">
-            <div class="ai-mod-row ai-mod-row--good">
-              <span class="ai-mod-row-icon">💚</span>
-              <div class="ai-mod-row-body">
-                <strong>Salute del Club</strong>
-                <span>Utenti totali, attivi negli ultimi 30 e 90 giorni con percentuale. Partite totali giocate, media per mese e per settimana.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">💰</span>
-              <div class="ai-mod-row-body">
-                <strong>Economia</strong>
-                <span>Fatturato cumulativo, ultimi 30 e 90 giorni. Spesa media per utente, spesa mediana e ticket medio a partita.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">🎨</span>
-              <div class="ai-mod-row-body">
-                <strong>Distribuzione Segmenti</strong>
-                <span>Barre colorate per ogni segmento — Premium, Active, Growing, Declining, At Risk, Dormant — con percentuale e conteggio utenti.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row ai-mod-row--warn">
-              <span class="ai-mod-row-icon">⚠️</span>
-              <div class="ai-mod-row-body">
-                <strong>Rischio Abbandono</strong>
-                <span>Churn score medio e trend del club (i soci giocano di più o di meno?). Distribuzione per livello di rischio: Basso / Moderato / Alto / Critico.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">📅</span>
-              <div class="ai-mod-row-body">
-                <strong>Retention & Tenure</strong>
-                <span>Anzianità media dei soci in mesi, regolarità media, tasso di cancellazione. Istogramma delle fasce di anzianità: 0–3 mesi, 3–6, 6–12, 12+.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">🗓️</span>
-              <div class="ai-mod-row-body">
-                <strong>Mappa Temporale</strong>
-                <span>Distribuzione delle partite per giorno della settimana e fascia oraria (mattina / pranzo / pomeriggio / sera). Tasso weekend e stagione di picco.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">🤝</span>
-              <div class="ai-mod-row-body">
-                <strong>Social Health</strong>
-                <span>Co-giocatori unici medi per utente, tasso da organizzatore, dimensione media del gruppo, partecipazioni totali a tornei e leghe.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row">
-              <span class="ai-mod-row-icon">🎾</span>
-              <div class="ai-mod-row-body">
-                <strong>Sport Breakdown</strong>
-                <span>Per ogni sport: partite totali e ultimi 30 giorni, giocatori attivi, livello medio e stagionalità specifica.</span>
-              </div>
-            </div>
-            <div class="ai-mod-row ai-mod-row--cta">
-              <span class="ai-mod-row-icon">🏆</span>
-              <div class="ai-mod-row-body">
-                <strong>Top Utenti</strong>
-                <span>Classifiche dei migliori soci per spesa totale, partite giocate e punteggio di fedeltà — con medaglie per i primi tre.</span>
-              </div>
-            </div>
-          </div>
-          <div class="ai-mod-note">📊 Tutti i dati sono aggregati in tempo reale — nessun export, nessun foglio Excel</div>
-        </div>
-
-    </div><!-- /ai-mods -->
+    <!-- AI 2x2 grid -->
+    <div class="ai-grid" id="aiGrid">
+      <div class="ai-node" id="aiNode0" data-dir="left">
+        <div class="ai-node-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="14" x2="8" y2="14"/><line x1="12" y1="14" x2="12" y2="14"/><line x1="16" y1="14" x2="16" y2="14"/></svg></div>
+        <h4>Agenda Insights</h4>
+        <p>Ogni mattina trovi un pannello che ti racconta la giornata: quante prenotazioni hai, a che percentuale sei di occupazione, quali slot rischiano di restare vuoti e quali soci non vengono da un po'. Con suggerimenti d'azione diretti — niente dati grezzi, solo cose da fare.</p>
+      </div>
+      <div class="ai-node" id="aiNode1" data-dir="right">
+        <div class="ai-node-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <h4>User Insights</h4>
+        <p>Apri il profilo di un socio e vedi subito chi è davvero: il suo segmento comportamentale, quanto ha speso, con chi gioca, quando rischia di smettere. Un punteggio da 0 a 100 per fedeltà, valore e socialità — e un report narrativo generato dall'AI su richiesta.</p>
+      </div>
+      <div class="ai-node" id="aiNode2" data-dir="left">
+        <div class="ai-node-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg></div>
+        <h4>Player Recommendation</h4>
+        <p>Stai creando una prenotazione e ti mancano giocatori? L'AI suggerisce chi aggiungere in base ad affinità, livello, disponibilità oraria e storico condiviso. Puoi sceglierli uno per uno o aggiungere un gruppo già pronto con un solo clic.</p>
+      </div>
+      <div class="ai-node" id="aiNode3" data-dir="right">
+        <div class="ai-node-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <h4>Company Insights</h4>
+        <p>La vista aggregata di tutto il club: fatturato, distribuzione dei segmenti, rischio churn medio, mappa delle presenze per giorno e orario, sport più giocati. Aperta ogni mattina, ti dice in 30 secondi come sta andando davvero il tuo centro.</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- APP BRANDIZZATA -->
 <section class="branded-section" id="app">
+  <div class="branded-inner">
   <div class="branded-grid">
 
       <!-- App icons wall -->
@@ -1185,11 +958,10 @@
         <h2 class="s-title">Il tuo circolo.<br>Con la sua app.</h2>
         <p class="s-sub">Ogni club che usa Anytimes può avere la <strong style="color:#fff">propria app ufficiale</strong> su App Store e Google Play — con il tuo logo, i tuoi colori, il nome del tuo circolo. I tuoi soci la scaricano, la vedono, la riconoscono.</p>
         <ul class="branded-list">
-          <li><span class="bl-dot"></span>App iOS con il <strong style="color:rgba(255,255,255,.8)">tuo logo e nome</strong> su App Store</li>
-          <li><span class="bl-dot"></span>App Android con il <strong style="color:rgba(255,255,255,.8)">tuo brand</strong> su Google Play</li>
-          <li><span class="bl-dot"></span>Colori, icona e splash screen personalizzati</li>
-          <li><span class="bl-dot"></span>I soci cercano il tuo club e trovano <strong style="color:rgba(255,255,255,.8)">la tua app</strong></li>
-          <li><span class="bl-dot"></span>Da gestore di campi a brand digitale riconoscibile</li>
+          <li><span class="bl-dot"></span>App iOS con il tuo <strong style="color:rgba(255,255,255,.8)">logo e nome</strong> su App Store</li>
+          <li><span class="bl-dot"></span>App Android con il tuo <strong style="color:rgba(255,255,255,.8)">brand</strong> su Google Play</li>
+          <li><span class="bl-dot"></span>Colori, icona e splash screen <strong style="color:rgba(255,255,255,.8)">personalizzati</strong></li>
+          <li><span class="bl-dot"></span>I soci cercano il tuo club — trovano <strong style="color:rgba(255,255,255,.8)">la tua app</strong></li>
         </ul>
         <div class="branded-stores">
           <a href="#" class="store-btn">
@@ -1214,6 +986,7 @@
       </div>
 
     </div><!-- /branded-grid -->
+  </div><!-- /branded-inner -->
 </section>
 
 <!-- PER CHI È -->
@@ -1900,6 +1673,20 @@ document.querySelectorAll('.fb, .who-card').forEach(card => {
     card.style.setProperty('--my', '-9999px');
   });
 });
+
+// AI Grid — slide-in from left/right on scroll
+(function(){
+  const grid = document.getElementById('aiGrid');
+  if(!grid) return;
+  const io = new IntersectionObserver(entries => {
+    if(!entries[0].isIntersecting) return;
+    io.disconnect();
+    grid.querySelectorAll('.ai-node').forEach((node, i) => {
+      setTimeout(() => node.classList.add('ai-node-in'), i * 150);
+    });
+  }, { threshold: 0.2 });
+  io.observe(grid);
+})();
 
 // Agenda mock — one-by-one + animated counters
 (function () {
