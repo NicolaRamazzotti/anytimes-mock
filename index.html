@@ -402,6 +402,69 @@
 [data-theme="dark"] .promise-section .s-title{color:#fff}
 [data-theme="dark"] .promise-section .s-sub{color:rgba(255,255,255,.5)}
 
+/* CONFRONTO COMPETITOR */
+.vs-section{background:var(--off-white)}
+.vs-compare{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;align-items:start}
+.vs-col{border-radius:var(--r-xl);overflow:hidden}
+.vs-col-ours{background:var(--dark);border:1px solid rgba(247,88,63,.18)}
+.vs-col-others{background:#fff;border:1px solid var(--border-light)}
+.vs-col-head{padding:2rem 2rem 1.75rem;border-bottom:1px solid rgba(255,255,255,.06)}
+.vs-col-others .vs-col-head{border-bottom-color:var(--border-light)}
+.vs-col-ours .vs-col-head{background:linear-gradient(135deg,rgba(92,50,234,.12) 0%,rgba(247,88,63,.08) 100%)}
+.vs-logo{font:800 1.5rem/1 var(--font-display);color:#fff;letter-spacing:-.5px;margin-bottom:.4rem}
+.vs-logo span{color:var(--brand)}
+.vs-col-title{font:700 1.3rem/1 var(--font-display);color:#0D0D0D;margin-bottom:.4rem}
+.vs-col-tag{font-size:12px;font-weight:500;letter-spacing:.2px}
+.vs-col-ours .vs-col-tag{color:rgba(255,255,255,.35)}
+.vs-col-others .vs-col-tag{color:rgba(13,13,13,.38)}
+.vs-list{list-style:none;padding:1.5rem 2rem 2rem;display:flex;flex-direction:column;gap:.65rem}
+.vs-item{display:flex;align-items:center;gap:.75rem;font-size:13.5px;font-weight:400;line-height:1.4}
+.vs-dot{width:22px;height:22px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800}
+.vs-item.yes .vs-dot{background:rgba(74,222,128,.15);color:#4ade80}
+.vs-item.no .vs-dot{background:rgba(248,113,113,.1);color:#f87171}
+.vs-item.partial .vs-dot{background:rgba(251,146,60,.1);color:#fb923c}
+.vs-col-ours .vs-item.yes{color:rgba(255,255,255,.8)}
+.vs-col-ours .vs-item.partial{color:rgba(255,255,255,.5)}
+.vs-col-others .vs-item.yes{color:rgba(13,13,13,.7)}
+.vs-col-others .vs-item.no{color:rgba(13,13,13,.32)}
+.vs-col-others .vs-item.no .vs-text{text-decoration:line-through}
+.vs-col-others .vs-item.partial{color:rgba(13,13,13,.5)}
+[data-theme="dark"] .vs-section{background:var(--dark-2)}
+[data-theme="dark"] .vs-col-others{background:var(--dark-card);border-color:var(--border-dark)}
+[data-theme="dark"] .vs-col-others .vs-col-head{border-bottom-color:var(--border-dark)}
+[data-theme="dark"] .vs-col-title{color:#fff}
+[data-theme="dark"] .vs-col-others .vs-item.yes{color:rgba(255,255,255,.65)}
+[data-theme="dark"] .vs-col-others .vs-item.no{color:rgba(255,255,255,.25)}
+[data-theme="dark"] .vs-col-others .vs-item.partial{color:rgba(255,255,255,.4)}
+/* vs-col-ours — dark island fissa in entrambi i temi */
+[data-theme="light"] .vs-col-ours{background:#0D0D0D!important;border-color:rgba(247,88,63,.18)!important}
+
+/* TESTIMONIAL SECTION */
+.testi-section{background:var(--dark);padding:6rem 0}
+.testi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:3.5rem}
+.testi-card{background:var(--dark-card);border:1px solid var(--border-dark);border-radius:var(--r-xl);padding:2.25rem 2rem;display:flex;flex-direction:column;gap:1.5rem;opacity:0;transition:box-shadow .25s;position:relative}
+.testi-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.4)}
+.testi-stars{display:flex;gap:3px}
+.testi-star{color:var(--brand);font-size:14px}
+.testi-quote{font-size:15px;line-height:1.75;font-weight:300;color:rgba(255,255,255,.75);flex:1;font-style:italic}
+.testi-quote::before{content:'“';font-family:var(--font-display);font-size:3rem;font-weight:800;color:var(--brand);opacity:.35;line-height:0;vertical-align:-.6rem;margin-right:.15rem}
+.testi-author{display:flex;align-items:center;gap:.875rem;border-top:1px solid var(--border-dark);padding-top:1.25rem}
+.testi-avatar{width:42px;height:42px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font:700 1rem/1 var(--font-display);color:#fff;flex-shrink:0}
+.testi-info{display:flex;flex-direction:column;gap:.2rem}
+.testi-name{font:600 .9rem/1 var(--font-display);color:#fff}
+.testi-role{font-size:12px;color:rgba(255,255,255,.38)}
+.testi-badge{position:absolute;top:1.5rem;right:1.5rem;font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;background:rgba(247,88,63,.12);color:var(--brand-mid);border:1px solid rgba(247,88,63,.2);border-radius:6px;padding:3px 8px}
+[data-theme="light"] .testi-section{background:var(--dark-2)}
+[data-theme="light"] .testi-card{background:#fff;border-color:var(--border-light)}
+[data-theme="light"] .testi-section .s-title{color:#0D0D0D!important}
+[data-theme="light"] .testi-section .s-sub{color:rgba(13,13,13,.5)!important}
+[data-theme="light"] .testi-section .eyebrow{color:var(--brand)!important}
+[data-theme="light"] .testi-quote{color:rgba(13,13,13,.72)!important}
+[data-theme="light"] .testi-name{color:#0D0D0D!important}
+[data-theme="light"] .testi-role{color:rgba(13,13,13,.42)!important}
+[data-theme="light"] .testi-author{border-top-color:var(--border-light)!important}
+[data-theme="light"] .testi-card:hover{box-shadow:0 12px 40px rgba(0,0,0,.08)!important}
+
 @media(max-width:960px){
   .hero{grid-template-columns:1fr;gap:3rem}
   .feat-bento{grid-template-columns:repeat(2,1fr)}
@@ -416,6 +479,8 @@
   .branded-text{padding:clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,3.5rem)}
   .promise-grid{grid-template-columns:repeat(3,1fr)}
   .promise-card{grid-column:span 1}
+  .testi-grid{grid-template-columns:1fr}
+  .vs-compare{grid-template-columns:1fr}
 }
 @media(max-width:600px){
   .feat-bento{grid-template-columns:1fr}
@@ -1045,6 +1110,72 @@
   </div>
 </section> -->
 
+<!-- TESTIMONIAL -->
+<section class="section testi-section">
+  <div class="inner">
+    <div class="fade-up" style="text-align:center">
+      <span class="eyebrow">Chi ci ha scelto</span>
+      <h2 class="s-title">Parola loro.</h2>
+      <p class="s-sub">Non lo diciamo solo noi — lo dicono i circoli che usano Anytimes ogni giorno.</p>
+    </div>
+    <div class="testi-grid">
+
+      <div class="testi-card" data-dir="left">
+        <span class="testi-badge">Padel Club</span>
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-quote">Siamo passati da un foglio Excel a un sistema completo in meno di due ore. La migrazione degli utenti è stata automatica, i soci hanno ricevuto le credenziali via email ancora prima che finissimo il setup. Non me lo aspettavo così veloce.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">MR</div>
+          <div class="testi-info">
+            <span class="testi-name">Marco Russo</span>
+            <span class="testi-role">Titolare · Padel Arena Milano</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card" data-dir="right">
+        <span class="testi-badge">Tennis Club</span>
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-quote">Gestisco 14 campi e un'academy con 200 ragazzi. Prima usavo tre software diversi per tenere tutto insieme. Ora ho una sola schermata e vedo tutto — prenotazioni, pagamenti, presenze ai corsi. Il supporto WhatsApp è stata la sorpresa più bella: rispondono in pochi minuti, davvero.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">LB</div>
+          <div class="testi-info">
+            <span class="testi-name">Laura Bianchi</span>
+            <span class="testi-role">Direttrice sportiva · TC Villa Verde Roma</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card" data-dir="left">
+        <span class="testi-badge">Centro Fitness</span>
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-quote">La cosa che apprezzo di più è che ogni volta che suggerisco qualcosa, nel giro di qualche settimana la trovo in piattaforma. Non mi era mai capitato con nessun software. Si sente che ci tengono davvero, non è il solito rapporto fornitore-cliente.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">GF</div>
+          <div class="testi-info">
+            <span class="testi-name">Giuseppe Ferrara</span>
+            <span class="testi-role">Gestore · Sport&Fit Napoli</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card" data-dir="right">
+        <span class="testi-badge">Multisport</span>
+        <div class="testi-stars"><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span><span class="testi-star">★</span></div>
+        <p class="testi-quote">I nostri soci adorano l'app — prenotano i campi in 30 secondi e seguono il ranking in tempo reale. Da quando siamo su Anytimes le prenotazioni online sono aumentate del 40% e le telefonate in reception sono praticamente sparite. Un sollievo enorme.</p>
+        <div class="testi-author">
+          <div class="testi-avatar">SC</div>
+          <div class="testi-info">
+            <span class="testi-name">Sara Conti</span>
+            <span class="testi-role">Co-fondatrice · Circolo dello Sport Torino</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
 <!-- PROMESSE / ZERO BULLSHIT -->
 <section class="section promise-section">
   <div class="inner">
@@ -1086,10 +1217,65 @@
       </div>
 
     </div>
+
   </div>
 </section>
 
-<!-- FINAL CTA -->
+<!-- CONFRONTO COMPETITOR -->
+<section class="section vs-section">
+  <div class="inner">
+    <div class="fade-up" style="text-align:center">
+      <span class="eyebrow">Perché Anytimes</span>
+      <h2 class="s-title">Un gestionale diverso.<br>Davvero tutto incluso.</h2>
+      <p class="s-sub" style="max-width:520px;margin:0 auto">La maggior parte dei gestionali fa bene una cosa sola. Anytimes fa tutto — dalla semplice prenotazione all'AI, dai tornei alla contabilità — in un'unica piattaforma pensata per adattarsi a ogni struttura, grande o piccola. Senza moduli aggiuntivi, senza costi nascosti, senza compromessi.</p>
+    </div>
+    <div class="vs-compare fade-up">
+
+      <!-- Colonna Anytimes -->
+      <div class="vs-col vs-col-ours">
+        <div class="vs-col-head">
+          <div class="vs-logo">any<span>times</span></div>
+          <div class="vs-col-tag">Tutto quello che serve, senza compromessi</div>
+        </div>
+        <ul class="vs-list">
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">Prenotazioni + agenda multi-campo</span></li>
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">Tornei, campionati e academy — nativi</span></li>
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">Contabilità + Stripe, contanti, borsellino, rate</span></li>
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">AI Insights integrata di serie</span></li>
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">App brandizzata con il tuo logo</span></li>
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">Zero commissioni sulle prenotazioni</span></li>
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">Nessun contratto annuale obbligatorio</span></li>
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">Supporto WhatsApp diretto con gli sviluppatori</span></li>
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">Interfaccia semplice per tutte le età</span></li>
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">Personalizzazione pressoché infinita</span></li>
+        </ul>
+      </div>
+
+      <!-- Colonna altri -->
+      <div class="vs-col vs-col-others">
+        <div class="vs-col-head">
+          <div class="vs-col-title">Altri gestionali</div>
+          <div class="vs-col-tag">Funzionalità spesso limitate o a pagamento</div>
+        </div>
+        <ul class="vs-list">
+          <li class="vs-item yes"><span class="vs-dot">✓</span><span class="vs-text">Prenotazioni base</span></li>
+          <li class="vs-item partial"><span class="vs-dot">~</span><span class="vs-text">Tornei e academy solo in piani cari</span></li>
+          <li class="vs-item partial"><span class="vs-dot">~</span><span class="vs-text">Pagamenti spesso parziali o da integrare</span></li>
+          <li class="vs-item no"><span class="vs-dot">✕</span><span class="vs-text">AI Insights non disponibile</span></li>
+          <li class="vs-item no"><span class="vs-dot">✕</span><span class="vs-text">App brandizzata non disponibile</span></li>
+          <li class="vs-item no"><span class="vs-dot">✕</span><span class="vs-text">Commissioni sulle prenotazioni</span></li>
+          <li class="vs-item no"><span class="vs-dot">✕</span><span class="vs-text">Contratto annuale spesso obbligatorio</span></li>
+          <li class="vs-item no"><span class="vs-dot">✕</span><span class="vs-text">Solo ticket o call center</span></li>
+          <li class="vs-item partial"><span class="vs-dot">~</span><span class="vs-text">Interfaccia spesso complessa</span></li>
+          <li class="vs-item partial"><span class="vs-dot">~</span><span class="vs-text">Customizzazione rigida o assente</span></li>
+        </ul>
+      </div>
+
+    </div>
+    </div>
+  </div>
+</section>
+
 <div class="cta-section" id="cta">
   <div class="cta-inner fade-up">
     <h2>Pronto a portare il tuo club<br>al livello successivo?</h2>
@@ -1283,6 +1469,38 @@ document.querySelectorAll('.fade-up, .pc, .apps-col').forEach(el => io.observe(e
 
   window.addEventListener('scroll', updateNjCards, { passive: true });
   updateNjCards();
+})();
+
+// Testimonial cards — accordion scroll effect
+(function () {
+  const cards = document.querySelectorAll('.testi-grid .testi-card');
+
+  function getProgress(el) {
+    const rect = el.getBoundingClientRect();
+    const winH  = window.innerHeight;
+    const start = winH * 0.95;
+    const end   = winH * 0.28;
+    const top   = rect.top;
+    if (top >= start) return 0;
+    if (top <= end)   return 1;
+    return (start - top) / (start - end);
+  }
+
+  function easeInOutQuad(t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
+
+  function updateTestiCards() {
+    cards.forEach(card => {
+      const p   = easeInOutQuad(Math.min(1, Math.max(0, getProgress(card))));
+      const dir = card.dataset.dir;
+      const rot = 11 * (1 - p) * (dir === 'left' ? -1 : 1);
+      const tx  = 34 * (1 - p) * (dir === 'left' ? -1 : 1);
+      card.style.transform = `rotate(${rot}deg) translate3d(${tx}px,0,0)`;
+      card.style.opacity   = 0.12 + 0.88 * p;
+    });
+  }
+
+  window.addEventListener('scroll', updateTestiCards, { passive: true });
+  updateTestiCards();
 })();
 
 // Who cards — accordion scroll effect
