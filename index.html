@@ -97,13 +97,6 @@
 .ai-header-wrap{text-align:center;margin-bottom:3rem;position:relative;z-index:1}
 .ai-header-wrap .s-title{margin:0 auto .75rem;max-width:620px}
 .ai-header-wrap .s-sub{max-width:500px;margin:0 auto 1.5rem}
-.ai-gemini-badge{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(92,50,234,0.12);border:1px solid rgba(92,50,234,0.3);
-  border-radius:20px;padding:7px 16px;
-  font-size:11px;color:var(--ai-mid);font-weight:500;font-family:var(--font-body);
-}
-.ai-gemini-dot{width:6px;height:6px;border-radius:50%;background:var(--ai);animation:pulse 2s ease-in-out infinite}
 /* main layout — orb hero centrato, cards sotto */
 .ai-visual{
   position:absolute;
@@ -112,19 +105,21 @@
   pointer-events:none;
 }
 #aiBlob{display:block;width:1000px;height:1000px;max-width:100vw;opacity:0.55}
-.ai-gemini-note{
-  font-size:10px;color:rgba(155,121,245,0.35);letter-spacing:1.2px;
-  text-transform:uppercase;font-family:monospace;
-  position:relative;z-index:1;
-  text-align:center;margin-bottom:2.5rem;
-}
 /* feature cards */
 
-.ai-mod{background:rgba(92,50,234,0.04);border:1px solid rgba(92,50,234,0.16);border-radius:var(--r-lg);padding:1.75rem;position:relative;overflow:hidden;will-change:transform,opacity;transition:background .3s,border-color .3s,box-shadow .3s}
-.ai-mod-left{opacity:0.15;transform:rotate(-14deg) translateX(-36px);transform-origin:right center}
-.ai-mod-right{opacity:0.15;transform:rotate(14deg) translateX(36px);transform-origin:left center}
+.ai-mod{background:rgba(92,50,234,0.04);border:none;border-radius:var(--r-lg);padding:1.75rem;position:relative;overflow:hidden;will-change:transform,opacity;transition:background .3s,box-shadow .3s}
+.ai-mod-left{opacity:0.15;transform:rotate(-14deg) translateX(-36px);transform-origin:right center;animation:aiCardViolet 5s ease-in-out infinite}
+.ai-mod-right{opacity:0.15;transform:rotate(14deg) translateX(36px);transform-origin:left center;animation:aiCardOrange 5s ease-in-out infinite}
+@keyframes aiCardViolet{
+  0%,100%{box-shadow:0 0 0 1px rgba(92,50,234,0.45),0 0 28px rgba(92,50,234,0.08)}
+  50%    {box-shadow:0 0 0 1px rgba(247,88,63,0.40),0 0 28px rgba(247,88,63,0.07)}
+}
+@keyframes aiCardOrange{
+  0%,100%{box-shadow:0 0 0 1px rgba(247,88,63,0.40),0 0 28px rgba(247,88,63,0.07)}
+  50%    {box-shadow:0 0 0 1px rgba(92,50,234,0.45),0 0 28px rgba(92,50,234,0.08)}
+}
 .ai-mod::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(circle at top left,rgba(92,50,234,0.1) 0%,transparent 60%);pointer-events:none}
-.ai-mod:hover{background:rgba(92,50,234,0.09);border-color:rgba(92,50,234,0.35);box-shadow:0 12px 40px rgba(92,50,234,0.2)}
+.ai-mod:hover{background:rgba(92,50,234,0.09);box-shadow:0 0 0 1px rgba(155,121,245,0.6),0 12px 40px rgba(92,50,234,0.22) !important}
 .ai-mod-icon{width:40px;height:40px;border-radius:10px;background:rgba(92,50,234,0.15);border:1px solid rgba(92,50,234,0.25);display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:1rem;position:relative;z-index:1}
 .ai-mod h4{font-family:var(--font-display);font-size:15px;font-weight:700;color:#fff;margin-bottom:.4rem;letter-spacing:-.3px;position:relative;z-index:1}
 .ai-mod p{font-size:12px;color:rgba(255,255,255,0.45);line-height:1.7;font-weight:300;position:relative;z-index:1;margin-bottom:.9rem}
@@ -422,7 +417,7 @@
 <!-- HERO -->
 <div class="hero" style="padding-bottom:0">
   <div>
-    <div class="hero-eyebrow"><span class="badge-pulse"></span>Nuovo: AI Insights con Gemini 2.0 Flash</div>
+    <div class="hero-eyebrow"><span class="badge-pulse"></span>Nuovo: AI Insights integrata nell'agenda</div>
     <h1 class="hero-h1">Il sistema<br><span class="accent">operativo</span><br>per il tuo<br><span class="dim">club sportivo.</span></h1>
     <p class="hero-p">Prenotazioni, tornei, abbonamenti e pagamenti su un'unica piattaforma. Dal padel al tennis, dal calcetto al basket.</p>
     <div class="hero-ctas">
@@ -575,7 +570,6 @@
       <span class="eyebrow">Intelligenza artificiale</span>
       <h2 class="s-title">Dati che parlano.<br>Suggerimenti che trasformano.</h2>
       <p class="s-sub">Il primo gestionale sportivo italiano con AI integrata di serie — analisi in tempo reale, insight azionabili ogni mattina.</p>
-      <div class="ai-gemini-note">Powered by Google Gemini 2.0 Flash</div>
     </div>
 
     <!-- Feature cards -->
