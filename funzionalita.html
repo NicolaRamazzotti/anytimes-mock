@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<script>document.documentElement.dataset.theme=localStorage.getItem('at-theme')||'dark'</script>
 <style>
 
 /* ── HERO ── */
@@ -100,8 +101,8 @@
 }
 .ai-big-inner{max-width:1200px;margin:0 auto}
 .ai-big-card{
-  background:linear-gradient(135deg,#0D0D0D 0%,#161616 50%,#0f0d0d 100%);
-  border:1px solid rgba(247,88,63,0.2);
+  background:linear-gradient(135deg,#0c0a14 0%,#130f1f 50%,#0c0a14 100%);
+  border:1px solid rgba(92,50,234,0.25);
   border-radius:var(--r-xl);
   padding:clamp(2.5rem,5vw,4rem);
   position:relative;overflow:hidden;
@@ -109,22 +110,22 @@
 .ai-big-card::before{
   content:'';position:absolute;top:-180px;right:-120px;
   width:600px;height:600px;
-  background:radial-gradient(circle,rgba(247,88,63,0.08) 0%,transparent 60%);
+  background:radial-gradient(circle,rgba(92,50,234,0.12) 0%,transparent 60%);
   pointer-events:none;
 }
 .ai-big-card::after{
   content:'';position:absolute;bottom:-100px;left:-80px;
   width:400px;height:400px;
-  background:radial-gradient(circle,rgba(99,91,255,0.05) 0%,transparent 65%);
+  background:radial-gradient(circle,rgba(92,50,234,0.06) 0%,transparent 65%);
   pointer-events:none;
 }
 .ai-badge{
   display:inline-flex;align-items:center;gap:8px;
-  background:rgba(247,88,63,0.1);border:1px solid rgba(247,88,63,0.2);
+  background:rgba(92,50,234,0.12);border:1px solid rgba(92,50,234,0.3);
   border-radius:20px;padding:6px 14px;
-  font-size:11px;color:var(--brand-mid);font-weight:500;margin-bottom:2rem;
+  font-size:11px;color:var(--ai-mid);font-weight:500;margin-bottom:2rem;
 }
-.ai-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--brand);animation:pulse 2s ease-in-out infinite}
+.ai-badge-dot{width:6px;height:6px;border-radius:50%;background:var(--ai);animation:pulse 2s ease-in-out infinite}
 .ai-top-row{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1.5rem;position:relative;z-index:1}
 .ai-top-left .s-title{color:#fff;font-size:clamp(1.8rem,3.5vw,2.6rem)}
 .ai-top-left .s-sub{color:rgba(255,255,255,0.5);max-width:480px;margin-top:.5rem}
@@ -137,28 +138,28 @@
   transition:opacity .5s,transform .5s,background .3s,border-color .3s;
 }
 .ai-feat-card.visible{opacity:1;transform:translateY(0)}
-.ai-feat-card:hover{background:rgba(255,255,255,0.07);transform:translateY(-3px);border-color:rgba(247,88,63,0.25)}
+.ai-feat-card:hover{background:rgba(92,50,234,0.06);transform:translateY(-3px);border-color:rgba(92,50,234,0.3)}
 .ai-feat-icon{
   width:44px;height:44px;border-radius:12px;
   display:flex;align-items:center;justify-content:center;
   font-size:22px;margin-bottom:1.1rem;
 }
-.ai-feat-icon.orange{background:rgba(247,88,63,0.12);border:1px solid rgba(247,88,63,0.2)}
-.ai-feat-icon.purple{background:rgba(139,92,246,0.12);border:1px solid rgba(139,92,246,0.2)}
-.ai-feat-icon.blue{background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.2)}
-.ai-feat-icon.green{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.2)}
+.ai-feat-icon.orange{background:rgba(92,50,234,0.12);border:1px solid rgba(92,50,234,0.25)}
+.ai-feat-icon.purple{background:rgba(92,50,234,0.15);border:1px solid rgba(92,50,234,0.3)}
+.ai-feat-icon.blue{background:rgba(92,50,234,0.1);border:1px solid rgba(92,50,234,0.2)}
+.ai-feat-icon.green{background:rgba(92,50,234,0.08);border:1px solid rgba(92,50,234,0.18)}
 .ai-feat-card h3{font-family:var(--font-display);font-size:16px;font-weight:700;color:#fff;margin-bottom:.5rem;letter-spacing:-.2px}
 .ai-feat-card p{font-size:13px;color:rgba(255,255,255,0.5);line-height:1.75;font-weight:300}
-.ai-feat-tag{display:inline-block;margin-top:.9rem;background:rgba(247,88,63,0.1);border:1px solid rgba(247,88,63,0.15);border-radius:6px;padding:3px 10px;font-size:10px;color:var(--brand-mid);font-family:monospace}
-.ai-feat-tag.purple-tag{background:rgba(139,92,246,0.1);border-color:rgba(139,92,246,0.2);color:#c4b5fd}
-.ai-feat-tag.blue-tag{background:rgba(59,130,246,0.1);border-color:rgba(59,130,246,0.2);color:#93c5fd}
-.ai-feat-tag.green-tag{background:rgba(34,197,94,0.1);border-color:rgba(34,197,94,0.2);color:#86efac}
+.ai-feat-tag{display:inline-block;margin-top:.9rem;background:rgba(92,50,234,0.1);border:1px solid rgba(92,50,234,0.2);border-radius:6px;padding:3px 10px;font-size:10px;color:var(--ai-mid);font-family:monospace}
+.ai-feat-tag.purple-tag{background:rgba(92,50,234,0.12);border-color:rgba(92,50,234,0.25);color:var(--ai-mid)}
+.ai-feat-tag.blue-tag{background:rgba(92,50,234,0.08);border-color:rgba(92,50,234,0.18);color:#b8a8f8}
+.ai-feat-tag.green-tag{background:rgba(92,50,234,0.06);border-color:rgba(92,50,234,0.15);color:#c4b8fb}
 .ai-feat-label{font-size:10px;font-weight:600;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:.35rem;font-family:var(--font-body)}
 .ai-meter{height:3px;background:rgba(255,255,255,0.07);border-radius:3px;margin-top:.9rem;overflow:hidden}
-.ai-meter-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--brand),#ff9a7e)}
-.ai-meter-fill.purple{background:linear-gradient(90deg,#8b5cf6,#c4b5fd)}
-.ai-meter-fill.blue{background:linear-gradient(90deg,#3b82f6,#93c5fd)}
-.ai-meter-fill.green{background:linear-gradient(90deg,#22c55e,#86efac)}
+.ai-meter-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--ai),var(--ai-mid))}
+.ai-meter-fill.purple{background:linear-gradient(90deg,var(--ai),#a78bfa)}
+.ai-meter-fill.blue{background:linear-gradient(90deg,#4520c8,var(--ai-mid))}
+.ai-meter-fill.green{background:linear-gradient(90deg,var(--ai-dark),var(--ai-mid))}
 
 /* ── STATS STRIP ── */
 .stats-strip{background:var(--dark-2);border-top:1px solid var(--border-dark);border-bottom:1px solid var(--border-dark);padding:2.5rem clamp(1.5rem,5vw,3.5rem)}
@@ -195,7 +196,6 @@
 .rm-card p{font-size:13px;color:var(--text-muted-dark);line-height:1.7;font-weight:300}
 
 @media(max-width:960px){
-  .feat-cards{grid-template-columns:repeat(2,1fr)}
   .feat-card.wide{grid-column:span 1}
   .ai-cards-grid{grid-template-columns:1fr}
   .stats-inner{grid-template-columns:repeat(2,1fr)}
@@ -207,6 +207,34 @@
   .roadmap-grid{grid-template-columns:1fr}
   .cat-tab span{display:none}
 }
+
+/* ── LIGHT THEME ── */
+[data-theme="light"] .feat-hero .s-title{color:#0D0D0D!important}
+[data-theme="light"] .feat-hero .s-sub{color:rgba(0,0,0,0.52)!important}
+[data-theme="light"] .cat-tabs-section{background:rgba(245,244,240,0.94)!important;border-bottom-color:rgba(0,0,0,0.08)!important}
+[data-theme="light"] .cat-tab{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.09);color:rgba(0,0,0,0.5)}
+[data-theme="light"] .cat-tab:hover{background:rgba(0,0,0,0.07);color:rgba(0,0,0,0.8)}
+[data-theme="light"] .cat-title{color:#0D0D0D}
+[data-theme="light"] .cat-count{color:rgba(0,0,0,0.3)}
+[data-theme="light"] .cat-line{background:rgba(0,0,0,0.09)}
+[data-theme="light"] .feat-cards{background:rgba(0,0,0,0.07)}
+[data-theme="light"] .feat-card{background:#fff}
+[data-theme="light"] .feat-card:hover{background:#F7F5F1}
+[data-theme="light"] .feat-card h3{color:#0D0D0D}
+[data-theme="light"] .feat-card p{color:rgba(0,0,0,0.5)}
+[data-theme="light"] .ftag{background:rgba(0,0,0,0.04);color:rgba(0,0,0,0.42);border-color:rgba(0,0,0,0.08)}
+[data-theme="light"] .fc-sub{color:rgba(0,0,0,0.45)}
+[data-theme="light"] .stat-num{color:#0D0D0D}
+[data-theme="light"] .stat-label{color:rgba(0,0,0,0.45)}
+[data-theme="light"] .int-chip{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.09);color:rgba(0,0,0,0.6)}
+[data-theme="light"] .int-chip:hover{background:rgba(0,0,0,0.08);border-color:rgba(0,0,0,0.15)}
+/* AI big section — rimane sempre dark, testi sempre bianchi */
+[data-theme="light"] .ai-big-section{background:#0c0a14}
+[data-theme="light"] .ai-big-section .s-title{color:#fff!important}
+[data-theme="light"] .ai-big-section .s-sub{color:rgba(255,255,255,0.5)!important}
+[data-theme="light"] .ai-feat-card h3{color:#fff!important}
+[data-theme="light"] .ai-feat-card p{color:rgba(255,255,255,0.5)!important}
+[data-theme="light"] .ai-feat-label{color:rgba(255,255,255,0.25)!important}
 </style>
 </head>
 <body>
@@ -222,6 +250,7 @@
     <li><a href="blog.html">Blog</a></li>
   </ul>
   <div class="nav-right">
+    <button class="theme-toggle" aria-label="Attiva tema chiaro"></button>
     <button class="btn-nav-ghost">Accedi</button>
     <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
   </div>
@@ -276,7 +305,7 @@
       <div class="cat-dot"></div><span>Accademie</span>
     </button>
     <button class="cat-tab" onclick="scrollTo('#ai')">
-      <div class="cat-dot" style="background:var(--brand)"></div><span>AI & Analytics</span>
+      <div class="cat-dot" style="background:var(--ai)"></div><span>AI & Analytics</span>
     </button>
   </div>
 </div>
@@ -664,5 +693,6 @@ sections.forEach(s => {
   if (el) scrollObserver.observe(el);
 });
 </script>
+<script src="shared.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="shared.css">
+<script>document.documentElement.dataset.theme=localStorage.getItem('at-theme')||'dark'</script>
 <style>
 /* ── STORIA ── */
 .storia-section{background:var(--dark)}
@@ -66,6 +67,22 @@
 .mission-banner h2{font-family:var(--font-display);font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:800;letter-spacing:-1px;color:#fff;margin-bottom:.75rem;line-height:1.2}
 .mission-banner p{font-size:1rem;color:rgba(255,255,255,0.8);font-weight:300;max-width:560px;margin:0 auto}
 
+/* ── LIGHT THEME ── */
+[data-theme="light"] .storia-text h2{color:#0D0D0D}
+[data-theme="light"] .storia-text p{color:rgba(0,0,0,0.52)}
+[data-theme="light"] .st-label{color:rgba(0,0,0,0.45)}
+[data-theme="light"] .storia-visual{background:#F7F5F1;border-color:rgba(0,0,0,0.09)}
+[data-theme="light"] .tl-content h4{color:#0D0D0D}
+[data-theme="light"] .tl-content p{color:rgba(0,0,0,0.5)}
+[data-theme="light"] .tl-line{background:rgba(0,0,0,0.09)}
+[data-theme="light"] .vcard{background:#fff;border-color:rgba(0,0,0,0.09)}
+[data-theme="light"] .vcard:hover{background:#F7F5F1;border-color:rgba(247,88,63,0.2)}
+[data-theme="light"] .vcard h3{color:#0D0D0D}
+[data-theme="light"] .vcard p{color:rgba(0,0,0,0.5)}
+[data-theme="light"] .tcard{background:#fff;border-color:rgba(0,0,0,0.09)}
+[data-theme="light"] .tcard-name{color:#0D0D0D}
+[data-theme="light"] .tcard-bio{color:rgba(0,0,0,0.45)}
+
 /* ── RESPONSIVE ────*/
 @media(max-width:960px){
   .storia-grid{grid-template-columns:1fr;gap:3rem}
@@ -90,6 +107,7 @@
     <li><a href="blog.html">Blog</a></li>
   </ul>
   <div class="nav-right">
+    <button class="theme-toggle" aria-label="Attiva tema chiaro"></button>
     <button class="btn-nav-ghost">Accedi</button>
     <a href="contatti.html" class="btn-nav-cta">Richiedi demo →</a>
   </div>
@@ -98,7 +116,7 @@
 <!-- PAGE HERO -->
 <div class="page-hero fade-up">
   <div class="eyebrow">Chi siamo</div>
-  <h1 class="s-title" style="color:#fff">Nati per i club sportivi.<br>Ossessionati dai dettagli.</h1>
+  <h1 class="s-title">Nati per i club sportivi.<br>Ossessionati dai dettagli.</h1>
   <p class="s-sub">Siamo una tech company italiana che ha costruito Anytimes ascoltando decine di gestori di club sportivi. Ogni funzionalità esiste per risolvere un problema reale.</p>
 </div>
 
@@ -150,8 +168,8 @@
   <div class="inner">
     <div class="fade-up" style="text-align:center">
       <div class="eyebrow">I nostri valori</div>
-      <h2 class="s-title" style="color:#fff;margin:0 auto .75rem">Ciò in cui crediamo</h2>
-      <p class="s-sub" style="color:rgba(255,255,255,0.45);max-width:480px;margin:0 auto">Non siamo solo una software house. Siamo appassionati di sport che costruiscono strumenti per chi lo vive ogni giorno.</p>
+      <h2 class="s-title" style="margin:0 auto .75rem">Ciò in cui crediamo</h2>
+      <p class="s-sub" style="max-width:480px;margin:0 auto">Non siamo solo una software house. Siamo appassionati di sport che costruiscono strumenti per chi lo vive ogni giorno.</p>
     </div>
     <div class="valori-grid">
       <div class="vcard">
@@ -199,8 +217,8 @@
   <div class="inner">
     <div class="fade-up" style="text-align:center;margin-bottom:0">
       <div class="eyebrow">Il team</div>
-      <h2 class="s-title" style="color:#fff;margin:0 auto .75rem">Le persone dietro Anytimes</h2>
-      <p class="s-sub" style="color:rgba(255,255,255,0.45);max-width:480px;margin:0 auto">Un piccolo team con una grande ossessione: fare il miglior gestionale sportivo d'Italia.</p>
+      <h2 class="s-title" style="margin:0 auto .75rem">Le persone dietro Anytimes</h2>
+      <p class="s-sub" style="max-width:480px;margin:0 auto">Un piccolo team con una grande ossessione: fare il miglior gestionale sportivo d’Italia.</p>
     </div>
     <div class="team-grid">
       <div class="tcard">
@@ -277,5 +295,6 @@ const io = new IntersectionObserver(e => {
 }, { threshold: 0.08 });
 document.querySelectorAll('.fade-up, .vcard, .tcard').forEach(el => io.observe(el));
 </script>
+<script src="shared.js"></script>
 </body>
 </html>
