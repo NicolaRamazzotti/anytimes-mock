@@ -328,9 +328,7 @@
 .iphone::before{content:'';position:absolute;left:-9px;top:90px;width:3px;height:26px;background:rgba(255,255,255,0.1);border-radius:2px;box-shadow:0 38px 0 rgba(255,255,255,0.1)}
 .iphone::after{content:'';position:absolute;right:-9px;top:110px;width:3px;height:50px;background:rgba(255,255,255,0.1);border-radius:2px}
 .iphone-island{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:80px;height:24px;background:#000;border-radius:20px;z-index:20}
-.iphone-slides{display:flex;width:300%;height:100%;animation:appSlide 12s ease-in-out infinite}
-@keyframes appSlide{0%,26%{transform:translateX(0)}33%,59%{transform:translateX(-33.333%)}66%,92%{transform:translateX(-66.666%)}99%,100%{transform:translateX(0)}}
-.iphone-slide{width:calc(100%/3);height:100%;flex-shrink:0;padding:48px 14px 18px;overflow:hidden;display:flex;flex-direction:column;gap:6px}
+.iphone-video{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
 /* app UI elements */
 .app-header{border-radius:12px;padding:11px 13px;background:var(--brand);display:flex;align-items:center;gap:10px;flex-shrink:0}
 .app-logo-circle{width:32px;height:32px;border-radius:10px;background:rgba(255,255,255,0.22);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;font-family:var(--font-display);flex-shrink:0;letter-spacing:-.3px}
@@ -695,83 +693,9 @@
           <div class="phone-outer">
             <div class="iphone">
               <div class="iphone-island"></div>
-              <div class="iphone-slides">
-
-                <!-- Slide 1: Home club -->
-                <div class="iphone-slide" style="background:#080808">
-                  <div class="app-header">
-                    <div class="app-logo-circle">PR</div>
-                    <div>
-                      <div class="app-club-name">Padel Roma</div>
-                      <div class="app-club-sub">Il tuo club · Prati</div>
-                    </div>
-                  </div>
-                  <div class="app-quick-btn">✦ Prenota un campo <span style="color:var(--brand)">→</span></div>
-                  <div class="app-quick-btn" style="background:rgba(92,50,234,0.12);border-color:rgba(92,50,234,0.2);color:#a5b4fc">🏆 Tornei attivi <span style="color:#a5b4fc">→</span></div>
-                  <div class="app-section-label">Prossime prenotazioni</div>
-                  <div class="app-booking-card">
-                    <div class="abc-dot"></div>
-                    <div class="abc-info">
-                      <div class="abc-title">Campo 2 — Padel</div>
-                      <div class="abc-time">Dom 14 apr · 10:30</div>
-                    </div>
-                    <span class="abc-chip">Confermato</span>
-                  </div>
-                  <div class="app-booking-card">
-                    <div class="abc-dot" style="background:#a5b4fc"></div>
-                    <div class="abc-info">
-                      <div class="abc-title">Allenamento Academy</div>
-                      <div class="abc-time">Lun 15 apr · 18:00</div>
-                    </div>
-                    <span class="abc-chip">Iscritto</span>
-                  </div>
-                </div>
-
-                <!-- Slide 2: Prenotazione campo -->
-                <div class="iphone-slide" style="background:#080808">
-                  <div class="app-cal-month">Aprile 2026</div>
-                  <div class="app-cal-days">
-                    <div class="acd">L</div><div class="acd">M</div><div class="acd">M</div><div class="acd">G</div><div class="acd">V</div><div class="acd">S</div><div class="acd">D</div>
-                  </div>
-                  <div class="app-cal-nums">
-                    <div class="acn">7</div><div class="acn">8</div><div class="acn">9</div><div class="acn">10</div><div class="acn">11</div><div class="acn">12</div><div class="acn">13</div>
-                    <div class="acn today">14</div><div class="acn sel">15</div><div class="acn">16</div><div class="acn">17</div><div class="acn">18</div><div class="acn">19</div><div class="acn">20</div>
-                  </div>
-                  <div class="app-slots-label">Slot disponibili — Campo 1</div>
-                  <div class="app-slots-row">
-                    <div class="aslot busy">09:00</div>
-                    <div class="aslot free">10:30</div>
-                    <div class="aslot free">12:00</div>
-                    <div class="aslot sel">14:00</div>
-                    <div class="aslot free">15:30</div>
-                    <div class="aslot busy">17:00</div>
-                    <div class="aslot free">18:30</div>
-                    <div class="aslot busy">20:00</div>
-                  </div>
-                  <div class="app-confirm-btn">Conferma prenotazione →</div>
-                </div>
-
-                <!-- Slide 3: Ranking -->
-                <div class="iphone-slide" style="background:#080808">
-                  <div class="app-rank-card">
-                    <div class="arc-label">Il tuo profilo</div>
-                    <div class="arc-name">Marco R.</div>
-                    <div class="arc-level">Intermedio · 3.2</div>
-                    <div class="arc-stats">
-                      <div class="arc-stat"><div class="arc-stat-val">42</div><div class="arc-stat-l">Partite</div></div>
-                      <div class="arc-stat"><div class="arc-stat-val">28</div><div class="arc-stat-l">Vittorie</div></div>
-                      <div class="arc-stat"><div class="arc-stat-val">#7</div><div class="arc-stat-l">Ranking</div></div>
-                    </div>
-                  </div>
-                  <div class="app-section-label">Classifica del club</div>
-                  <div class="app-rank-list">
-                    <div class="arl"><div class="arl-pos">1</div><div class="arl-av">👑</div><div class="arl-name">Luca F.</div><div class="arl-pts">1.240 pt</div></div>
-                    <div class="arl"><div class="arl-pos">2</div><div class="arl-av">🎯</div><div class="arl-name">Sara M.</div><div class="arl-pts">1.180 pt</div></div>
-                    <div class="arl me"><div class="arl-pos">7</div><div class="arl-av">⭐</div><div class="arl-name">Marco R.</div><div class="arl-pts">880 pt</div></div>
-                  </div>
-                </div>
-
-              </div><!-- /iphone-slides -->
+              <video class="iphone-video" autoplay muted loop playsinline>
+                <source src="assets/phone/video-phone.mp4" type="video/mp4">
+              </video>
             </div><!-- /iphone -->
           </div><!-- /phone-outer -->
         </div><!-- /phone-wrap -->
