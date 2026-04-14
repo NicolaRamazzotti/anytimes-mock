@@ -249,15 +249,21 @@
 /* ── NOT JUST A GESTIONALE ── */
 .notjust-section{background:var(--off-white)}
 .notjust-section .eyebrow{color:var(--brand)}
-.notjust-section .s-title{color:#0D0D0D}
+.notjust-section .s-title{color:var(--dark)}
 .notjust-section .s-sub{color:rgba(0,0,0,0.52)}
+.nj-body{font-size:14px;line-height:1.8;font-weight:300;color:rgba(13,13,13,0.52);max-width:420px;margin-top:.75rem}
+[data-theme="dark"] .notjust-section .s-title{color:#fff}
+[data-theme="dark"] .notjust-section .s-sub{color:rgba(255,255,255,0.5)}
+[data-theme="dark"] .nj-body{color:rgba(255,255,255,0.42)}
+[data-theme="dark"] .nj-stat{background:var(--dark-card);border-color:var(--border-dark)}
+[data-theme="dark"] .nj-stat-label{color:rgba(255,255,255,0.45)}
 .nj-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
 .nj-cta{margin-top:2rem}
 .nj-stats{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem}
-.nj-stat{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:var(--r-lg);padding:1.75rem;text-align:center;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s,box-shadow .25s}
-.nj-stat.visible{opacity:1;transform:translateY(0)}
-.nj-stat.visible:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,.09)}
+.nj-stat{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:var(--r-lg);padding:1.75rem;text-align:center;opacity:0;transition:box-shadow .25s}
+.nj-stat:hover{box-shadow:0 12px 32px rgba(0,0,0,.09)}
 .nj-stat-num{font-family:var(--font-display);font-size:2.6rem;font-weight:800;color:var(--brand);letter-spacing:-1px;line-height:1}
+.nj-stat-icon{font-size:2rem;line-height:1;margin-bottom:.6rem}
 .nj-stat-label{font-size:12px;color:rgba(0,0,0,0.45);margin-top:.4rem}
 .nj-stat-wide{grid-column:span 2}
 
@@ -559,22 +565,24 @@
     <div class="nj-grid">
       <div class="fade-up">
         <div class="eyebrow">La nostra filosofia</div>
-        <h2 class="s-title">Non un semplice<br>gestionale</h2>
-        <p class="s-sub" style="max-width:400px">AnyTimes è una piattaforma SaaS in costante sviluppo, costruita insieme ai gestori di club sportivi. Ogni aggiornamento nasce da esigenze reali e feedback diretti.</p>
+        <h2 class="s-title">Costruito con voi,<br>non per voi.</h2>
+        <p class="s-sub" style="max-width:420px">Siamo un team giovane che ama lo sport e ama costruire — e Anytimes è nata esattamente così: giorno dopo giorno, circolo dopo circolo, ascoltando chi il club lo vive davvero.</p>
+        <p class="nj-body">Ogni funzionalità, ogni dettaglio dell'interfaccia, ogni modulo che trovi dentro la piattaforma ha una storia — ed è nata da un'idea condivisa con chi ci ha scelti. Continua ad andare così: i circoli che fanno parte di Anytimes sono i nostri co-fondatori silenziosi, e il loro feedback è ancora oggi la nostra bussola.</p>
+        <p class="nj-body">Il nostro obiettivo non è vendere un software — è crescere insieme alle strutture che ci hanno dato fiducia, semplificargli il lavoro ogni giorno e aiutarle ad andare meglio.</p>
         <div class="nj-cta"><a href="chi-siamo.html" class="btn-primary">Scopri chi siamo →</a></div>
       </div>
       <div class="nj-stats">
-        <div class="nj-stat">
-          <div class="nj-stat-num">800+</div>
-          <div class="nj-stat-label">Club gestiti</div>
+        <div class="nj-stat" data-dir="left">
+          <div class="nj-stat-icon">🤝</div>
+          <div class="nj-stat-label" style="font-size:13px;line-height:1.5">Ogni funzionalità è nata da un'idea condivisa con i circoli. Nessuna feature calata dall'alto.</div>
         </div>
-        <div class="nj-stat">
-          <div class="nj-stat-num">6k+</div>
-          <div class="nj-stat-label">Prenotazioni al giorno</div>
+        <div class="nj-stat" data-dir="right">
+          <div class="nj-stat-icon">🌱</div>
+          <div class="nj-stat-label" style="font-size:13px;line-height:1.5">Cresciamo insieme alle strutture che ci scelgono — il loro successo è il nostro traguardo.</div>
         </div>
-        <div class="nj-stat nj-stat-wide">
-          <div class="nj-stat-num">∞</div>
-          <div class="nj-stat-label">Aggiornamenti inclusi nel piano</div>
+        <div class="nj-stat nj-stat-wide" data-dir="center">
+          <div class="nj-stat-icon">💬</div>
+          <div class="nj-stat-label" style="font-size:13px;line-height:1.5">Ogni aggiornamento parte da feedback reali. Scrivi agli sviluppatori oggi — domani potrebbe diventare una feature.</div>
         </div>
       </div>
     </div>
@@ -1131,7 +1139,7 @@ const io = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.08 });
-document.querySelectorAll('.fade-up, .pc, .who-card, .apps-col, .nj-stat').forEach(el => io.observe(el));
+document.querySelectorAll('.fade-up, .pc, .who-card, .apps-col').forEach(el => io.observe(el));
 
 // Feature bento — puzzle scroll (pezzi che si incastrano)
 (function(){
@@ -1244,6 +1252,39 @@ document.querySelectorAll('.fade-up, .pc, .who-card, .apps-col, .nj-stat').forEa
 
   window.addEventListener('scroll', updatePromiseCards, { passive: true });
   updatePromiseCards();
+})();
+
+// Filosofia stat cards — accordion scroll effect
+(function () {
+  const cards = document.querySelectorAll('.nj-stats .nj-stat');
+
+  function getProgress(el) {
+    const rect = el.getBoundingClientRect();
+    const winH  = window.innerHeight;
+    const start = winH * 0.95;
+    const end   = winH * 0.28;
+    const top   = rect.top;
+    if (top >= start) return 0;
+    if (top <= end)   return 1;
+    return (start - top) / (start - end);
+  }
+
+  function easeInOutQuad(t) { return t < .5 ? 2*t*t : -1+(4-2*t)*t; }
+
+  function updateNjCards() {
+    cards.forEach(card => {
+      const p   = easeInOutQuad(Math.min(1, Math.max(0, getProgress(card))));
+      const dir = card.dataset.dir;
+      const rot = 10 * (1 - p) * (dir === 'left' ? -1 : dir === 'right' ? 1 : 0);
+      const tx  = 28 * (1 - p) * (dir === 'left' ? -1 : dir === 'right' ? 1 : 0);
+      const ty  = dir === 'center' ? 30 * (1 - p) : 0;
+      card.style.transform = `rotate(${rot}deg) translate3d(${tx}px,${ty}px,0)`;
+      card.style.opacity   = 0.12 + 0.88 * p;
+    });
+  }
+
+  window.addEventListener('scroll', updateNjCards, { passive: true });
+  updateNjCards();
 })();
 
 // AI Blob — Siri style hollow morphing outline
