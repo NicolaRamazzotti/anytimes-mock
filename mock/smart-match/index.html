@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Anytimes — Smart Match Mock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --brand:#F7583F;
+  --font-display:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+}
+
+html,body{width:100%;height:100vh;background:#08080C;font-family:var(--font-body);display:flex;flex-direction:column;overflow:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 900px 600px at 50% 50%,rgba(247,88,63,0.055) 0%,transparent 70%),radial-gradient(ellipse 1200px 700px at 30% 70%,rgba(92,50,234,0.035) 0%,transparent 65%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
+
+.mock-stage{position:relative;z-index:1;display:flex;flex-direction:column;width:100%;height:100vh;}
+
+/* ── SHELL ── */
+.dash-shell{width:100%;height:100vh;background:#f0efea;display:flex;flex-direction:column;overflow:hidden;position:relative;}
+
+/* ── TITLEBAR macOS ── */
+.dash-titlebar{background:#111;border-bottom:1px solid rgba(255,255,255,0.07);padding:14px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.tl-dots{display:flex;gap:7px}
+.tl{width:12px;height:12px;border-radius:50%}
+.tl-r{background:#FC6058}.tl-y{background:#FEC02F}.tl-g{background:#2BC840}
+.urlbar{flex:1;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:5px 14px;font-size:11.5px;color:rgba(255,255,255,0.35);font-family:monospace;margin:0 14px;}
+
+/* ── TOPBAR ── */
+.dapp-topbar{height:52px;flex-shrink:0;background:#fff;border-bottom:1px solid rgba(0,0,0,.09);display:flex;align-items:center;padding:0 24px 0 0;}
+.dapp-topbrand{width:52px;height:52px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border-right:1px solid rgba(0,0,0,.07);}
+.dapp-topbrand img{height:22px;width:auto}
+.dapp-toptitle{font-family:var(--font-display);font-size:15px;font-weight:700;color:#0d0d0d;letter-spacing:-.3px;padding:0 0 0 20px;margin-right:auto;}
+.dapp-toptitle span{color:var(--brand)}
+.dapp-topmeta{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(0,0,0,.4);line-height:1.35;text-align:right;margin-right:18px;}
+.dapp-topsearch{width:200px;height:32px;background:#f4f3ef;border:1px solid rgba(0,0,0,.1);border-radius:7px;display:flex;align-items:center;gap:7px;padding:0 12px;font-size:12px;color:rgba(0,0,0,.35);margin-right:18px;}
+.dapp-topright{display:flex;align-items:center;gap:10px}
+.dapp-topuser{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:rgba(0,0,0,.55);background:#f4f3ef;border:1px solid rgba(0,0,0,.1);border-radius:7px;padding:5px 12px;}
+.dapp-topicon{width:30px;height:30px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.35);border-radius:6px;}
+
+/* ── APP BODY ── */
+.app-body{display:flex;flex:1;min-height:0;overflow:hidden;}
+
+/* ── SIDEBAR ── */
+.dapp-sidebar{width:52px;flex-shrink:0;background:#fff;border-right:1px solid rgba(0,0,0,.07);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px;}
+.dsb-i{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:8px;color:rgba(0,0,0,.28);flex-shrink:0;}
+.dsb-i.on{background:rgba(247,88,63,.1);color:#F7583F}
+.dsb-sep{width:26px;height:1px;background:rgba(0,0,0,.08);margin:4px 0}
+.dsb-mt{margin-top:auto}
+
+/* ── MAIN AGENDA ── */
+.dapp-main{flex:1;overflow:hidden;display:flex;flex-direction:column;min-height:0;position:relative;}
+
+/* Stats bar */
+.dapp-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;padding:7px 9px;background:#f0efea;flex-shrink:0;}
+.dstat{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:7px;padding:7px 10px;display:flex;align-items:center;gap:8px;overflow:hidden}
+.dstat-ico{width:28px;height:28px;border-radius:5px;background:rgba(247,88,63,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.dstat-n{font:700 15px/1 var(--font-display);color:#0d0d0d;letter-spacing:-.5px}
+.dstat-lbl{font-size:7.5px;color:rgba(0,0,0,.4);margin-top:2px;white-space:nowrap}
+
+/* Date bar */
+.dapp-datebar{display:flex;align-items:center;gap:5px;padding:5px 9px;background:#f0efea;flex-shrink:0}
+.ddb-arr{width:19px;height:19px;background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:11px;color:rgba(0,0,0,.45)}
+.ddb-date{font:500 9px/1 var(--font-body);color:#0d0d0d;background:#fff;border:1px solid rgba(0,0,0,.12);border-radius:3px;padding:0 9px;height:19px;display:flex;align-items:center;white-space:nowrap}
+.ddb-oggi{font:600 9px/1 var(--font-body);color:#0d0d0d;background:#fff;border:1px solid rgba(0,0,0,.14);border-radius:3px;padding:3px 9px}
+
+/* Agenda paper */
+.dapp-paper{background:#fff;flex:1;overflow:hidden;display:flex;flex-direction:column;padding:7px 9px 0;position:relative;margin:0 9px 9px;min-height:0;}
+.dapp-paper-hd{display:flex;align-items:center;margin-bottom:5px;flex-shrink:0}
+.dapp-paper-ttl{font:800 18px/1 var(--font-display);color:#0d0d0d;flex:1;letter-spacing:-.3px}
+.dpa-actions{display:flex;gap:4px}
+.dpa-btn{width:21px;height:21px;border:1px solid rgba(0,0,0,.1);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;color:rgba(0,0,0,.38)}
+
+/* Calendar grid */
+.ag-calendar{display:grid;grid-template-columns:38px 1fr 1fr 1fr}
+.ag-col-hd{padding:6px 7px;border-bottom:none;border-right:none;font-size:8px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;color:#0d0d0d;background:transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;}
+.ag-col-hd span{display:block;font-size:7px;color:rgba(0,0,0,.45);font-weight:400;margin-top:1.5px}
+
+.ag-body{display:flex;flex:1;min-height:0;overflow:hidden}
+.ag-times{position:relative;width:38px;flex-shrink:0}
+.ag-tl{position:absolute;right:5px;font-size:7.5px;color:rgba(0,0,0,.3);transform:translateY(-50%);line-height:1;white-space:nowrap}
+.ag-slot-col{flex:1;position:relative;border-right:none}
+.ag-slot{height:60px;background:#e8e7e1;border-radius:3px;margin:0 2px 2px}
+.ag-block{position:absolute;left:2px;right:2px;border-radius:5px;padding:5px 6px;z-index:2;overflow:hidden;}
+.ag-b-cyan  {background:#12E8D4;border:1px solid rgba(18,232,212,.4)}
+.ag-b-yellow{background:#F5A623;border:1px solid rgba(245,166,35,.4)}
+.ag-b-green {background:#2EC47A;border:1px solid rgba(46,196,122,.4)}
+.ag-b-blue  {background:#4A90E2;border:1px solid rgba(74,144,226,.4)}
+.ag-b-violet{background:#624DE3;border:1px solid rgba(98,77,227,.35)}
+.ag-b-sky   {background:#5BC4F0;border:1px solid rgba(91,196,240,.35)}
+.ag-b-mint  {background:#34D399;border:1px solid rgba(52,211,153,.35)}
+.ag-b-orange{background:#F7583F;border:1px solid rgba(247,88,63,.35)}
+.ag-b-amber {background:#0D9488;border:1px solid rgba(13,148,136,.35)}
+/* highlighted block for click target */
+.ag-block-target{box-shadow:0 0 0 2.5px rgba(247,88,63,.7);z-index:3;}
+
+.ag-pa{display:flex;flex-direction:column;justify-content:space-between;height:100%}
+.ag-pa-time{font-size:6.5px;font-weight:600;color:rgba(255,255,255,.78);line-height:1}
+.ag-pa-avs{display:flex;justify-content:center;align-items:center;gap:3px;flex:1}
+.ag-av{width:17px;height:17px;border-radius:50%;font-size:5.5px;font-weight:700;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.72);border:1.5px solid rgba(255,255,255,.3);flex-shrink:0}
+.ag-av-q{background:rgba(255,255,255,.15);color:rgba(255,255,255,.5);border-color:rgba(255,255,255,.18)}
+.ag-pa-lbl{font-size:6px;font-weight:700;letter-spacing:.5px;color:rgba(255,255,255,.65);text-transform:uppercase}
+.ag-pren-mid{flex:1;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:rgba(0,0,0,.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ag-b-orange .ag-pa-time,.ag-b-amber .ag-pa-time{color:rgba(255,255,255,.75)}
+.ag-b-orange .ag-pren-mid,.ag-b-amber .ag-pren-mid{color:rgba(255,255,255,.92);font-size:10px;letter-spacing:.3px}
+.ag-b-orange .ag-pa-lbl,.ag-b-amber .ag-pa-lbl{color:rgba(255,255,255,.6)}
+.ag-b-mint .ag-pa-time,.ag-b-sky .ag-pa-time{color:rgba(0,0,0,.6)}
+.ag-b-mint .ag-pa-lbl,.ag-b-sky .ag-pa-lbl{color:rgba(0,0,0,.5)}
+.ag-b-yellow .ag-pa-time{color:rgba(0,0,0,.7)}
+.ag-b-yellow .ag-pa-lbl{color:rgba(0,0,0,.5)}
+.ag-b-sky .ag-pren-mid{color:rgba(0,0,0,.72)}
+
+/* ── CURSOR ── */
+.fake-cursor{
+  position:fixed;
+  z-index:1000;
+  pointer-events:none;
+  transition:left .8s cubic-bezier(.4,0,.2,1),top .8s cubic-bezier(.4,0,.2,1);
+  opacity:0;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,.35));
+}
+.fake-cursor svg{display:block;}
+.fake-cursor.cursor-click{animation:cursorClick .25s ease forwards;}
+@keyframes cursorClick{0%{transform:scale(1)}50%{transform:scale(.82)}100%{transform:scale(1)}}
+
+/* ── DRAWER OVERLAY ── */
+.drawer-overlay{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,0);
+  z-index:100;
+  pointer-events:none;
+  transition:background .35s;
+}
+.drawer-overlay.dim{background:rgba(0,0,0,0.75);pointer-events:auto;}
+
+.drawer{
+  position:absolute;top:0;right:0;bottom:0;
+  width:660px;
+  background:#fff;
+  box-shadow:-12px 0 48px rgba(0,0,0,.22);
+  transform:translateX(100%);
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+  display:flex;flex-direction:column;
+  overflow:hidden;
+  z-index:101;
+}
+.drawer.open{transform:translateX(0);}
+
+/* Drawer header */
+.dr-hd{padding:18px 22px 14px;border-bottom:1px solid rgba(0,0,0,.07);flex-shrink:0;display:flex;flex-direction:column;gap:10px;}
+.dr-hd-top{display:flex;align-items:center;gap:10px;}
+.dr-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;}
+.dr-badge-pren{background:rgba(18,212,196,.12);color:#0D9488;}
+.dr-badge-pren svg{opacity:.7}
+.dr-meta{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(0,0,0,.4);margin-left:auto;}
+
+.dr-info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 20px;padding:4px 0;}
+.dr-info-item{}
+.dr-info-lbl{font-size:10px;color:rgba(0,0,0,.4);margin-bottom:2px;}
+.dr-info-val{font-size:13px;font-weight:700;color:#0d0d0d;}
+.dr-info-sub{font-size:11px;font-weight:600;color:#0d0d0d;margin-top:1px;}
+
+.dr-piano{background:#f0faf8;border-radius:8px;padding:10px 14px;}
+.dr-piano-lbl{font-size:10px;color:rgba(0,0,0,.4);margin-bottom:3px;}
+.dr-piano-val{font-size:12px;font-weight:700;color:#0d0d0d;}
+
+.dr-actions{display:flex;gap:8px;padding:10px 22px 0;flex-shrink:0;}
+.dr-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:11.5px;font-weight:600;}
+.dr-btn-ghost{border:1px solid rgba(0,0,0,.12);color:rgba(0,0,0,.5);}
+.dr-btn-edit{border:1px solid rgba(0,0,0,.12);color:#0d0d0d;}
+.dr-btn-del{border:1px solid rgba(247,88,63,.3);color:#F7583F;margin-left:auto;}
+
+/* Incasso alert */
+.dr-incasso{margin:12px 22px 0;border-radius:9px;border:1.5px solid rgba(247,88,63,.2);background:#fff8f7;padding:11px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.dr-incasso-left{display:flex;align-items:center;gap:9px;}
+.dr-incasso-ico{width:28px;height:28px;border-radius:7px;background:rgba(247,88,63,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dr-incasso-lbl{font-size:10px;color:rgba(0,0,0,.45);}
+.dr-incasso-amt{font-family:var(--font-display);font-size:20px;font-weight:800;color:#F7583F;letter-spacing:-.5px;}
+.dr-incasso-arr{color:rgba(0,0,0,.25);font-size:16px;}
+
+/* Giocatori section */
+.dr-section{padding:14px 22px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+.dr-section-hd{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.dr-section-title{font-size:14px;font-weight:700;color:#0d0d0d;flex:1;}
+.dr-section-count{font-size:12px;font-weight:600;color:rgba(0,0,0,.35);}
+.dr-timbra{font-size:10px;font-style:italic;color:rgba(0,0,0,.35);margin-left:auto;}
+
+/* Add player / Suggerimenti buttons */
+.dr-add-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2px;}
+.dr-add-btn{border:1.5px dashed rgba(0,0,0,.15);border-radius:8px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px;color:rgba(0,0,0,.4);cursor:pointer;}
+.dr-sugg-btn{border-radius:8px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:11px;font-weight:700;color:#fff;background:linear-gradient(135deg,#F7583F 0%,#E040FB 50%,#00BCD4 100%);cursor:pointer;position:relative;overflow:hidden;}
+.dr-sugg-btn::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);pointer-events:none;}
+.dr-sugg-btn-pulse{animation:suggPulse 1.8s ease-in-out infinite;}
+@keyframes suggPulse{0%,100%{box-shadow:0 0 0 0 rgba(247,88,63,.4)}60%{box-shadow:0 0 0 8px rgba(247,88,63,0)}}
+
+/* Player row */
+.dr-player{background:#fafaf8;border:1px solid rgba(0,0,0,.07);border-radius:9px;padding:11px 14px;display:flex;align-items:center;gap:11px;}
+.dr-player-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;}
+.dr-player-info{flex:1;min-width:0;}
+.dr-player-name{font-size:13px;font-weight:700;color:#0d0d0d;display:flex;align-items:center;gap:6px;}
+.dr-player-badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;letter-spacing:.3px;}
+.badge-tess{background:rgba(46,196,122,.12);color:#16a34a;}
+.dr-player-sub{font-size:10.5px;color:rgba(0,0,0,.4);margin-top:2px;}
+.dr-player-row2{display:flex;align-items:center;gap:14px;margin-top:6px;}
+.dr-player-col{font-size:10px;color:rgba(0,0,0,.4);}
+.dr-player-col strong{display:block;font-size:12px;font-weight:700;color:#0d0d0d;}
+.dr-player-col .val-red{color:#F7583F;}
+.dr-player-actions{display:flex;gap:4px;flex-shrink:0;}
+.dr-pact{width:28px;height:28px;border-radius:6px;border:1px solid rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.35);}
+.dr-pact-euro{background:rgba(46,196,122,.08);border-color:rgba(46,196,122,.2);color:#16a34a;font-size:11px;font-weight:700;}
+
+/* ── SUGGERITI DRAWER CONTENT ── */
+.sugg-tabs{display:flex;gap:6px;padding:14px 22px 0;flex-shrink:0;}
+.sugg-tab{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;font-size:12px;font-weight:600;border:1px solid rgba(0,0,0,.1);color:rgba(0,0,0,.45);cursor:pointer;}
+.sugg-tab.active{background:linear-gradient(135deg,#F7583F,#E040FB,#00BCD4);color:#fff;border-color:transparent;}
+.sugg-tab-matchai{background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);color:#fff;border-color:transparent;}
+.sugg-tab-matchai.active{background:linear-gradient(135deg,#a855f7,#3b82f6);color:#fff;}
+
+.sugg-in-pren{padding:14px 22px 0;flex-shrink:0;}
+.sugg-in-pren-hd{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.sugg-in-pren-title{font-size:13px;font-weight:700;color:#0d0d0d;flex:1;}
+.sugg-in-pren-count{font-size:11px;color:rgba(0,0,0,.35);}
+.sugg-in-row{background:#fafaf8;border:1px solid rgba(0,0,0,.07);border-radius:8px;padding:9px 12px;display:flex;align-items:center;gap:10px;}
+.sugg-in-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;}
+.sugg-in-name{font-size:12px;font-weight:700;color:#0d0d0d;display:flex;align-items:center;gap:6px;flex:1;}
+.sugg-in-sub{font-size:10px;color:rgba(0,0,0,.4);margin-top:1px;}
+.sugg-in-minus{width:22px;height:22px;border-radius:50%;background:rgba(247,88,63,.1);display:flex;align-items:center;justify-content:center;color:#F7583F;font-size:14px;font-weight:700;line-height:1;}
+
+/* Results section */
+.sugg-results{padding:14px 22px 0;flex-shrink:0;}
+.sugg-results-hd{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.sugg-results-ico{font-size:16px;}
+.sugg-results-title{font-size:13px;font-weight:700;color:#0d0d0d;flex:1;}
+.sugg-results-count{font-size:10px;color:rgba(0,0,0,.35);}
+.sugg-filter-row{display:flex;align-items:center;gap:6px;margin-bottom:10px;}
+.sugg-filter{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:20px;font-size:11px;font-weight:600;}
+.sugg-f-pm{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff;}
+.sugg-f-nc{background:rgba(0,0,0,.06);color:rgba(0,0,0,.5);border:1px solid rgba(0,0,0,.1);}
+.sugg-gender{display:flex;gap:4px;margin-left:auto;}
+.sugg-gen-btn{padding:4px 9px;border-radius:5px;font-size:10px;font-weight:600;border:1px solid rgba(0,0,0,.1);color:rgba(0,0,0,.4);}
+.sugg-gen-btn.active{background:#0d0d0d;color:#fff;border-color:#0d0d0d;}
+
+.sugg-list{flex:1;overflow-y:auto;padding:0 22px 16px;display:flex;flex-direction:column;gap:8px;}
+.sugg-card{background:#fafaf8;border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:11px 14px;position:relative;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;}
+.sugg-card.show{opacity:1;transform:none;}
+.sugg-card-top{display:flex;align-items:center;gap:10px;}
+.sugg-card-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;}
+.sugg-card-info{flex:1;}
+.sugg-card-name{font-size:12.5px;font-weight:700;color:#0d0d0d;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.sugg-card-sub{font-size:10px;color:rgba(0,0,0,.4);margin-top:2px;}
+.sugg-card-badges{display:flex;align-items:center;gap:5px;margin-top:5px;flex-wrap:wrap;}
+.badge-premium{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;background:rgba(163,100,200,.1);color:#7c3aed;}
+.badge-crescita{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;background:rgba(59,130,246,.08);color:#2563eb;}
+.badge-conf{font-size:9px;color:rgba(0,0,0,.4);}
+.sugg-card-percent{display:flex;flex-direction:column;align-items:center;flex-shrink:0;gap:1px;}
+.sugg-pct-ring{width:38px;height:38px;position:relative;}
+.sugg-pct-ring svg{transform:rotate(-90deg);}
+.sugg-pct-ring circle{fill:none;stroke-width:3;}
+.sugg-pct-track{stroke:#f0efea;}
+.sugg-pct-fill{stroke:#2EC47A;stroke-dasharray:var(--pct,71) 100;stroke-linecap:round;transition:stroke-dasharray .8s cubic-bezier(.16,1,.3,1);}
+.sugg-pct-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#0d0d0d;}
+.sugg-pct-sub{font-size:7.5px;color:#2EC47A;font-weight:600;}
+.sugg-card-hist{background:#f4f3ef;border-radius:6px;padding:6px 9px;display:inline-flex;align-items:center;gap:6px;margin-top:7px;font-size:10px;color:rgba(0,0,0,.55);}
+.sugg-card-hist strong{color:#0d0d0d;}
+.sugg-card-add{position:absolute;right:12px;bottom:10px;width:22px;height:22px;border-radius:50%;border:1px solid rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.35);font-size:14px;font-weight:300;}
+
+/* ── MATCH AI CARDS ── */
+.matchai-list{flex:1;overflow-y:auto;padding:0 22px 16px;display:flex;flex-direction:column;gap:10px;}
+.matchai-card{background:#fafaf8;border:1.5px solid rgba(0,0,0,.07);border-radius:12px;padding:13px 14px;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s;}
+.matchai-card.show{opacity:1;transform:none;}
+.matchai-card-hd{display:flex;align-items:center;justify-content:flex-end;margin-bottom:10px;}
+.matchai-pct{display:flex;flex-direction:column;align-items:center;gap:1px;}
+.matchai-pct-ring{width:38px;height:38px;position:relative;}
+.matchai-pct-ring svg{transform:rotate(-90deg);}
+.matchai-pct-ring circle{fill:none;stroke-width:3;}
+.matchai-pct-track{stroke:#f0efea;}
+.matchai-pct-fill{stroke:#2EC47A;stroke-dasharray:var(--mpct,76) 100;stroke-linecap:round;transition:stroke-dasharray .9s cubic-bezier(.16,1,.3,1);}
+.matchai-pct-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#0d0d0d;}
+.matchai-pct-sub{font-size:7.5px;color:#2EC47A;font-weight:600;}
+.matchai-pct-lbl{font-size:8px;color:rgba(0,0,0,.4);text-align:center;}
+.matchai-players{display:flex;flex-direction:column;gap:7px;margin-bottom:8px;}
+.matchai-player{display:flex;align-items:center;gap:9px;}
+.matchai-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;flex-shrink:0;}
+.matchai-pname{font-size:12px;font-weight:600;color:#0d0d0d;flex:1;}
+.matchai-badges{display:flex;gap:4px;}
+.matchai-reasons{display:flex;flex-direction:column;gap:2px;margin-bottom:10px;padding:0 2px;}
+.matchai-reason{font-size:9.5px;color:rgba(0,0,0,.45);}
+.matchai-reason::before{content:'· ';}
+.matchai-addall{display:flex;align-items:center;justify-content:flex-end;}
+.matchai-addall-btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:7px;background:#0d0d0d;color:#fff;font-size:11px;font-weight:600;}
+</style>
+</head>
+<body>
+<div class="mock-stage">
+<div class="dash-shell">
+
+  <!-- TITLEBAR -->
+  <div class="dash-titlebar">
+    <div class="tl-dots"><div class="tl tl-r"></div><div class="tl tl-y"></div><div class="tl tl-g"></div></div>
+    <div class="urlbar" id="urlbar">app.anytimes.it/agenda</div>
+  </div>
+
+  <!-- TOPBAR -->
+  <div class="dapp-topbar">
+    <div class="dapp-topbrand"><img src="../../assets/logo.png" alt="Anytimes"></div>
+    <div class="dapp-toptitle">any<span>times</span></div>
+    <div class="dapp-topmeta">
+      <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="11" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M1 6h12" stroke="currentColor" stroke-width="1.3"/><path d="M5 1v3M9 1v3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <div>15 apr<br>15:20:06</div>
+    </div>
+    <div class="dapp-topsearch">
+      <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3"/><path d="M10 10l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Cerca un utente
+    </div>
+    <div class="dapp-topright">
+      <div class="dapp-topuser">
+        <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="2.5" stroke="currentColor" stroke-width="1.3"/><path d="M2 13c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        demo
+      </div>
+      <div class="dapp-topicon"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2a6 6 0 0 1 6 6v2l1.5 2.5h-15L4 10V8a6 6 0 0 1 6-6z" stroke="currentColor" stroke-width="1.4"/><path d="M8 16a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+      <div class="dapp-topicon"><svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M17 17l-4-4m0 0a6 6 0 1 0-8.485-8.485A6 6 0 0 0 13 13z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+    </div>
+  </div>
+
+  <!-- APP BODY -->
+  <div class="app-body">
+
+    <!-- SIDEBAR -->
+    <div class="dapp-sidebar">
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="4" height="4" rx="1" fill="currentColor" fill-opacity=".35"/><rect x="7" y="1" width="4" height="4" rx="1" fill="currentColor" fill-opacity=".35"/><rect x="1" y="7" width="4" height="4" rx="1" fill="currentColor" fill-opacity=".35"/><rect x="7" y="7" width="4" height="4" rx="1" fill="currentColor" fill-opacity=".35"/></svg></div>
+      <div class="dsb-i on"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.2"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><circle cx="4.5" cy="4" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2.2 1.6-3.5 3.5-3.5S8 8.8 8 11" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M8.5 2a2 2 0 0 1 0 4M11 11c0-1.8-1.2-3-3-3.4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><rect x="1" y="2.5" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 5.5h10" stroke="currentColor" stroke-width="1.2"/><circle cx="3.5" cy="8" r=".8" fill="currentColor"/><path d="M5.5 8h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M10 8.5C10 9.3 9.3 10 8.5 10H4l-2.5 2V3.5C1.5 2.7 2.2 2 3 2h5.5C9.3 2 10 2.7 10 3.5v5z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 4h5M3.5 6.5h5M3.5 9h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M6 1.5l1.2 2.6 2.8.3-2 2 .5 2.8L6 7.8 3.5 9.2l.5-2.8-2-2 2.8-.3z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><rect x="1" y="1" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 5h10M1 8h10M5 1v10" stroke="currentColor" stroke-width="1.2"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M6 9V10.5M4.5 11.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M2.5 2H1.5v2a2 2 0 0 0 2 2M9.5 2h1v2a2 2 0 0 1-2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M3 1h6v4.5a3 3 0 0 1-6 0V1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><rect x="1" y="3" width="10" height="7" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 3V2a2 2 0 0 1 4 0v1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="6" cy="6.5" r="1.2" stroke="currentColor" stroke-width="1.1"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M1 9.5l3-3.5 2 2.5 3-5 2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><path d="M6 1.5C6 1.5 4 3 4 5a2 2 0 0 0 4 0c0-2-2-3.5-2-3.5z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><path d="M4 10.5h4M6 7v3.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+      <div class="dsb-sep dsb-mt"></div>
+      <div class="dsb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M6 1v1.5M6 9.5V11M1 6h1.5M9.5 6H11M2.64 2.64l1.06 1.06M8.3 8.3l1.06 1.06M9.36 2.64L8.3 3.7M3.7 8.3L2.64 9.36" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="dapp-main">
+
+      <!-- Stats -->
+      <div class="dapp-stats">
+        <div class="dstat"><div class="dstat-ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="12" height="12" rx="2" stroke="#F7583F" stroke-width="1.3"/><path d="M3.5 5h7M3.5 7.5h4.5" stroke="#F7583F" stroke-width="1.3" stroke-linecap="round"/></svg></div><div><div class="dstat-n">8</div><div class="dstat-lbl">Prenotazioni</div></div></div>
+        <div class="dstat"><div class="dstat-ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="5" r="2.2" stroke="#F7583F" stroke-width="1.3"/><path d="M1 13c0-2.5 1.8-4 4-4s4 1.5 4 4" stroke="#F7583F" stroke-width="1.3" stroke-linecap="round"/><path d="M9.5 2a2.2 2.2 0 0 1 0 4.4M13 13c0-2-1.4-3.2-3.5-3.6" stroke="#F7583F" stroke-width="1.3" stroke-linecap="round"/></svg></div><div><div class="dstat-n">3</div><div class="dstat-lbl">Partite aperte</div></div></div>
+        <div class="dstat"><div class="dstat-ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3.5" width="12" height="7.5" rx="1.5" stroke="#F7583F" stroke-width="1.3"/><path d="M5.5 7.5a1.5 1.5 0 0 1 3 0" stroke="#F7583F" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="7.5" r=".7" fill="#F7583F"/><path d="M4 3.5V2.5M10 3.5V2.5" stroke="#F7583F" stroke-width="1.3" stroke-linecap="round"/></svg></div><div><div class="dstat-n">€ 295</div><div class="dstat-lbl">Incasso oggi</div></div></div>
+      </div>
+
+      <!-- Date bar -->
+      <div class="dapp-datebar">
+        <div class="ddb-arr">&#8249;</div>
+        <span class="ddb-date">mer 15/04/2026</span>
+        <div class="ddb-arr">&#8250;</div>
+        <div class="ddb-oggi">oggi</div>
+      </div>
+
+      <!-- AGENDA PAPER -->
+      <div class="dapp-paper">
+        <div class="dapp-paper-hd">
+          <span class="dapp-paper-ttl">Agenda</span>
+          <div class="dpa-actions">
+            <div class="dpa-btn">&#8595;</div><div class="dpa-btn">&#10138;</div><div class="dpa-btn">&#9636;</div><div class="dpa-btn">&#128197;</div>
+          </div>
+        </div>
+
+        <!-- Column headers -->
+        <div class="ag-calendar">
+          <div></div>
+          <div class="ag-col-hd">Campo 1 WPT<span>PADEL · INDOOR</span></div>
+          <div class="ag-col-hd">Campo 2<span>PADEL · INDOOR</span></div>
+          <div class="ag-col-hd">Campo 3 Indoor<span>PADEL · INDOOR</span></div>
+        </div>
+
+        <!-- Grid body -->
+        <div class="ag-body">
+          <!-- Time labels -->
+          <div class="ag-times">
+            <span class="ag-tl" style="top:0;transform:none">10:00</span>
+            <span class="ag-tl" style="top:62px">11:30</span>
+            <span class="ag-tl" style="top:124px">13:00</span>
+            <span class="ag-tl" style="top:186px">14:30</span>
+            <span class="ag-tl" style="top:248px">16:00</span>
+            <span class="ag-tl" style="top:310px">17:30</span>
+            <span class="ag-tl" style="top:372px">19:00</span>
+            <span class="ag-tl" style="top:434px">20:30</span>
+            <span class="ag-tl" style="top:496px">22:00</span>
+          </div>
+
+          <!-- Campo 1 -->
+          <div class="ag-slot-col">
+            <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
+            <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
+            <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
+            <div class="ag-block ag-b-mint" style="top:62px;height:60px"><div class="ag-pa"><div class="ag-pa-time">11:30 – 13:00</div><div class="ag-pa-avs"><div class="ag-av" style="background:#6CB8E6">GP</div><div class="ag-av" style="background:#F5A623">AB</div><div class="ag-av" style="background:#E8604A">LR</div><div class="ag-av ag-av-q">?</div></div><div class="ag-pa-lbl">Lezione aperta</div></div></div>
+            <div class="ag-block ag-b-violet" style="top:186px;height:60px"><div class="ag-pa"><div class="ag-pa-time">14:30 – 16:00</div><div class="ag-pa-avs"><div class="ag-av" style="background:#12E8D4">GP</div><div class="ag-av" style="background:#F5A623">AB</div><div class="ag-av ag-av-q">?</div><div class="ag-av ag-av-q">?</div></div><div class="ag-pa-lbl">Partita aperta</div></div></div>
+            <div class="ag-block ag-b-sky" style="top:248px;height:60px"><div class="ag-pa"><div class="ag-pa-time">16:00 – 17:30</div><div class="ag-pren-mid">Carlo Marchetti</div><div class="ag-pa-lbl">Prenotazione</div></div></div>
+            <div class="ag-block ag-b-sky" style="top:372px;height:60px"><div class="ag-pa"><div class="ag-pa-time">19:00 – 20:30</div><div class="ag-pren-mid">Luca Ferrari</div><div class="ag-pa-lbl">Prenotazione</div></div></div>
+          </div>
+
+          <!-- Campo 2 — il blocco violetto 16:00 è il target del click -->
+          <div class="ag-slot-col">
+            <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
+            <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
+            <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
+            <div class="ag-block ag-b-yellow" style="top:62px;height:60px"><div class="ag-pa"><div class="ag-pa-time">11:30 – 13:00</div><div class="ag-pa-avs"><div class="ag-av" style="background:#E8604A">MC</div><div class="ag-av" style="background:#2EC47A">DP</div></div><div class="ag-pa-lbl">Lezione doppia</div></div></div>
+            <!-- TARGET BLOCK: partita aperta campo 2 16:00 -->
+            <div class="ag-block ag-b-violet" id="target-block" style="top:248px;height:60px"><div class="ag-pa"><div class="ag-pa-time">16:00 – 17:30</div><div class="ag-pa-avs"><div class="ag-av" style="background:#A78BFA">LM</div><div class="ag-av ag-av-q">?</div><div class="ag-av ag-av-q">?</div><div class="ag-av ag-av-q">?</div></div><div class="ag-pa-lbl">Partita aperta</div></div></div>
+            <div class="ag-block ag-b-orange" style="top:310px;height:122px"><div class="ag-pa"><div class="ag-pa-time">17:30 – 20:30</div><div class="ag-pren-mid">Scuola Padel</div><div class="ag-pa-lbl">Corso</div></div></div>
+          </div>
+
+          <!-- Campo 3 -->
+          <div class="ag-slot-col">
+            <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
+            <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
+            <div class="ag-slot"></div><div class="ag-slot"></div><div class="ag-slot"></div>
+            <div class="ag-block ag-b-violet" style="top:124px;height:60px"><div class="ag-pa"><div class="ag-pa-time">13:00 – 14:30</div><div class="ag-pa-avs"><div class="ag-av" style="background:#6CB8E6">GR</div><div class="ag-av" style="background:#2EC47A">FP</div><div class="ag-av ag-av-q">?</div><div class="ag-av ag-av-q">?</div></div><div class="ag-pa-lbl">Partita aperta</div></div></div>
+            <div class="ag-block ag-b-sky" style="top:310px;height:60px"><div class="ag-pa"><div class="ag-pa-time">17:30 – 19:00</div><div class="ag-pren-mid">Sara Bianchi</div><div class="ag-pa-lbl">Prenotazione</div></div></div>
+            <div class="ag-block ag-b-amber" style="top:372px;height:122px"><div class="ag-pa"><div class="ag-pa-time">19:00 – 22:00</div><div class="ag-pren-mid">Torneo Americano</div><div class="ag-pa-lbl">Torneo</div></div></div>
+          </div>
+        </div><!-- /ag-body -->
+
+      </div><!-- /dapp-paper -->
+    </div><!-- /dapp-main -->
+  </div><!-- /app-body -->
+
+  <!-- DRAWER OVERLAY (covers entire shell incl. topbar + sidebar) -->
+  <div class="drawer-overlay" id="drawerOverlay">
+
+          <!-- ═══ DRAWER ═══ -->
+          <div class="drawer" id="drawer">
+
+            <!-- STEP 1: Prenotazione detail -->
+            <div id="step-pren" style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
+              <!-- Header -->
+              <div class="dr-hd">
+                <div class="dr-hd-top">
+                  <div class="dr-badge dr-badge-pren">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.2"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                    Prenotazione
+                  </div>
+                  <div class="dr-meta">
+                    <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.2"/><path d="M6 4v2.5l1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+                    mer 15/04/26 · 15:20 &nbsp;·&nbsp; demo@anytimes.it
+                  </div>
+                  <div style="margin-left:8px;width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.35);font-size:18px;cursor:pointer;">×</div>
+                </div>
+                <div class="dr-info-grid">
+                  <div class="dr-info-item"><div class="dr-info-lbl">Campo</div><div class="dr-info-val">Campo 2</div></div>
+                  <div class="dr-info-item"><div class="dr-info-lbl">Data</div><div class="dr-info-val">15/04/26</div></div>
+                  <div class="dr-info-item"><div class="dr-info-lbl">Orario</div><div class="dr-info-val">16:00 – 17:30</div></div>
+                  <div class="dr-info-item" style="grid-column:1/-1"><div class="dr-info-lbl">Intestatario</div><div class="dr-info-sub">Lorenzo Matteo</div></div>
+                </div>
+                <div class="dr-piano"><div class="dr-piano-lbl">Pianificazione</div><div class="dr-piano-val">Ogni mercoledì fino al 27/05/2026</div></div>
+              </div>
+
+              <!-- Actions -->
+              <div class="dr-actions">
+                <div class="dr-btn dr-btn-ghost"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.2 2.5L10 3.9l-2 1.9.5 2.7L6 7.2 3.5 8.5l.5-2.7L2 3.9l2.8-.4z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg>Condividi</div>
+                <div class="dr-btn dr-btn-edit"><svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M8.5 2L10 3.5l-6 6H2.5V8l6-6z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg>Modifica</div>
+                <div class="dr-btn dr-btn-del">Disdici</div>
+              </div>
+
+              <!-- Incasso -->
+              <div class="dr-incasso">
+                <div class="dr-incasso-left">
+                  <div class="dr-incasso-ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3.5" width="12" height="7.5" rx="1.5" stroke="#F7583F" stroke-width="1.3"/><path d="M5.5 7.5a1.5 1.5 0 0 1 3 0" stroke="#F7583F" stroke-width="1.3" stroke-linecap="round"/><circle cx="7" cy="7.5" r=".7" fill="#F7583F"/></svg></div>
+                  <div><div class="dr-incasso-lbl">Devi incassare</div><div class="dr-incasso-amt">48,00€</div></div>
+                </div>
+                <div class="dr-incasso-arr">›</div>
+              </div>
+
+              <!-- Giocatori -->
+              <div class="dr-section">
+                <div class="dr-section-hd">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="5" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M1 13c0-2.5 1.8-4 4-4s4 1.5 4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M9.5 2a2.2 2.2 0 0 1 0 4.4M13 13c0-2-1.4-3.2-3.5-3.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  <span class="dr-section-title">Giocatori</span>
+                  <span class="dr-section-count">1/4</span>
+                  <span class="dr-timbra">Timbra bonus card</span>
+                </div>
+
+                <!-- Add player + Suggerimenti AI -->
+                <div class="dr-add-row">
+                  <div class="dr-add-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.3"/><path d="M8 5v6M5 8h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                    Aggiungi giocatore
+                  </div>
+                  <div class="dr-sugg-btn dr-sugg-btn-pulse" id="suggBtn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2l1.2 3.3L12.5 6l-2.5 2.4.6 3.4L8 10.1l-2.6 1.7.6-3.4L3.5 6l3.3-.7z" fill="rgba(255,255,255,.9)"/></svg>
+                    Suggerimenti
+                  </div>
+                </div>
+
+                <!-- Player row -->
+                <div class="dr-player">
+                  <div class="dr-player-av" style="background:#A78BFA">LM</div>
+                  <div class="dr-player-info">
+                    <div class="dr-player-name">
+                      Lorenzo Matteo
+                      <span class="dr-player-badge badge-tess">Tesserato</span>
+                    </div>
+                    <div class="dr-player-sub">3291442188 · lmatteo71@anytimes.it</div>
+                    <div class="dr-player-row2">
+                      <div class="dr-player-col"><strong>9,00€</strong>Dovuto</div>
+                      <div class="dr-player-col"><strong class="val-red">0,00€</strong>Pagato</div>
+                      <div class="dr-player-col"><strong>–</strong>Metodo</div>
+                      <div class="dr-player-col"><strong>–</strong>Data pag.</div>
+                    </div>
+                  </div>
+                  <div class="dr-player-actions">
+                    <div class="dr-pact dr-pact-euro">€</div>
+                    <div class="dr-pact"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M8.5 2L10 3.5l-6 6H2.5V8l6-6z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg></div>
+                    <div class="dr-pact"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 10L10 2M2 2l8 8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+                  </div>
+                </div>
+              </div>
+            </div><!-- /step-pren -->
+
+            <!-- STEP 2: Suggeriti -->
+            <div id="step-sugg" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+              <!-- Header reuse -->
+              <div class="dr-hd" style="padding-bottom:12px;">
+                <div class="dr-hd-top">
+                  <span style="font-family:var(--font-display);font-size:16px;font-weight:800;color:#0d0d0d;letter-spacing:-.3px;">Giocatori suggeriti</span>
+                  <div style="margin-left:auto;width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.35);font-size:18px;cursor:pointer;">×</div>
+                </div>
+              </div>
+
+              <!-- Tabs -->
+              <div class="sugg-tabs">
+                <div class="sugg-tab active" id="tab-sugg">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.1 2.4L10 3.8l-2 1.8.5 2.7L6 7.1 3.5 8.3l.5-2.7L2 3.8l2.9-.4z" fill="currentColor"/></svg>
+                  Suggeriti
+                </div>
+                <div class="sugg-tab sugg-tab-matchai" id="tab-matchai">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.1 2.4L10 3.8l-2 1.8.5 2.7L6 7.1 3.5 8.3l.5-2.7L2 3.8l2.9-.4z" fill="rgba(255,255,255,.7)"/></svg>
+                  Match AI
+                </div>
+              </div>
+
+              <!-- In prenotazione -->
+              <div class="sugg-in-pren">
+                <div class="sugg-in-pren-hd">
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="5" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M1 13c0-2.5 1.8-4 4-4s4 1.5 4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M9.5 2a2.2 2.2 0 0 1 0 4.4M13 13c0-2-1.4-3.2-3.5-3.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  <span class="sugg-in-pren-title">In prenotazione</span>
+                  <span class="sugg-in-pren-count">1/4</span>
+                </div>
+                <div class="sugg-in-row">
+                  <div class="sugg-in-av" style="background:#A78BFA">LM</div>
+                  <div><div class="sugg-in-name">Lorenzo Matteo <span class="dr-player-badge badge-tess">Tesserato</span></div><div class="sugg-in-sub">lmatteo71@anytimes.it · 3291442188</div></div>
+                  <div class="sugg-in-minus">−</div>
+                </div>
+              </div>
+
+              <!-- Results -->
+              <div class="sugg-results">
+                <div class="sugg-results-hd">
+                  <span class="sugg-results-ico">💡</span>
+                  <span class="sugg-results-title">Risultati</span>
+                  <span class="sugg-results-count">159 giocatori analizzati</span>
+                </div>
+                <div class="sugg-filter-row">
+                  <div class="sugg-filter sugg-f-pm">⭐ Perfect Match</div>
+                  <div class="sugg-filter sugg-f-nc">⬡ Nuove connessioni</div>
+                  <div class="sugg-gender">
+                    <div class="sugg-gen-btn active">Tutti</div>
+                    <div class="sugg-gen-btn">M</div>
+                    <div class="sugg-gen-btn">F</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- List suggeriti -->
+              <div class="sugg-list" id="suggList">
+                <!-- card 1 -->
+                <div class="sugg-card" data-si="0">
+                  <div class="sugg-card-top">
+                    <div class="sugg-card-av" style="background:#7C3AED">MF</div>
+                    <div class="sugg-card-info">
+                      <div class="sugg-card-name">Marco Fattori <span class="dr-player-badge badge-tess">Tesserato 2026</span></div>
+                      <div class="sugg-card-sub">balbomf@anytimes.it · 3483802306</div>
+                      <div class="sugg-card-badges"><span class="badge-premium">💜 Premium</span><span class="badge-conf">confidenza dati: alta</span></div>
+                    </div>
+                    <div class="sugg-card-percent">
+                      <div class="sugg-pct-ring"><svg viewBox="0 0 36 36" width="38" height="38"><circle class="sugg-pct-track" cx="18" cy="18" r="15.9"/><circle class="sugg-pct-fill" cx="18" cy="18" r="15.9" style="--pct:71" stroke-dasharray="0 100"/></svg><div class="sugg-pct-label">71%</div></div>
+                      <div class="sugg-pct-sub">Perfect Match</div>
+                    </div>
+                  </div>
+                  <div class="sugg-card-hist">Lorenzo Matteo &nbsp;<strong>29 partite</strong>&nbsp; ultima <strong>59gg fa</strong></div>
+                  <div class="sugg-card-add">+</div>
+                </div>
+                <!-- card 2 -->
+                <div class="sugg-card" data-si="1">
+                  <div class="sugg-card-top">
+                    <div class="sugg-card-av" style="background:#059669">PF</div>
+                    <div class="sugg-card-info">
+                      <div class="sugg-card-name">Paolo Fava <span class="dr-player-badge badge-tess">Tesserato 2026</span></div>
+                      <div class="sugg-card-sub">paolofava65@anytimes.it · 3473499575</div>
+                      <div class="sugg-card-badges"><span class="badge-premium">💜 Premium</span><span class="badge-conf">confidenza dati: media</span></div>
+                    </div>
+                    <div class="sugg-card-percent">
+                      <div class="sugg-pct-ring"><svg viewBox="0 0 36 36" width="38" height="38"><circle class="sugg-pct-track" cx="18" cy="18" r="15.9"/><circle class="sugg-pct-fill" cx="18" cy="18" r="15.9" style="--pct:68" stroke-dasharray="0 100"/></svg><div class="sugg-pct-label">68%</div></div>
+                      <div class="sugg-pct-sub">Perfect Match</div>
+                    </div>
+                  </div>
+                  <div class="sugg-card-hist">Lorenzo Matteo &nbsp;<strong>9 partite</strong>&nbsp; ultima <strong>59gg fa</strong></div>
+                  <div class="sugg-card-add">+</div>
+                </div>
+                <!-- card 3 -->
+                <div class="sugg-card" data-si="2">
+                  <div class="sugg-card-top">
+                    <div class="sugg-card-av" style="background:#2563EB">AB</div>
+                    <div class="sugg-card-info">
+                      <div class="sugg-card-name">Andrea Brusini <span class="dr-player-badge badge-tess">Tesserato 2026</span></div>
+                      <div class="sugg-card-sub">brusiniandrea@anytimes.it · 3400595932</div>
+                      <div class="sugg-card-badges"><span class="badge-premium">💜 Premium</span><span class="badge-conf">confidenza dati: media</span></div>
+                    </div>
+                    <div class="sugg-card-percent">
+                      <div class="sugg-pct-ring"><svg viewBox="0 0 36 36" width="38" height="38"><circle class="sugg-pct-track" cx="18" cy="18" r="15.9"/><circle class="sugg-pct-fill" cx="18" cy="18" r="15.9" style="--pct:68" stroke-dasharray="0 100"/></svg><div class="sugg-pct-label">68%</div></div>
+                      <div class="sugg-pct-sub">Perfect Match</div>
+                    </div>
+                  </div>
+                  <div class="sugg-card-hist">Lorenzo Matteo &nbsp;<strong>9 partite</strong>&nbsp; ultima <strong>69gg fa</strong></div>
+                  <div class="sugg-card-add">+</div>
+                </div>
+                <!-- card 4 -->
+                <div class="sugg-card" data-si="3">
+                  <div class="sugg-card-top">
+                    <div class="sugg-card-av" style="background:#D97706">PM</div>
+                    <div class="sugg-card-info">
+                      <div class="sugg-card-name">Piergiovanni Mastruzzi <span class="dr-player-badge badge-tess">Tesserato 2026</span></div>
+                      <div class="sugg-card-sub">pgmastruzzi@anytimes.it · 3483834371</div>
+                      <div class="sugg-card-badges"><span class="badge-crescita">↗ In crescita</span><span class="badge-conf">confidenza dati: media</span></div>
+                    </div>
+                    <div class="sugg-card-percent">
+                      <div class="sugg-pct-ring"><svg viewBox="0 0 36 36" width="38" height="38"><circle class="sugg-pct-track" cx="18" cy="18" r="15.9"/><circle class="sugg-pct-fill" cx="18" cy="18" r="15.9" style="--pct:65" stroke-dasharray="0 100"/></svg><div class="sugg-pct-label">65%</div></div>
+                      <div class="sugg-pct-sub">Perfect Match</div>
+                    </div>
+                  </div>
+                  <div class="sugg-card-hist">Lorenzo Matteo &nbsp;<strong>5 partite</strong>&nbsp; ultima <strong>82gg fa</strong></div>
+                  <div class="sugg-card-add">+</div>
+                </div>
+              </div>
+            </div><!-- /step-sugg -->
+
+            <!-- STEP 3: Match AI -->
+            <div id="step-matchai" style="display:none;flex-direction:column;flex:1;overflow:hidden;">
+              <div class="dr-hd" style="padding-bottom:12px;">
+                <div class="dr-hd-top">
+                  <span style="font-family:var(--font-display);font-size:16px;font-weight:800;color:#0d0d0d;letter-spacing:-.3px;">Giocatori suggeriti</span>
+                  <div style="margin-left:auto;width:26px;height:26px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.35);font-size:18px;">×</div>
+                </div>
+              </div>
+
+              <!-- Tabs (Match AI active) -->
+              <div class="sugg-tabs">
+                <div class="sugg-tab" id="tab2-sugg">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.1 2.4L10 3.8l-2 1.8.5 2.7L6 7.1 3.5 8.3l.5-2.7L2 3.8l2.9-.4z" fill="currentColor"/></svg>
+                  Suggeriti
+                </div>
+                <div class="sugg-tab sugg-tab-matchai active" id="tab2-matchai">
+                  <svg width="11" height="11" viewBox="0 0 12 12" fill="none"><path d="M6 1l1.1 2.4L10 3.8l-2 1.8.5 2.7L6 7.1 3.5 8.3l.5-2.7L2 3.8l2.9-.4z" fill="rgba(255,255,255,.9)"/></svg>
+                  Match AI
+                </div>
+              </div>
+
+              <!-- In prenotazione (same) -->
+              <div class="sugg-in-pren">
+                <div class="sugg-in-pren-hd">
+                  <svg width="13" height="13" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="5" r="2.2" stroke="currentColor" stroke-width="1.3"/><path d="M1 13c0-2.5 1.8-4 4-4s4 1.5 4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M9.5 2a2.2 2.2 0 0 1 0 4.4M13 13c0-2-1.4-3.2-3.5-3.6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                  <span class="sugg-in-pren-title">In prenotazione</span>
+                  <span class="sugg-in-pren-count">1/4</span>
+                </div>
+                <div class="sugg-in-row">
+                  <div class="sugg-in-av" style="background:#A78BFA">LM</div>
+                  <div><div class="sugg-in-name">Lorenzo Matteo <span class="dr-player-badge badge-tess">Tesserato</span></div><div class="sugg-in-sub">lmatteo71@anytimes.it · 3291442188</div></div>
+                  <div class="sugg-in-minus">−</div>
+                </div>
+              </div>
+
+              <div class="sugg-results" style="padding-bottom:10px;">
+                <div class="sugg-results-hd">
+                  <span class="sugg-results-ico">💡</span>
+                  <span class="sugg-results-title">Risultati</span>
+                  <span class="sugg-results-count">159 giocatori analizzati</span>
+                </div>
+                <div class="sugg-filter-row" style="margin-bottom:0">
+                  <div class="sugg-filter sugg-f-pm">⭐ Perfect Match</div>
+                  <div class="sugg-filter sugg-f-nc">⬡ Nuove connessioni</div>
+                  <div class="sugg-gender">
+                    <div class="sugg-gen-btn active">Tutti</div>
+                    <div class="sugg-gen-btn">M</div>
+                    <div class="sugg-gen-btn">F</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Match AI group cards -->
+              <div class="matchai-list" id="matchaiList">
+                <!-- group 1 -->
+                <div class="matchai-card" data-mi="0">
+                  <div class="matchai-card-hd">
+                    <span style="font-size:10px;color:rgba(0,0,0,.4);margin-right:auto;">probabilità riuscita</span>
+                    <div class="matchai-pct">
+                      <div class="matchai-pct-ring"><svg viewBox="0 0 36 36" width="38" height="38"><circle class="matchai-pct-track" cx="18" cy="18" r="15.9"/><circle class="matchai-pct-fill" cx="18" cy="18" r="15.9" style="--mpct:76" stroke-dasharray="0 100"/></svg><div class="matchai-pct-label">76%</div></div>
+                      <div class="matchai-pct-sub">Perfetto</div>
+                    </div>
+                  </div>
+                  <div class="matchai-players">
+                    <div class="matchai-player"><div class="matchai-av" style="background:#7C3AED">PM</div><span class="matchai-pname">Pietro Morganti</span><div class="matchai-badges"><span class="badge-premium">💜 Premium</span></div></div>
+                    <div class="matchai-player"><div class="matchai-av" style="background:#0EA5E9">IP</div><span class="matchai-pname">Irene Pelizzola</span><div class="matchai-badges"><span class="badge-crescita">↗ In crescita</span></div></div>
+                    <div class="matchai-player"><div class="matchai-av" style="background:#D97706">AT</div><span class="matchai-pname">Alice Traldi</span><div class="matchai-badges"><span class="badge-premium">💜 Premium</span></div></div>
+                  </div>
+                  <div class="matchai-reasons">
+                    <div class="matchai-reason">Alcuni si conoscono già</div>
+                    <div class="matchai-reason">Tutti attivi di recente (hanno giocato negli ultimi 14 giorni)</div>
+                    <div class="matchai-reason">Tutti preferiscono questo giorno/orario</div>
+                  </div>
+                  <div class="matchai-addall"><div class="matchai-addall-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2 1.6-3.3 4-3.3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M9 8v3M7.5 9.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Aggiungi tutti</div></div>
+                </div>
+                <!-- group 2 -->
+                <div class="matchai-card" data-mi="1">
+                  <div class="matchai-card-hd">
+                    <span style="font-size:10px;color:rgba(0,0,0,.4);margin-right:auto;">probabilità riuscita</span>
+                    <div class="matchai-pct">
+                      <div class="matchai-pct-ring"><svg viewBox="0 0 36 36" width="38" height="38"><circle class="matchai-pct-track" cx="18" cy="18" r="15.9"/><circle class="matchai-pct-fill" cx="18" cy="18" r="15.9" style="--mpct:75" stroke-dasharray="0 100"/></svg><div class="matchai-pct-label">75%</div></div>
+                      <div class="matchai-pct-sub">Perfetto</div>
+                    </div>
+                  </div>
+                  <div class="matchai-players">
+                    <div class="matchai-player"><div class="matchai-av" style="background:#10B981">GL</div><span class="matchai-pname">Greta Lupi</span><div class="matchai-badges"><span class="badge-crescita">↗ In crescita</span></div></div>
+                    <div class="matchai-player"><div class="matchai-av" style="background:#0EA5E9">IP</div><span class="matchai-pname">Irene Pelizzola</span><div class="matchai-badges"><span class="badge-crescita">↗ In crescita</span></div></div>
+                    <div class="matchai-player"><div class="matchai-av" style="background:#F43F5E">JC</div><span class="matchai-pname">Jacopo Cassini</span><div class="matchai-badges"><span class="badge-premium">💜 Premium</span></div></div>
+                  </div>
+                  <div class="matchai-reasons">
+                    <div class="matchai-reason">Mix livelli equilibrato</div>
+                    <div class="matchai-reason">Nessuno si conosce → nuove connessioni</div>
+                    <div class="matchai-reason">Disponibili in questa fascia oraria</div>
+                  </div>
+                  <div class="matchai-addall"><div class="matchai-addall-btn"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 11c0-2 1.6-3.3 4-3.3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M9 8v3M7.5 9.5h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Aggiungi tutti</div></div>
+                </div>
+              </div>
+            </div><!-- /step-matchai -->
+
+          </div><!-- /drawer -->
+  </div><!-- /drawer-overlay -->
+
+</div><!-- /dash-shell -->
+</div><!-- /mock-stage -->
+
+<!-- CURSOR -->
+<div class="fake-cursor" id="cursor">
+  <svg width="22" height="26" viewBox="0 0 22 26" fill="none"><path d="M3 2L3 20L7.5 15.5L10.5 22L13 21L10 14.5L16.5 14.5L3 2Z" fill="white" stroke="#222" stroke-width="1.5" stroke-linejoin="round"/></svg>
+</div>
+
+<script>
+(function(){
+  const cursor = document.getElementById('cursor');
+  const overlay = document.getElementById('drawerOverlay');
+  const drawer = document.getElementById('drawer');
+  const stepPren = document.getElementById('step-pren');
+  const stepSugg = document.getElementById('step-sugg');
+  const stepMatchai = document.getElementById('step-matchai');
+  const suggBtn = document.getElementById('suggBtn');
+  const targetBlock = document.getElementById('target-block');
+  const urlbar = document.getElementById('urlbar');
+
+  let timers = [];
+  function clr(){ timers.forEach(clearTimeout); timers = []; }
+  function t(fn, ms){ timers.push(setTimeout(fn, ms)); }
+
+  /* ── CURSOR MOVE ── */
+  function moveCursor(x, y, duration){
+    cursor.style.transition = `left ${duration}ms cubic-bezier(.4,0,.2,1), top ${duration}ms cubic-bezier(.4,0,.2,1)`;
+    cursor.style.left = x + 'px';
+    cursor.style.top  = y + 'px';
+  }
+  function showCursor(){ cursor.style.opacity = '1'; }
+  function hideCursor(){ cursor.style.opacity = '0'; cursor.style.transition = 'opacity .3s'; }
+  function clickAnim(){ cursor.classList.add('cursor-click'); setTimeout(()=>cursor.classList.remove('cursor-click'), 300); }
+
+  /* ── DRAWER ── */
+  function showStep(step){
+    stepPren.style.display = 'none';
+    stepSugg.style.display = 'none';
+    stepMatchai.style.display = 'none';
+    step.style.display = 'flex';
+  }
+
+  function openDrawer(){
+    overlay.classList.add('dim');
+    drawer.classList.add('open');
+    targetBlock.classList.add('ag-block-target');
+    urlbar.textContent = 'app.anytimes.it/agenda/prenotazione/campo2-16:00';
+  }
+
+  function closeDrawer(){
+    overlay.classList.remove('dim');
+    drawer.classList.remove('open');
+    targetBlock.classList.remove('ag-block-target');
+    urlbar.textContent = 'app.anytimes.it/agenda';
+  }
+
+  /* ── RING ANIMATION ── */
+  function animRings(container){
+    const fills = container.querySelectorAll('.sugg-pct-fill, .matchai-pct-fill');
+    fills.forEach(f => {
+      const pct = f.style.getPropertyValue('--pct') || f.style.cssText.match(/--mpct:(\d+)/)?.[1] || 70;
+      f.style.strokeDasharray = '0 100';
+      setTimeout(()=>{ f.style.strokeDasharray = `${pct} 100`; }, 80);
+    });
+  }
+
+  /* ── SUGG CARDS ANIMATION ── */
+  function animSuggCards(){
+    const cards = document.querySelectorAll('#suggList .sugg-card');
+    cards.forEach(c => { c.style.transition = 'none'; c.classList.remove('show'); });
+    void document.getElementById('suggList').offsetWidth;
+    cards.forEach(c => c.style.transition = '');
+    cards.forEach((c,i) => { t(()=>c.classList.add('show'), 200 + i*180); });
+    t(()=>animRings(document.getElementById('suggList')), 300);
+  }
+
+  function animMatchaiCards(){
+    const cards = document.querySelectorAll('#matchaiList .matchai-card');
+    cards.forEach(c => { c.style.transition = 'none'; c.classList.remove('show'); });
+    void document.getElementById('matchaiList').offsetWidth;
+    cards.forEach(c => c.style.transition = '');
+    cards.forEach((c,i) => { t(()=>c.classList.add('show'), 150 + i*250); });
+    t(()=>animRings(document.getElementById('matchaiList')), 250);
+  }
+
+  /* ── GET ELEMENT CENTER on page ── */
+  function getCenter(el){
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width/2 - 4, y: r.top + r.height/2 - 6 };
+  }
+  function getPos(el, offX, offY){
+    const r = el.getBoundingClientRect();
+    return { x: r.left + (offX||0), y: r.top + (offY||0) };
+  }
+
+  /* ── MAIN CYCLE ── */
+  function run(){
+    clr();
+
+    // Reset all state
+    closeDrawer();
+    showStep(stepPren);
+    hideCursor();
+    suggBtn.classList.add('dr-sugg-btn-pulse');
+
+    // --- Phase 0: cursor appears, moves to target block, waits ---
+    t(()=>{
+      const pos = getCenter(targetBlock);
+      cursor.style.left = (pos.x - 120) + 'px';
+      cursor.style.top  = (pos.y + 60) + 'px';
+      showCursor();
+    }, 800);
+
+    // Move to block
+    t(()=>{
+      const pos = getCenter(targetBlock);
+      moveCursor(pos.x, pos.y, 900);
+    }, 1200);
+
+    // Click block → open drawer
+    t(()=>{
+      clickAnim();
+      openDrawer();
+    }, 2200);
+
+    // --- Phase 1: Prenotazione drawer open, cursor moves to Suggerimenti btn ---
+    t(()=>{
+      const pos = getCenter(suggBtn);
+      moveCursor(pos.x - 80, pos.y + 40, 700);
+    }, 2900);
+
+    t(()=>{
+      const pos = getCenter(suggBtn);
+      moveCursor(pos.x, pos.y, 700);
+    }, 3700);
+
+    // Click Suggerimenti
+    t(()=>{
+      clickAnim();
+      suggBtn.classList.remove('dr-sugg-btn-pulse');
+      showStep(stepSugg);
+      urlbar.textContent = 'app.anytimes.it/agenda/prenotazione/campo2-16:00/suggeriti';
+    }, 4500);
+
+    t(()=> animSuggCards(), 4600);
+
+    // Hide cursor while user "reads"
+    t(()=> hideCursor(), 5200);
+
+    // --- Phase 2: Suggeriti → hold 4s ---
+    // cursor reappears and clicks Match AI tab
+    t(()=>{
+      const tab = document.getElementById('tab-matchai');
+      const pos = getCenter(tab);
+      cursor.style.left = (pos.x - 60) + 'px';
+      cursor.style.top  = (pos.y + 50) + 'px';
+      showCursor();
+    }, 9200);
+
+    t(()=>{
+      const tab = document.getElementById('tab-matchai');
+      const pos = getCenter(tab);
+      moveCursor(pos.x, pos.y, 600);
+    }, 9700);
+
+    t(()=>{
+      clickAnim();
+      showStep(stepMatchai);
+      urlbar.textContent = 'app.anytimes.it/agenda/prenotazione/campo2-16:00/match-ai';
+    }, 10400);
+
+    t(()=> animMatchaiCards(), 10500);
+
+    t(()=> hideCursor(), 11200);
+
+    // --- Phase 3: Match AI → hold 5s → close → restart ---
+    t(()=>{
+      // cursor reappears near close × button to signal end
+      const pos = getCenter(drawer);
+      cursor.style.left = (pos.x + 290) + 'px';
+      cursor.style.top  = (pos.y - 200) + 'px';
+      showCursor();
+    }, 15800);
+
+    t(()=>{
+      moveCursor(
+        parseFloat(cursor.style.left) + 20,
+        parseFloat(cursor.style.top) + 10,
+        400
+      );
+    }, 16200);
+
+    t(()=>{
+      clickAnim();
+      closeDrawer();
+      hideCursor();
+      suggBtn.classList.add('dr-sugg-btn-pulse');
+    }, 16700);
+
+    // Loop
+    t(()=> run(), 18500);
+  }
+
+  // Kickoff after a small delay
+  t(()=> run(), 500);
+})();
+</script>
+</body>
+</html>
