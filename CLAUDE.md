@@ -138,6 +138,35 @@ La finestra stile macOS nell'hero usa:
 
 ---
 
+## Mock UI (screen recording)
+
+Cartella `mock/` — pagine standalone per la registrazione video dei singoli moduli dell'app. Ogni mock:
+- È **completamente self-contained** (CSS + JS inline, zero dipendenze locali tranne le font Google)
+- Path asset: percorso relativo da `mock/<nome>/` → `../../assets/`
+- Ha `<meta name="viewport" content="width=1440">` — aprire il browser a **1440 × 900** per recording MacBook ideale
+- Sfondo: `#08080C` con glow radiale brand, griglia di punti sottile
+- Le animazioni girano in loop automatico, non serve input utente
+
+```
+mock/
+  agenda/
+    index.html    Dashboard + agenda multi-campo (animazione blocchi prenotazione + contatori)
+```
+
+### Come aggiungere un nuovo mock
+1. Crea `mock/<nome>/index.html`
+2. Estrai HTML + CSS + JS dal componente corrispondente nel sito
+3. Adatta i path asset (`../../assets/...`)
+4. Mantieni `<meta name="viewport" content="width=1440">`
+5. Scrivi qui sotto il mock nella lista
+
+### Mock pianificati
+- [ ] `mock/app-mobile/` — schermata app mobile (iOS style)
+- [ ] `mock/tornei/` — vista gestione torneo a tabellone
+- [ ] `mock/stats/` — dashboard analytics / report
+
+---
+
 ## Todo / Next steps
 
 - [ ] Sostituire i `href="#"` delle card club con URL reali (webapp + App Store + Play Store)
