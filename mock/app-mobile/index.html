@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Anytimes — App Mobile Mock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --brand:#F7583F;
+  --font-display:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --slot-free:#2EC47A;
+  --slot-taken:#5BC4F0;
+  --slot-closed:#3A3A3A;
+}
+
+html,body{
+  width:100%;height:100vh;
+  background:#08080C;
+  font-family:var(--font-body);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 900px 600px at 50% 50%,rgba(247,88,63,0.05) 0%,transparent 70%);pointer-events:none;}
+body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;}
+
+/* ── PHONE FRAME ── */
+.phone{
+  position:relative;
+  width:390px;
+  height:844px;
+  background:#fff;
+  border-radius:54px;
+  box-shadow:
+    0 0 0 10px #1a1a1a,
+    0 0 0 12px #2a2a2a,
+    0 80px 160px rgba(0,0,0,.9),
+    0 20px 60px rgba(0,0,0,.5);
+  overflow:hidden;
+  flex-shrink:0;
+}
+
+/* Dynamic island */
+.dynamic-island{
+  position:absolute;top:14px;left:50%;transform:translateX(-50%);
+  width:120px;height:36px;
+  background:#000;border-radius:20px;
+  z-index:200;
+}
+
+/* Screen container — clipped inside phone */
+.phone-screen{
+  position:absolute;inset:0;
+  border-radius:54px;
+  overflow:hidden;
+  background:#f5f4f0;
+}
+
+/* ── SCREEN MANAGER ── */
+.screen{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  background:#f5f4f0;
+  transition:transform .4s cubic-bezier(.16,1,.3,1),opacity .4s;
+  will-change:transform;
+}
+.screen.off-right{transform:translateX(100%);opacity:0;pointer-events:none;}
+.screen.off-left{transform:translateX(-100%);opacity:0;pointer-events:none;}
+.screen.active{transform:translateX(0);opacity:1;}
+
+/* ── STATUS BAR ── */
+.status-bar{
+  height:58px;flex-shrink:0;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 28px 10px;
+  font-size:12px;font-weight:600;color:#0d0d0d;
+}
+.status-time{font-size:16px;font-weight:700;letter-spacing:-.5px;}
+.status-icons{display:flex;align-items:center;gap:6px;}
+
+/* ── APP TOPBAR ── */
+.app-topbar{
+  height:52px;flex-shrink:0;
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  display:flex;align-items:center;
+  padding:0 18px;gap:10px;
+}
+.app-logo{
+  display:flex;align-items:center;gap:7px;
+  flex-shrink:0;
+  text-decoration:none;
+}
+.app-logo img{height:26px;width:auto;}
+.app-logo-text{font-family:var(--font-display);font-size:16px;font-weight:700;color:#0d0d0d;letter-spacing:-.3px;}
+.app-logo-text span{color:var(--brand);}
+.app-topbar-nav{display:flex;align-items:center;gap:14px;margin-left:auto;}
+.app-topbar-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;color:rgba(0,0,0,.35);}
+.app-topbar-icon.active{background:rgba(247,88,63,.08);color:var(--brand);}
+
+/* ── DATE STRIP ── */
+.date-strip{
+  background:#fff;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  padding:10px 16px 0;
+  flex-shrink:0;
+}
+.date-scroll{display:flex;gap:8px;overflow:hidden;padding-bottom:10px;}
+.date-chip{
+  display:flex;flex-direction:column;align-items:center;
+  min-width:52px;padding:8px 6px;
+  border-radius:14px;
+  gap:3px;
+}
+.date-chip.today{background:var(--brand);}
+.date-dow{font-size:10px;font-weight:500;color:rgba(0,0,0,.4);line-height:1;}
+.date-chip.today .date-dow{color:rgba(255,255,255,.75);}
+.date-num{font-size:20px;font-weight:800;font-family:var(--font-display);color:#0d0d0d;letter-spacing:-.5px;line-height:1;}
+.date-chip.today .date-num{color:#fff;}
+.date-month{font-size:9px;font-weight:500;color:rgba(0,0,0,.35);line-height:1;}
+.date-chip.today .date-month{color:rgba(255,255,255,.7);}
+.date-dot{width:5px;height:5px;border-radius:50%;background:rgba(0,0,0,.15);margin-top:1px;}
+.date-chip.today .date-dot{background:rgba(255,255,255,.5);}
+
+/* ── COURTS COLUMNS ── */
+.courts-area{
+  flex:1;
+  display:flex;
+  overflow-y:auto;
+  scrollbar-width:none;
+}
+.courts-area::-webkit-scrollbar{display:none;}
+.court-col{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  background:#f0efea;
+}
+.court-col-hd{
+  position:sticky;top:0;z-index:2;
+  background:#fff;
+  padding:9px 10px 8px;
+}
+.court-col-hd-name{font-size:11px;font-weight:700;color:#0d0d0d;letter-spacing:.1px;text-align:center;}
+.court-col-hd-sub{font-size:9px;color:rgba(0,0,0,.38);margin-top:2px;display:flex;align-items:center;justify-content:center;gap:3px;}
+
+.slots-inner{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  padding:5px 3px 16px;
+}
+
+.slot{
+  height:72px;
+  flex-shrink:0;
+  border-radius:12px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:3px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:opacity .1s;
+}
+.slot-free{background:var(--slot-free);}
+.slot-taken{background:var(--slot-taken);}
+.slot-closed{background:var(--slot-closed);height:56px;}
+.slot-time{font-size:12px;font-weight:700;line-height:1.3;text-align:center;}
+.slot-free .slot-time{color:rgba(0,0,0,.75);}
+.slot-taken .slot-time{color:rgba(0,0,0,.6);font-size:11px;}
+.slot-closed .slot-time{color:rgba(255,255,255,.3);font-size:10px;}
+.slot-closed-lbl{font-size:9px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:rgba(255,255,255,.25);}
+
+/* TARGET SLOT — the one the finger taps */
+.slot-target{
+  transition:box-shadow .3s;
+}
+.slot-target.highlight{
+  box-shadow:inset 0 0 0 3px rgba(247,88,63,.7);
+}
+
+/* ── BOTTOM NAVBAR ── */
+.bottom-nav{
+  height:82px;flex-shrink:0;
+  background:#fff;
+  border-top:1px solid rgba(0,0,0,.07);
+  display:flex;align-items:flex-start;justify-content:space-around;
+  padding-top:12px;
+}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:52px;}
+.bnav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.3);}
+.bnav-item.active .bnav-icon{color:var(--brand);}
+.bnav-lbl{font-size:9px;font-weight:600;color:rgba(0,0,0,.3);letter-spacing:.2px;}
+.bnav-item.active .bnav-lbl{color:var(--brand);}
+.bnav-dot{width:4px;height:4px;border-radius:50%;background:var(--brand);margin-top:-2px;}
+
+/* ── SCREEN 2: DRAWER BOOKING (bottom sheet overlay) ── */
+#screen-booking{
+  background:rgba(0,0,0,0);
+  transition:background .35s ease;
+  pointer-events:none;
+}
+#screen-booking.active{
+  background:rgba(0,0,0,0.45);
+  pointer-events:all;
+}
+#screen-booking.off-right,#screen-booking.off-left{
+  transform:none !important;
+  background:rgba(0,0,0,0);
+  pointer-events:none;
+}
+.booking-sheet{
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:87%;
+  background:#f5f4f0;
+  border-radius:24px 24px 0 0;
+  display:flex;
+  flex-direction:column;
+  transform:translateY(100%);
+  transition:transform .42s cubic-bezier(.16,1,.3,1);
+  overflow:hidden;
+}
+#screen-booking.active .booking-sheet{transform:translateY(0);}
+.sheet-handle{width:36px;height:4px;border-radius:2px;background:rgba(0,0,0,.18);margin:10px auto 0;flex-shrink:0;}
+.booking-info-header{padding:14px 18px 0;flex-shrink:0;}
+.booking-info-line{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:2px 0;}
+.booking-info-lbl{color:rgba(0,0,0,.4);font-weight:500;}
+.booking-info-val{color:#0d0d0d;font-weight:700;}
+.booking-info-sep{height:1px;background:rgba(0,0,0,.08);margin:12px 0 0;}
+
+.booking-scroll{flex:1;overflow-y:auto;padding:14px 18px 20px;display:flex;flex-direction:column;gap:12px;scrollbar-width:none;}
+.booking-scroll::-webkit-scrollbar{display:none;}
+
+.booking-section{background:#fff;border-radius:16px;padding:14px 16px;}
+.booking-section-title{font-size:13px;font-weight:700;color:#0d0d0d;margin-bottom:10px;}
+
+/* Tipologia toggle */
+.tipo-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.tipo-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:14px 8px;border-radius:12px;border:1.5px solid rgba(0,0,0,.1);
+  font-size:11px;font-weight:600;color:rgba(0,0,0,.5);cursor:pointer;
+}
+.tipo-btn.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+
+/* Durata */
+.durata-row{display:flex;gap:8px;}
+.durata-btn{
+  padding:9px 20px;border-radius:10px;
+  border:1.5px solid rgba(0,0,0,.1);
+  font-size:13px;font-weight:600;color:rgba(0,0,0,.5);cursor:pointer;
+}
+.durata-btn.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+
+/* Costi */
+.costo-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0;}
+.costo-lbl{font-size:13px;color:rgba(0,0,0,.55);}
+.costo-sep{height:1px;background:rgba(0,0,0,.08);margin:6px 0;}
+.costo-val{font-size:15px;font-weight:800;font-family:var(--font-display);color:#0d0d0d;}
+
+/* Partecipanti */
+.partecipanti-row{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.part-av{display:flex;flex-direction:column;align-items:center;gap:5px;}
+.part-av-circle{
+  width:52px;height:52px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;font-weight:700;color:#fff;
+  background:var(--brand);
+  overflow:hidden;
+}
+.part-av-circle.ospite{
+  background:transparent;
+  border:1.5px dashed rgba(0,0,0,.2);
+  color:rgba(0,0,0,.25);
+}
+.part-av-lbl{font-size:10px;color:rgba(0,0,0,.45);font-weight:500;text-align:center;max-width:58px;}
+.aggiungi-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:13px;border-radius:12px;
+  border:1.5px solid rgba(247,88,63,.3);
+  font-size:13px;font-weight:700;color:var(--brand);
+  margin-top:4px;letter-spacing:.2px;
+}
+
+/* Pagamento */
+.pag-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.pag-btn{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+  padding:14px 8px;border-radius:12px;border:1.5px solid rgba(0,0,0,.1);
+  font-size:11px;font-weight:600;color:rgba(0,0,0,.5);cursor:pointer;
+}
+.pag-btn.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+
+/* CTA PRENOTA */
+.booking-cta{
+  flex-shrink:0;
+  padding:0 18px 20px;
+}
+.cta-btn{
+  width:100%;height:56px;border-radius:16px;
+  background:var(--brand);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-size:15px;font-weight:700;color:#fff;letter-spacing:.3px;
+  cursor:pointer;
+  box-shadow:0 8px 24px rgba(247,88,63,.35);
+  transition:transform .1s,box-shadow .1s;
+}
+.cta-btn:active{transform:scale(.97);box-shadow:0 4px 12px rgba(247,88,63,.25);}
+
+/* ── SCREEN 3: CONFERMA ── */
+#screen-conferma{background:#f5f4f0;}
+.conferma-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px 24px 0;gap:0;}
+.conferma-check{
+  width:80px;height:80px;border-radius:50%;background:var(--slot-free);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:22px;
+  box-shadow:0 12px 32px rgba(46,196,122,.35);
+  opacity:0;transform:scale(.5);
+  transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1);
+}
+.conferma-check.show{opacity:1;transform:scale(1);}
+.conferma-title{font-family:var(--font-display);font-size:24px;font-weight:800;color:#0d0d0d;letter-spacing:-.5px;text-align:center;margin-bottom:24px;opacity:0;transform:translateY(10px);transition:opacity .4s .15s,transform .4s .15s;}
+.conferma-title.show{opacity:1;transform:none;}
+
+
+/* Riepilogo card */
+.conferma-card{
+  width:100%;background:#fff;border-radius:20px;padding:18px 18px;
+  display:flex;flex-direction:column;gap:10px;
+  opacity:0;transform:translateY(14px);transition:opacity .4s .35s,transform .4s .35s;
+}
+.conferma-card.show{opacity:1;transform:none;}
+.conf-row{display:flex;align-items:center;justify-content:space-between;font-size:13px;}
+.conf-lbl{color:rgba(0,0,0,.4);font-weight:500;}
+.conf-val{color:#0d0d0d;font-weight:700;}
+.conf-sep{height:1px;background:rgba(0,0,0,.07);}
+
+
+
+/* ── FINGER CURSOR ── */
+.finger{
+  position:fixed;
+  z-index:9999;
+  pointer-events:none;
+  opacity:0;
+  transition:left .7s cubic-bezier(.4,0,.2,1),top .7s cubic-bezier(.4,0,.2,1),opacity .3s;
+  font-size:28px;
+  filter:drop-shadow(0 3px 6px rgba(0,0,0,.4));
+  transform-origin:30% 90%;
+  line-height:1;
+}
+.finger.tap{animation:fingerTap .3s ease forwards;}
+@keyframes fingerTap{0%{transform:scale(1)}40%{transform:scale(.82)}100%{transform:scale(1)}}
+
+/* ripple on tap */
+.ripple{
+  position:absolute;
+  border-radius:50%;
+  background:rgba(255,255,255,.5);
+  width:40px;height:40px;
+  margin-left:-20px;margin-top:-20px;
+  transform:scale(0);
+  opacity:1;
+  pointer-events:none;
+  animation:rippleAnim .5s ease forwards;
+}
+@keyframes rippleAnim{to{transform:scale(3);opacity:0;}}
+</style>
+</head>
+<body>
+
+<!-- PHONE -->
+<div class="phone" id="phone">
+  <div class="dynamic-island"></div>
+
+  <div class="phone-screen">
+
+    <!-- ══ SCREEN 1: AGENDA ══ -->
+    <div class="screen active" id="screen-agenda">
+
+      <!-- Status bar -->
+      <div class="status-bar">
+        <span class="status-time">09:41</span>
+        <div class="status-icons">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0" y="3" width="3" height="9" rx="1" fill="currentColor" opacity=".3"/><rect x="4.5" y="2" width="3" height="10" rx="1" fill="currentColor" opacity=".5"/><rect x="9" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".75"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" fill="currentColor"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 2.5C9.8 2.5 11.4 3.2 12.6 4.4L14 3C12.4 1.4 10.3.5 8 .5S3.6 1.4 2 3L3.4 4.4C4.6 3.2 6.2 2.5 8 2.5z" fill="currentColor"/><path d="M8 5.5c1 0 1.9.4 2.6 1L12 5.1C10.9 4 9.5 3.4 8 3.4s-2.9.6-4 1.7L5.4 6.5C6.1 5.9 7 5.5 8 5.5z" fill="currentColor"/><circle cx="8" cy="9.5" r="1.5" fill="currentColor"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity=".35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z" fill="currentColor" opacity=".4"/></svg>
+        </div>
+      </div>
+
+      <!-- App topbar -->
+      <div class="app-topbar">
+        <div class="app-logo"><img src="../../assets/logo.png" alt="Anytimes"><div class="app-logo-text">any<span>times</span></div></div>
+        <div class="app-topbar-nav">
+          <div class="app-topbar-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M17 17l-4-4m0 0a6 6 0 1 0-8.485-8.485A6 6 0 0 0 13 13z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+          <div class="app-topbar-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7 11s3-1 6 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="7" cy="8" r="1.2" fill="currentColor"/><circle cx="13" cy="8" r="1.2" fill="currentColor"/><path d="M10 2a8 8 0 1 1 0 16A8 8 0 0 1 10 2z" stroke="currentColor" stroke-width="1.5"/></svg>
+          </div>
+          <div class="app-topbar-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 6h12M4 10h12M4 14h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date strip -->
+      <div class="date-strip">
+        <div class="date-scroll">
+          <div class="date-chip"><div class="date-dow">Mer</div><div class="date-num">15</div><div class="date-month">apr</div><div class="date-dot"></div></div>
+          <div class="date-chip today"><div class="date-dow">Gio</div><div class="date-num">16</div><div class="date-month">apr</div><div class="date-dot"></div></div>
+          <div class="date-chip"><div class="date-dow">Ven</div><div class="date-num">17</div><div class="date-month">apr</div><div class="date-dot"></div></div>
+          <div class="date-chip"><div class="date-dow">Sab</div><div class="date-num">18</div><div class="date-month">apr</div><div class="date-dot"></div></div>
+          <div class="date-chip"><div class="date-dow">Dom</div><div class="date-num">19</div><div class="date-month">apr</div><div class="date-dot"></div></div>
+          <div class="date-chip"><div class="date-dow">Lun</div><div class="date-num">20</div><div class="date-month">apr</div><div class="date-dot"></div></div>
+        </div>
+      </div>
+
+      <!-- Courts columns -->
+      <div class="courts-area">
+
+        <!-- CAMPO 1 -->
+        <div class="court-col">
+          <div class="court-col-hd">
+            <div class="court-col-hd-name">CAMPO 1 WPT</div>
+            <div class="court-col-hd-sub">
+              <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M5 1a3 3 0 0 1 3 3c0 2.5-3 6-3 6S2 6.5 2 4a3 3 0 0 1 3-3z" stroke="currentColor" stroke-width="1.2"/></svg>
+              PADEL · INDOOR
+            </div>
+          </div>
+          <div class="slots-inner">
+            <div class="slot slot-free"><div class="slot-time">09:00 – 10:30</div></div>
+            <div class="slot slot-free slot-target" id="tapTarget"><div class="slot-time">10:30 – 12:00</div></div>
+            <div class="slot slot-free"><div class="slot-time">12:00 – 13:30</div></div>
+            <div class="slot slot-free"><div class="slot-time">13:30 – 15:00</div></div>
+            <div class="slot slot-free"><div class="slot-time">15:00 – 16:30</div></div>
+            <div class="slot slot-free"><div class="slot-time">17:00 – 18:30</div></div>
+            <div class="slot slot-free"><div class="slot-time">18:30 – 20:00</div></div>
+          </div>
+        </div>
+
+        <!-- CAMPO 2 -->
+        <div class="court-col">
+          <div class="court-col-hd">
+            <div class="court-col-hd-name">CAMPO 2</div>
+            <div class="court-col-hd-sub">
+              <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><path d="M5 1a3 3 0 0 1 3 3c0 2.5-3 6-3 6S2 6.5 2 4a3 3 0 0 1 3-3z" stroke="currentColor" stroke-width="1.2"/></svg>
+              PADEL · INDOOR
+            </div>
+          </div>
+          <div class="slots-inner">
+            <div class="slot slot-closed"><div class="slot-closed-lbl">Campo chiuso</div></div>
+            <div class="slot slot-free"><div class="slot-time">09:30 – 11:00</div></div>
+            <div class="slot slot-free"><div class="slot-time">11:00 – 12:30</div></div>
+            <div class="slot slot-free"><div class="slot-time">12:30 – 14:00</div></div>
+            <div class="slot slot-free"><div class="slot-time">14:00 – 15:30</div></div>
+            <div class="slot slot-free"><div class="slot-time">15:30 – 17:00</div></div>
+            <div class="slot slot-free"><div class="slot-time">17:30 – 19:00</div></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom nav -->
+      <div class="bottom-nav">
+        <div class="bnav-item active">
+          <div class="bnav-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><rect x="2" y="3" width="18" height="17" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M2 8h18" stroke="currentColor" stroke-width="1.6"/><path d="M7 2v3M15 2v3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <div class="bnav-lbl">Agenda</div>
+          <div class="bnav-dot"></div>
+        </div>
+        <div class="bnav-item">
+          <div class="bnav-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="8" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M2 20c0-3.8 2.7-6 6-6s6 2.2 6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path d="M14.5 3a4 4 0 0 1 0 8M20 20c0-3.3-2-5.3-5.5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <div class="bnav-lbl">Amici</div>
+        </div>
+        <div class="bnav-item">
+          <div class="bnav-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2a7 7 0 0 1 7 7c0 5-7 13-7 13S4 14 4 9a7 7 0 0 1 7-7z" stroke="currentColor" stroke-width="1.6"/><circle cx="11" cy="9" r="2.5" stroke="currentColor" stroke-width="1.5"/></svg></div>
+          <div class="bnav-lbl">Club</div>
+        </div>
+        <div class="bnav-item">
+          <div class="bnav-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 2l1.8 4.9L18 7.6l-3.7 3.6.9 5.1L11 14l-4.2 2.3.9-5.1L4 7.6l5.2-.7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
+          <div class="bnav-lbl">Tornei</div>
+        </div>
+        <div class="bnav-item">
+          <div class="bnav-icon"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M3 20c0-4.4 3.6-7 8-7s8 2.6 8 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+          <div class="bnav-lbl">Profilo</div>
+        </div>
+      </div>
+    </div><!-- /screen-agenda -->
+
+
+    <!-- ══ SCREEN 2: PRENOTA DRAWER ══ -->
+    <div class="screen off-right" id="screen-booking">
+      <div class="booking-sheet">
+
+        <div class="sheet-handle"></div>
+
+        <!-- Riepilogo slot selezionato -->
+        <div class="booking-info-header">
+          <div class="booking-info-line"><span class="booking-info-lbl">Campo</span><span class="booking-info-val">CAMPO 1 WPT</span></div>
+          <div class="booking-info-line"><span class="booking-info-lbl">Data</span><span class="booking-info-val">giovedì 16/04/2026</span></div>
+          <div class="booking-info-line"><span class="booking-info-lbl">Ora</span><span class="booking-info-val">10:30 – 12:00</span></div>
+          <div class="booking-info-sep"></div>
+        </div>
+
+        <div class="booking-scroll">
+
+          <!-- Tipologia -->
+          <div class="booking-section">
+            <div class="booking-section-title">Tipologia</div>
+            <div class="tipo-row">
+              <div class="tipo-btn active">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M1 18c0-3.5 2.7-5.5 6-5.5s6 2 6 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14 6a3 3 0 0 1 0 6M18 18c0-2.8-1.8-4.5-4.5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Prenotazione
+              </div>
+              <div class="tipo-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="7" cy="7" r="3.5" stroke="currentColor" stroke-width="1.5"/><path d="M1 18c0-3.5 2.7-5.5 6-5.5s6 2 6 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="14" cy="7" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M14 4v6M11 7h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+                Partita Aperta
+              </div>
+            </div>
+          </div>
+
+          <!-- Modalità / Durata -->
+          <div class="booking-section">
+            <div class="booking-section-title">Modalità</div>
+            <div style="font-size:12px;color:rgba(0,0,0,.45);margin-bottom:8px;">Durata</div>
+            <div class="durata-row">
+              <div class="durata-btn">60 min</div>
+              <div class="durata-btn active">90 min</div>
+            </div>
+          </div>
+
+          <!-- Costi -->
+          <div class="booking-section">
+            <div class="booking-section-title">Riepilogo dei costi</div>
+            <div class="costo-sep"></div>
+            <div class="costo-row"><span class="costo-lbl">La tua parte</span><span class="costo-val">10,00€</span></div>
+          </div>
+
+          <!-- Partecipanti -->
+          <div class="booking-section">
+            <div class="booking-section-title">Partecipanti</div>
+            <div class="partecipanti-row">
+              <div class="part-av">
+                <div class="part-av-circle">NR</div>
+                <div class="part-av-lbl">Nicola Ramazzotti</div>
+              </div>
+              <div class="part-av">
+                <div class="part-av-circle ospite"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M3 20c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+                <div class="part-av-lbl">Ospite</div>
+              </div>
+              <div class="part-av">
+                <div class="part-av-circle ospite"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M3 20c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+                <div class="part-av-lbl">Ospite</div>
+              </div>
+              <div class="part-av">
+                <div class="part-av-circle ospite"><svg width="22" height="22" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="8" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M3 20c0-4 3.5-6.5 8-6.5s8 2.5 8 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+                <div class="part-av-lbl">Ospite</div>
+              </div>
+            </div>
+            <div class="aggiungi-btn" style="margin-top:14px;">AGGIUNGI UN AMICO</div>
+          </div>
+
+          <!-- Pagamento -->
+          <div class="booking-section">
+            <div class="booking-section-title">Pagamento</div>
+            <div class="pag-row">
+              <div class="pag-btn active">
+                <svg width="20" height="16" viewBox="0 0 20 16" fill="none"><rect x="1" y="1.5" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M1 5.5h18" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="8.5" width="5" height="2" rx="1" fill="currentColor"/></svg>
+                In struttura
+              </div>
+              <div class="pag-btn">
+                <svg width="20" height="16" viewBox="0 0 20 16" fill="none"><rect x="1" y="1.5" width="18" height="13" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M10 5v6M7.5 7.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Crediti
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /booking-scroll -->
+
+        <div class="booking-cta">
+          <div class="cta-btn" id="ctaPrenota">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 2l1.4 3.7L14 6l-2.9 2.8.7 3.9L9 11 5.2 12.7l.7-3.9L3 6l3.6-.3z" fill="rgba(255,255,255,.9)"/></svg>
+            PRENOTA
+          </div>
+        </div>
+
+      </div><!-- /booking-sheet -->
+    </div><!-- /screen-booking -->
+
+
+    <!-- ══ SCREEN 3: CONFERMA ══ -->
+    <div class="screen off-right" id="screen-conferma">
+
+      <div class="status-bar">
+        <span class="status-time">09:41</span>
+        <div class="status-icons">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0" y="3" width="3" height="9" rx="1" fill="currentColor" opacity=".3"/><rect x="4.5" y="2" width="3" height="10" rx="1" fill="currentColor" opacity=".5"/><rect x="9" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".75"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" fill="currentColor"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 2.5C9.8 2.5 11.4 3.2 12.6 4.4L14 3C12.4 1.4 10.3.5 8 .5S3.6 1.4 2 3L3.4 4.4C4.6 3.2 6.2 2.5 8 2.5z" fill="currentColor"/><path d="M8 5.5c1 0 1.9.4 2.6 1L12 5.1C10.9 4 9.5 3.4 8 3.4s-2.9.6-4 1.7L5.4 6.5C6.1 5.9 7 5.5 8 5.5z" fill="currentColor"/><circle cx="8" cy="9.5" r="1.5" fill="currentColor"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity=".35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z" fill="currentColor" opacity=".4"/></svg>
+        </div>
+      </div>
+
+      <div class="conferma-body">
+        <div class="conferma-check" id="confCheck">
+          <svg width="38" height="38" viewBox="0 0 38 38" fill="none"><path d="M9 19l7 7 13-14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="conferma-title" id="confTitle">Prenotazione confermata!</div>
+
+        <div class="conferma-card" id="confCard">
+          <div class="conf-row"><span class="conf-lbl">Campo</span><span class="conf-val">CAMPO 1 WPT</span></div>
+          <div class="conf-sep"></div>
+          <div class="conf-row"><span class="conf-lbl">Data</span><span class="conf-val">gio 16/04/2026</span></div>
+          <div class="conf-sep"></div>
+          <div class="conf-row"><span class="conf-lbl">Orario</span><span class="conf-val">10:30 – 12:00</span></div>
+          <div class="conf-sep"></div>
+          <div class="conf-row"><span class="conf-lbl">Importo</span><span class="conf-val">10,00€</span></div>
+        </div>
+
+      </div>
+    </div><!-- /screen-conferma -->
+
+  </div><!-- /phone-screen -->
+</div><!-- /phone -->
+
+<!-- FINGER CURSOR -->
+<div class="finger" id="finger">👆</div>
+
+<script>
+(function(){
+  const phone     = document.getElementById('phone');
+  const finger    = document.getElementById('finger');
+  const tapTarget = document.getElementById('tapTarget');
+  const ctaPrenota= document.getElementById('ctaPrenota');
+
+  const s1 = document.getElementById('screen-agenda');
+  const s2 = document.getElementById('screen-booking');
+  const s3 = document.getElementById('screen-conferma');
+
+  // conf elements
+  const confCheck  = document.getElementById('confCheck');
+  const confTitle  = document.getElementById('confTitle');
+  const confCard   = document.getElementById('confCard');
+
+
+  let timers = [];
+  function clr(){ timers.forEach(clearTimeout); timers = []; }
+  function t(fn, ms){ timers.push(setTimeout(fn, ms)); }
+
+  /* ── SCREEN TRANSITIONS ── */
+  function goTo(from, to){
+    if(to === s2){
+      // overlay drawer: s1 rimane visibile, s2 overlay sale dal basso
+      to.classList.remove('off-right','off-left');
+      to.classList.add('active');
+    } else {
+      from.classList.remove('active');
+      from.classList.add('off-left');
+      to.classList.remove('off-right','off-left');
+      to.classList.add('active');
+    }
+  }
+  function goBack(from, to){
+    from.classList.remove('active');
+    from.classList.add('off-right');
+    to.classList.remove('off-left','off-right');
+    to.classList.add('active');
+  }
+
+  /* ── FINGER POSITION ── */
+  function setFinger(x, y){
+    finger.style.left = x + 'px';
+    finger.style.top  = y + 'px';
+  }
+  function moveFinger(x, y, dur){
+    finger.style.transition = `left ${dur}ms cubic-bezier(.4,0,.2,1), top ${dur}ms cubic-bezier(.4,0,.2,1), opacity .3s`;
+    finger.style.left = x + 'px';
+    finger.style.top  = y + 'px';
+  }
+  function showFinger(){ finger.style.opacity = '1'; }
+  function hideFinger(){ finger.style.transition = 'opacity .3s'; finger.style.opacity = '0'; }
+
+  function tapAnim(){
+    finger.classList.add('tap');
+    setTimeout(()=>finger.classList.remove('tap'), 350);
+  }
+
+  function spawnRipple(el){
+    const r = document.createElement('div');
+    r.className = 'ripple';
+    const rect = el.getBoundingClientRect();
+    r.style.left = (rect.width/2) + 'px';
+    r.style.top  = (rect.height/2) + 'px';
+    el.style.position = 'relative';
+    el.appendChild(r);
+    setTimeout(()=>r.remove(), 600);
+  }
+
+  /* get center of element in page coords */
+  function center(el){
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width/2 - 14, y: r.top + r.height/2 - 28 };
+  }
+
+  /* ── RESET CONF SCREEN ── */
+  function resetConf(){
+    [confCheck,confTitle,confCard].forEach(el=>{
+      el.style.transition='none';
+      el.classList.remove('show');
+    });
+    void confCheck.offsetWidth;
+    [confCheck,confTitle,confCard].forEach(el=>el.style.transition='');
+  }
+
+  /* ── MAIN LOOP ── */
+  function run(){
+    clr();
+    hideFinger();
+    tapTarget.classList.remove('highlight');
+
+    // Reset all screens
+    s1.className='screen active';
+    s2.className='screen off-right';
+    s3.className='screen off-right';
+    resetConf();
+
+    // Phase 1: wait a beat, then show finger near slot
+    t(()=>{
+      const pos = center(tapTarget);
+      setFinger(pos.x + 30, pos.y + 60);
+      showFinger();
+    }, 1200);
+
+    // Move finger to slot
+    t(()=>{
+      const pos = center(tapTarget);
+      moveFinger(pos.x, pos.y, 600);
+    }, 1600);
+
+    // Highlight slot, tap anim
+    t(()=>{
+      tapTarget.classList.add('highlight');
+    }, 2300);
+
+    t(()=>{
+      tapAnim();
+      spawnRipple(tapTarget);
+    }, 2350);
+
+    // Slide to screen 2
+    t(()=>{
+      tapTarget.classList.remove('highlight');
+      goTo(s1, s2);
+      hideFinger();
+    }, 2700);
+
+    // Wait on booking screen, then move finger to CTA
+    t(()=>{
+      const pos = center(ctaPrenota);
+      setFinger(pos.x + 30, pos.y + 60);
+      showFinger();
+    }, 5500);
+
+    t(()=>{
+      const pos = center(ctaPrenota);
+      moveFinger(pos.x, pos.y, 600);
+    }, 5900);
+
+    t(()=>{ tapAnim(); spawnRipple(ctaPrenota); }, 6600);
+
+    // Go to confirm screen
+    t(()=>{
+      goTo(s2, s3);
+      hideFinger();
+    }, 6900);
+
+    // Animate confirm elements in sequence
+    t(()=>confCheck.classList.add('show'), 7150);
+    t(()=>confTitle.classList.add('show'), 7300);
+    t(()=>confCard.classList.add('show'), 7500);
+
+    // Hold on confirm screen, then reset
+    t(()=>{
+      // Fade back to start
+      goBack(s3, s2);
+    }, 13000);
+    t(()=>{ goBack(s2, s1); }, 13450);
+    t(()=>run(), 14400);
+  }
+
+  // Kick off
+  t(run, 600);
+})();
+</script>
+</body>
+</html>
