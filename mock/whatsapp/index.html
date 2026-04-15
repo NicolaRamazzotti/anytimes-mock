@@ -128,7 +128,7 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
 /* ── MESSAGES AREA ── */
 .messages-area{
   flex:1;
-  overflow-y:auto;
+  overflow-y:scroll;
   overflow-x:hidden;
   padding:12px 10px 8px;
   display:flex;
@@ -137,8 +137,7 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
   position:relative;
   z-index:10;
   scrollbar-width:none;
-  position:relative;
-  z-index:1;
+  pointer-events:none; /* nessun scroll manuale */
 }
 .messages-area::-webkit-scrollbar{display:none;}
 
@@ -283,6 +282,11 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
 }
 
 /* Typing indicator */
+.typing-wrap{
+  display:flex;align-items:flex-end;gap:6px;
+  align-self:flex-start;
+  margin-top:8px;
+}
 .typing-bubble{
   background:var(--wa-bubble-in);
   border-radius:12px;
@@ -294,6 +298,44 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
 .typing-dot{
   width:7px;height:7px;border-radius:50%;
   background:rgba(0,0,0,.3);
+  animation:tdot 1.2s ease-in-out infinite;
+}
+.typing-dot:nth-child(2){animation-delay:.2s;}
+.typing-dot:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,80%,100%{transform:scale(.8);opacity:.4}40%{transform:scale(1.1);opacity:1}}
+
+/* Azioni WA (pulsanti selezionabili) */
+.wa-actions{
+  background:var(--wa-bubble-in);
+  border-radius:12px;
+  border-top-left-radius:3px;
+  overflow:hidden;
+  box-shadow:0 1px 2px rgba(0,0,0,.13);
+  margin-top:2px;
+  align-self:flex-start;
+  max-width:82%;
+  margin-left:34px; /* allineato con le bolle in senza avatar */
+}
+.wa-action-item{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 14px;
+  border-top:1px solid rgba(0,0,0,.07);
+  font-size:13px;font-weight:600;
+  color:rgba(0,0,0,.35);
+  cursor:default;
+}
+.wa-action-item:first-child{border-top:none;}
+.wa-action-item.selected{color:#128C7E;}
+.wa-action-icon{font-size:12px;opacity:.6;}
+
+/* Animazione entrata messaggi */
+.msg, .wa-actions, .typing-wrap{
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity .28s ease, transform .28s ease;
+}
+.msg.show, .wa-actions.show, .typing-wrap.show{
+  opacity:1;transform:none;
 }
 
 /* ── INPUT BAR ── */
@@ -382,28 +424,40 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
         <div class="date-sep-pill">OGGI</div>
       </div>
 
-      <!-- MSG IN 1 — benvenuto -->
-      <div class="msg in">
+      <!-- 1. OUT — Ciao! -->
+      <div class="msg out" id="m1">
+        <div class="bubble">
+          <div class="bubble-text">Ciao! 😊</div>
+          <div class="bubble-meta">
+            <span class="bubble-time">09:30</span>
+            <span class="tick read">
+              <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 5l3.5 3.5L16 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- typing 1 -->
+      <div class="typing-wrap" id="ty1">
+        <div class="msg-avatar"><img src="../../assets/logo.png" alt="AT"></div>
+        <div class="typing-bubble">
+          <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+        </div>
+      </div>
+
+      <!-- 2. IN — Bentornato -->
+      <div class="msg in" id="m2">
         <div class="msg-avatar"><img src="../../assets/logo.png" alt="AT"></div>
         <div class="bubble">
-          <div class="bubble-text">Ciao Nicola! 👋 Benvenuto su <strong>Anytimes</strong>. Sono qui per aiutarti a gestire le tue prenotazioni.</div>
+          <div class="bubble-text">Bentornato Federico! 👋 Come posso aiutarti?</div>
           <div class="bubble-meta"><span class="bubble-time">09:30</span></div>
         </div>
       </div>
 
-      <!-- MSG IN 2 (sequenza, no avatar) -->
-      <div class="msg in">
-        <div class="msg-avatar-spacer"></div>
+      <!-- 3. OUT — Voglio prenotare un campo da padel -->
+      <div class="msg out" id="m3">
         <div class="bubble">
-          <div class="bubble-text">Hai una partita di padel prenotata domani alle <strong>10:30</strong> al Campo 1 WPT. Vuoi un promemoria?</div>
-          <div class="bubble-meta"><span class="bubble-time">09:30</span></div>
-        </div>
-      </div>
-
-      <!-- MSG OUT 1 -->
-      <div class="msg out">
-        <div class="bubble">
-          <div class="bubble-text">Sì, mandami un promemoria un'ora prima 🙏</div>
+          <div class="bubble-text">Voglio prenotare un campo da padel 🎾</div>
           <div class="bubble-meta">
             <span class="bubble-time">09:31</span>
             <span class="tick read">
@@ -413,19 +467,126 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
         </div>
       </div>
 
-      <!-- MSG IN — conferma promemoria -->
-      <div class="msg in">
+      <!-- typing 2 -->
+      <div class="typing-wrap" id="ty2">
         <div class="msg-avatar"><img src="../../assets/logo.png" alt="AT"></div>
-        <div class="bubble">
-          <div class="bubble-text">Perfetto! Ti avviserò domani alle <strong>09:30</strong>. 🎾</div>
-          <div class="bubble-meta"><span class="bubble-time">09:31</span></div>
+        <div class="typing-bubble">
+          <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
         </div>
       </div>
 
-      <!-- MSG OUT 2 -->
-      <div class="msg out">
+      <!-- 4. IN — card tipologia campo -->
+      <div class="msg in" id="m4" style="max-width:88%;">
+        <div class="msg-avatar"><img src="../../assets/logo.png" alt="AT"></div>
+        <div class="bubble" style="padding-bottom:0;min-width:220px;">
+          <div class="bubble-card">
+            <div class="bubble-card-header">
+              <div class="bubble-card-header-icon">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="2.5" stroke="white" stroke-width="1.4"/><path d="M5 8h6M8 5v6" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </div>
+              <div class="bubble-card-title">Tipologia Campo</div>
+            </div>
+            <div class="bubble-card-body">
+              <div class="bubble-card-row" style="justify-content:flex-start;">
+                <span style="font-size:13px;color:#111;line-height:1.45;">Seleziona la tipologia di campo che vuoi prenotare:</span>
+              </div>
+            </div>
+            <div class="bubble-card-cta" id="cta-tipologia">☰ Scegli tipologia</div>
+          </div>
+          <div class="bubble-meta" style="padding:4px 2px 5px;"><span class="bubble-time">09:31</span></div>
+        </div>
+      </div>
+
+      <!-- 5. OUT — Indoor -->
+      <div class="msg out" id="m5">
         <div class="bubble">
-          <div class="bubble-text">Grazie! Quanti crediti ho ancora?</div>
+          <div class="bubble-text">Indoor</div>
+          <div class="bubble-meta">
+            <span class="bubble-time">09:31</span>
+            <span class="tick read">
+              <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 5l3.5 3.5L16 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- typing 3 -->
+      <div class="typing-wrap" id="ty3">
+        <div class="msg-avatar"><img src="../../assets/logo.png" alt="AT"></div>
+        <div class="typing-bubble">
+          <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+        </div>
+      </div>
+
+      <!-- 6. IN — card seleziona giorno -->
+      <div class="msg in" id="m6" style="max-width:88%;">
+        <div class="msg-avatar"><img src="../../assets/logo.png" alt="AT"></div>
+        <div class="bubble" style="padding-bottom:0;min-width:220px;">
+          <div class="bubble-card">
+            <div class="bubble-card-header">
+              <div class="bubble-card-header-icon">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="13" rx="2" stroke="white" stroke-width="1.4"/><path d="M1 6h14" stroke="white" stroke-width="1.4"/><path d="M5 1v3M11 1v3" stroke="white" stroke-width="1.4" stroke-linecap="round"/></svg>
+              </div>
+              <div class="bubble-card-title">Prenotazione</div>
+            </div>
+            <div class="bubble-card-body">
+              <div class="bubble-card-row" style="justify-content:flex-start;">
+                <span style="font-size:13px;color:#111;line-height:1.45;">Seleziona il giorno in cui vuoi prenotare:</span>
+              </div>
+            </div>
+            <div class="bubble-card-cta" id="cta-giorno">☰ Scegli giorno</div>
+          </div>
+          <div class="bubble-meta" style="padding:4px 2px 5px;"><span class="bubble-time">09:32</span></div>
+        </div>
+      </div>
+
+      <!-- 7. OUT — scelta giorno -->
+      <div class="msg out" id="m7">
+        <div class="bubble">
+          <div class="bubble-text">Venerdì 30 Gennaio</div>
+          <div class="bubble-meta">
+            <span class="bubble-time">09:32</span>
+            <span class="tick read">
+              <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 5l3.5 3.5L16 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- typing 4 -->
+      <div class="typing-wrap" id="ty4">
+        <div class="msg-avatar"><img src="../../assets/logo.png" alt="AT"></div>
+        <div class="typing-bubble">
+          <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
+        </div>
+      </div>
+
+      <!-- 8. IN — card seleziona orario -->
+      <div class="msg in" id="m8" style="max-width:88%;">
+        <div class="msg-avatar"><img src="../../assets/logo.png" alt="AT"></div>
+        <div class="bubble" style="padding-bottom:0;min-width:220px;">
+          <div class="bubble-card">
+            <div class="bubble-card-header">
+              <div class="bubble-card-header-icon">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="white" stroke-width="1.4"/><path d="M8 5v3.5l2.5 2" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="bubble-card-title">Orario Prenotazione</div>
+            </div>
+            <div class="bubble-card-body">
+              <div class="bubble-card-row" style="justify-content:flex-start;">
+                <span style="font-size:13px;color:#111;line-height:1.5;">Seleziona l'orario per un campo indoor il giorno <strong>30 gennaio</strong> (la prenotazione è di 90 minuti):</span>
+              </div>
+            </div>
+            <div class="bubble-card-cta" id="cta-orario">☰ Scegli orario</div>
+          </div>
+          <div class="bubble-meta" style="padding:4px 2px 5px;"><span class="bubble-time">09:33</span></div>
+        </div>
+      </div>
+
+      <!-- 9. OUT — scelta orario -->
+      <div class="msg out" id="m9">
+        <div class="bubble">
+          <div class="bubble-text">20:00</div>
           <div class="bubble-meta">
             <span class="bubble-time">09:33</span>
             <span class="tick read">
@@ -435,41 +596,20 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
         </div>
       </div>
 
-      <!-- MSG IN — risposta crediti con card -->
-      <div class="msg in" style="max-width:88%;">
+      <!-- typing 5 -->
+      <div class="typing-wrap" id="ty5">
         <div class="msg-avatar"><img src="../../assets/logo.png" alt="AT"></div>
-        <div class="bubble" style="padding-bottom:0;">
-          <div class="bubble-text">Ecco il tuo saldo crediti aggiornato:</div>
-          <div class="bubble-card">
-            <div class="bubble-card-header">
-              <div class="bubble-card-header-icon">
-                <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="2.5" width="14" height="10" rx="2" stroke="white" stroke-width="1.4"/><path d="M1 6h14" stroke="white" stroke-width="1.4"/><rect x="3" y="8.5" width="4" height="2" rx="1" fill="white"/></svg>
-              </div>
-              <div class="bubble-card-title">Crediti disponibili</div>
-            </div>
-            <div class="bubble-card-body">
-              <div class="bubble-card-row"><span class="bubble-card-lbl">Saldo</span><span class="bubble-card-val">8 crediti</span></div>
-              <div class="bubble-card-sep"></div>
-              <div class="bubble-card-row"><span class="bubble-card-lbl">Scadenza</span><span class="bubble-card-val">30 apr 2026</span></div>
-              <div class="bubble-card-sep"></div>
-              <div class="bubble-card-row"><span class="bubble-card-lbl">Equivale a</span><span class="bubble-card-val">~4 ore di gioco</span></div>
-            </div>
-            <div class="bubble-card-cta">ACQUISTA ALTRI CREDITI →</div>
-          </div>
-          <div class="bubble-meta" style="padding:4px 2px 5px;"><span class="bubble-time">09:33</span></div>
+        <div class="typing-bubble">
+          <div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>
         </div>
       </div>
 
-      <!-- MSG OUT 3 -->
-      <div class="msg out">
+      <!-- 10. IN — prenotazione confermata -->
+      <div class="msg in" id="m10">
+        <div class="msg-avatar"><img src="../../assets/logo.png" alt="AT"></div>
         <div class="bubble">
-          <div class="bubble-text">Ottimo, grazie mille! 💪</div>
-          <div class="bubble-meta">
-            <span class="bubble-time">09:34</span>
-            <span class="tick">
-              <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M1 5l3.5 3.5L11 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 5l3.5 3.5L16 1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </span>
-          </div>
+          <div class="bubble-text">✅ La tua prenotazione è confermata! Ti aspettiamo al campo venerdì 30 gennaio alle <strong>20:00</strong>. Per qualsiasi modifica o cancellazione, contattaci direttamente.</div>
+          <div class="bubble-meta"><span class="bubble-time">09:34</span></div>
         </div>
       </div>
 
@@ -493,6 +633,116 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
 
   </div><!-- /phone-screen -->
 </div><!-- /phone -->
+
+<script>
+(function(){
+  const area = document.getElementById('msgArea');
+
+  // Evidenzia il CTA che l'utente "ha toccato"
+  function highlightCta(id){
+    const el = document.getElementById(id);
+    if(el){
+      el.style.background = 'rgba(18,140,126,0.1)';
+      el.style.color = '#128C7E';
+      el.closest('.msg') && scrollTo(el.closest('.msg'));
+    }
+  }
+
+  // Scrolla fino all'elemento appena mostrato
+  function scrollTo(el){
+    if(!el) return;
+    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function show(id, cb, delay){
+    setTimeout(()=>{
+      const el = document.getElementById(id);
+      if(el){
+        el.classList.add('show');
+        scrollTo(el);
+      }
+      if(cb) cb();
+    }, delay||0);
+  }
+
+  function hide(id){
+    const el = document.getElementById(id);
+    if(el){ el.style.opacity='0'; el.style.transform='translateY(6px)'; }
+  }
+
+  function runCycle(){
+    // Reset tutto
+    ['m1','m2','m3','m4','m5','m6','m7','m8','m9','m10','ty1','ty2','ty3','ty4','ty5'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(!el) return;
+      el.classList.remove('show');
+      el.style.opacity='';
+      el.style.transform='';
+    });
+    // Reset CTA
+    ['cta-tipologia','cta-giorno','cta-orario'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){ el.style.background=''; el.style.color=''; }
+    });
+    area.scrollTop=0;
+
+    let t = 400;
+    const gap   = 600;   // pausa tra un messaggio e il successivo
+    const type  = 900;   // durata typing indicator visibile
+    const pause = 400;   // pausa prima di nascondere il typing
+
+    // 1. Utente: "Ciao!"
+    show('m1', null, t); t += gap;
+
+    // 2. Typing → Bentornato
+    show('ty1', null, t); t += type;
+    setTimeout(()=>{ hide('ty1'); }, t - pause);
+    show('m2', null, t); t += gap;
+
+    // 3. Utente: "Voglio prenotare un campo da padel"
+    show('m3', null, t); t += gap;
+
+    // 4. Typing → card tipologia campo
+    show('ty2', null, t); t += type;
+    setTimeout(()=>{ hide('ty2'); }, t - pause);
+    show('m4', null, t); t += gap + 400;
+
+    // 5. CTA tipologia si illumina → Utente sceglie Indoor
+    setTimeout(()=>{ highlightCta('cta-tipologia'); }, t); t += 700;
+    show('m5', null, t); t += gap;
+
+    // 6. Typing → card giorno
+    show('ty3', null, t); t += type;
+    setTimeout(()=>{ hide('ty3'); }, t - pause);
+    show('m6', null, t); t += gap + 400;
+
+    // 7. CTA giorno si illumina → Utente sceglie giorno
+    setTimeout(()=>{ highlightCta('cta-giorno'); }, t); t += 700;
+    show('m7', null, t); t += gap;
+
+    // 8. Typing → card orario
+    show('ty4', null, t); t += type;
+    setTimeout(()=>{ hide('ty4'); }, t - pause);
+    show('m8', null, t); t += gap + 400;
+
+    // 9. CTA orario si illumina → Utente sceglie orario
+    setTimeout(()=>{ highlightCta('cta-orario'); }, t); t += 700;
+    show('m9', null, t); t += gap;
+
+    // 10. Typing finale → conferma
+    show('ty5', null, t); t += type + 300;
+    setTimeout(()=>{ hide('ty5'); }, t - pause - 300);
+    show('m10', null, t); t += gap;
+
+    // Riparti dopo pausa
+    t += 4000;
+    setTimeout(runCycle, t);
+  }
+
+  // Avvia
+  setTimeout(runCycle, 600);
+})();
+</script>
 
 </body>
 </html>
