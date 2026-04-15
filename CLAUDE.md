@@ -161,8 +161,9 @@ mock/
 5. Scrivi qui sotto il mock nella lista
 
 ### Mock pianificati
-- [ ] `mock/app-mobile/` — schermata app mobile (iOS style)
-- [ ] `mock/tornei/` — vista gestione torneo a tabellone
+- [x] `mock/app-mobile/` — schermata app mobile (iOS style), agenda + prenota + conferma
+- [x] `mock/tornei/` — vista gestione torneo a tabellone
+- [x] `mock/whatsapp/` — chat WhatsApp-style: messaggi Anytimes (sx, logo) + utente (dx, bolle verdi); include bubble-card per riepilogo prenotazione/crediti. Animazioni da aggiungere.
 - [ ] `mock/stats/` — dashboard analytics / report
 
 ---
