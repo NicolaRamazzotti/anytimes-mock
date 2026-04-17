@@ -742,6 +742,20 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
   // Avvia
   setTimeout(runCycle, 600);
 })();
+
+// Auto-fit phone to viewport
+(function(){
+  const phone = document.querySelector('.phone');
+  function fit(){
+    const availH = window.innerHeight * 0.90;
+    const availW = window.innerWidth  * 0.44;
+    const scale  = Math.min(1, availH / 844, availW / 390);
+    phone.style.transform       = `scale(${scale.toFixed(3)})`;
+    phone.style.transformOrigin = 'center center';
+  }
+  fit();
+  window.addEventListener('resize', fit);
+})();
 </script>
 
 </body>

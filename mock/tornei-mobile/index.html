@@ -32,10 +32,12 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
 .phone{
   position:relative;
   width:390px;height:844px;
-  background:#fff;
-  border-radius:54px;
-  box-shadow:0 0 0 10px #1a1a1a,0 0 0 12px #2a2a2a,0 80px 160px rgba(0,0,0,.9),0 20px 60px rgba(0,0,0,.5);
-  overflow:hidden;flex-shrink:0;
+  background:#1a1a1a;
+  border-radius:0;
+  box-shadow:
+    0 0 0 30px #1a1a1a,
+    0 0 0 32px #2a2a2a;
+  flex-shrink:0;
 }
 .dynamic-island{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:120px;height:36px;background:#000;border-radius:20px;z-index:200;}
 .phone-screen{position:absolute;inset:0;border-radius:54px;overflow:hidden;background:#f5f4f0;}
@@ -731,6 +733,20 @@ function runCycle(){
 }
 
 runCycle();
+
+// Auto-fit phone to viewport
+(function(){
+  const phone = document.getElementById('phone');
+  function fit(){
+    const availH = window.innerHeight * 0.90; // 90% viewport height
+    const availW = window.innerWidth  * 0.44; // max 44% viewport width
+    const scale  = Math.min(1, availH / 844, availW / 390);
+    phone.style.transform       = `scale(${scale.toFixed(3)})`;
+    phone.style.transformOrigin = 'center center';
+  }
+  fit();
+  window.addEventListener('resize', fit);
+})();
 </script>
 </body>
 </html>
