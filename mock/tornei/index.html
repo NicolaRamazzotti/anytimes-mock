@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{--brand:#F7583F;--font-display:'Syne',sans-serif;--font-body:'Inter',sans-serif;}
+:root{--brand:#F7583F;--green:#2EC47A;--font-display:'Syne',sans-serif;--font-body:'Inter',sans-serif;}
 html,body{width:100%;height:100vh;background:#08080C;font-family:var(--font-body);overflow:hidden;}
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 900px 600px at 50% 50%,rgba(247,88,63,0.055) 0%,transparent 70%),radial-gradient(ellipse 1200px 700px at 30% 70%,rgba(92,50,234,0.035) 0%,transparent 65%);pointer-events:none;z-index:0;}
 body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.035) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;z-index:0;}
@@ -65,6 +65,95 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
 .winner-block.show{opacity:1;transform:none}
 .winner-trophy{font-size:28px;line-height:1;}
 .winner-name{font-family:var(--font-display);font-size:13px;font-weight:800;color:#0d0d0d;letter-spacing:.5px;text-align:center;}
+
+/* ── PHASE SYSTEM ── */
+.main{flex:1;overflow:hidden;background:#f0efea;position:relative;}
+.phase{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .55s ease;display:flex;flex-direction:column;}
+.phase.active{opacity:1;pointer-events:auto;}
+
+/* ── GIRONI PHASE ── */
+.g-header{padding:18px 28px 12px;flex-shrink:0;}
+.g-title-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.g-title{font-family:var(--font-display);font-size:22px;font-weight:800;color:#0d0d0d;letter-spacing:-.6px;}
+.g-back{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:rgba(0,0,0,.06);color:rgba(0,0,0,.45);flex-shrink:0;}
+.g-tabs{display:flex;gap:2px;background:#e8e7e1;border-radius:8px;padding:3px;width:fit-content;}
+.g-tab{padding:6px 18px;border-radius:6px;font-size:11px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;color:rgba(0,0,0,.45);}
+.g-tab.on{background:#fff;color:#0d0d0d;box-shadow:0 1px 3px rgba(0,0,0,.1);}
+.g-tab.on.brand{background:var(--brand);color:#fff;}
+.g-scroll{flex:1;overflow-y:auto;padding:0 28px 24px;scrollbar-width:none;}
+.g-scroll::-webkit-scrollbar{display:none;}
+.g-pdf-row{display:flex;gap:10px;margin-bottom:18px;opacity:0;transform:translateY(5px);transition:opacity .3s,transform .3s;}
+.g-pdf-row.show{opacity:1;transform:none;}
+.g-pdf-btn{padding:7px 16px;border-radius:7px;font-size:11.5px;font-weight:600;background:rgba(74,144,226,.13);color:#4A90E2;border:none;cursor:default;}
+.g-expand-btn{margin-left:auto;width:30px;height:30px;border-radius:7px;border:1px solid rgba(0,0,0,.12);display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.4);}
+.gironi-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+
+/* ── GIRONE CARD ── */
+.girone-card{background:#fff;border-radius:12px;border:1.5px solid rgba(0,0,0,.1);overflow:hidden;opacity:0;transform:translateY(8px);transition:opacity .35s,transform .35s,border-color .35s;}
+.girone-card.show{opacity:1;transform:none;}
+.girone-card.cal-on{border-color:rgba(46,196,122,.55);}
+.girone-ttl{font-family:var(--font-display);font-size:15px;font-weight:800;color:#0d0d0d;padding:15px 20px 10px;letter-spacing:-.3px;}
+.st-tbl{width:100%;border-collapse:collapse;}
+.st-tbl thead th{font-size:10px;font-weight:600;color:rgba(0,0,0,.38);letter-spacing:.4px;text-transform:uppercase;padding:7px 12px;border-bottom:1.5px solid rgba(0,0,0,.09);text-align:center;}
+.st-tbl thead th:nth-child(2){text-align:left;}
+.st-row{border-bottom:1px solid rgba(0,0,0,.05);opacity:0;transform:translateY(4px);transition:opacity .28s,transform .28s;}
+.st-row.show{opacity:1;transform:none;}
+.st-row td{padding:10px 12px;font-size:11.5px;color:#0d0d0d;text-align:center;vertical-align:middle;}
+.st-row td:nth-child(2){text-align:left;letter-spacing:.35px;text-transform:uppercase;font-size:11px;}
+.st-row td:first-child{color:rgba(0,0,0,.38);font-size:11px;}
+.st-pt{color:var(--brand);font-weight:700;}
+.st-pt-zero{color:rgba(0,0,0,.28);}
+.st-check{display:inline-block;width:14px;height:14px;border:1.5px solid rgba(0,0,0,.25);border-radius:3px;}
+
+/* ── CALENDAR TOGGLE ── */
+.cal-toggle{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;border-top:1px solid rgba(0,0,0,.08);font-size:11px;font-weight:700;letter-spacing:.5px;color:rgba(0,0,0,.45);cursor:default;transition:color .25s,border-color .25s;}
+.cal-toggle.cal-open{color:var(--brand);border-top-color:rgba(247,88,63,.25);}
+
+/* ── CALENDAR BODY ── */
+.cal-body{overflow:hidden;max-height:0;transition:max-height .55s cubic-bezier(.16,1,.3,1);}
+.cal-body.open{max-height:800px;}
+.giornata{border-top:1px solid rgba(0,0,0,.06);opacity:0;transform:translateY(4px);transition:opacity .28s,transform .28s;}
+.giornata.show{opacity:1;transform:none;}
+.giornata-hd{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;background:#f8f7f4;}
+.giornata-hd-lbl{font-size:11px;font-weight:700;color:#0d0d0d;letter-spacing:.5px;}
+.giornata-icons{display:flex;gap:5px;font-size:11px;color:rgba(0,0,0,.35);}
+.giornata-body{padding:5px 16px 10px;}
+.g-riposa{font-size:10px;color:rgba(0,0,0,.35);padding:5px 0 7px;border-bottom:1px solid rgba(0,0,0,.05);margin-bottom:5px;}
+.g-riposa span{font-style:italic;}
+.g-match{display:flex;align-items:center;padding:5px 0;}
+.g-match-teams{flex:1;display:flex;flex-direction:column;gap:3px;}
+.g-team{font-size:11px;letter-spacing:.3px;}
+.g-team.win{font-weight:700;color:#0d0d0d;}
+.g-team.los{color:rgba(0,0,0,.45);}
+.g-match-scores{display:flex;flex-direction:column;align-items:flex-end;gap:3px;margin-right:10px;}
+.g-score{font-size:10px;color:rgba(0,0,0,.4);letter-spacing:1.5px;}
+.g-cal-ico{color:rgba(0,0,0,.18);}
+
+/* ── FASE FINALE BUTTON ── */
+.fase-btn{margin-left:auto;padding:7px 13px;border-radius:8px;border:1.5px solid var(--brand);display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;font-weight:700;color:#fff;letter-spacing:.5px;transition:background .3s,color .3s,border-color .3s;background:var(--brand);white-space:nowrap;}
+.fase-btn.fire{background:var(--brand);color:#fff;border-color:var(--brand);}
+
+/* ── BRACKET PHASE (keep existing) ── */
+.bracket-phase-inner{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.tournament-header{padding:18px 28px 16px;flex-shrink:0;}
+.tournament-title{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-size:22px;font-weight:800;color:#0d0d0d;letter-spacing:-.6px;}
+.tournament-back{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:6px;background:rgba(0,0,0,.06);color:rgba(0,0,0,.45);flex-shrink:0;}
+.bracket-area{flex:1;overflow:hidden;padding:20px 40px;display:flex;flex-direction:column;}
+.round-headers{display:flex;margin-bottom:20px;flex-shrink:0;}
+.round-hd{width:240px;flex-shrink:0;font-size:13px;font-weight:600;color:rgba(0,0,0,.55);text-align:center;background:#fff;border:1px solid rgba(0,0,0,.09);border-radius:8px;padding:8px 0;}
+.round-hd+.round-hd{margin-left:80px}
+.bracket-canvas{position:relative;flex:1;}
+.bracket-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;}
+.bracket-line{fill:none;stroke:rgba(0,0,0,.15);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:var(--len,400);stroke-dashoffset:var(--len,400);transition:stroke-dashoffset .55s cubic-bezier(.16,1,.3,1);}
+.bracket-line.draw{stroke-dashoffset:0}
+.match-card{position:absolute;width:240px;background:#fff;border:1px solid rgba(0,0,0,.1);border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06);opacity:0;transform:translateY(8px) scale(.97);transition:opacity .4s cubic-bezier(.16,1,.3,1),transform .4s cubic-bezier(.16,1,.3,1);}
+.match-card.show{opacity:1;transform:none}
+.match-row{display:flex;align-items:center;padding:7px 10px;gap:8px;border-bottom:1px solid rgba(0,0,0,.06);}
+.match-row:last-child{border-bottom:none}
+.match-seed{width:4px;height:30px;border-radius:2px;flex-shrink:0;}
+.seed-win{background:#2EC47A}.seed-lose{background:#F7583F}.seed-neutral{background:rgba(0,0,0,.12)}
+.match-name{flex:1;font-size:12px;font-weight:600;color:#0d0d0d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.match-scores{display:flex;gap:5px;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -107,63 +196,217 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
           <div class="sb-i"><svg width="14" height="14" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="2" stroke="currentColor" stroke-width="1.2"/><path d="M6 1v1.5M6 9.5V11M1 6h1.5M9.5 6H11M2.64 2.64l1.06 1.06M8.3 8.3l1.06 1.06M9.36 2.64L8.3 3.7M3.7 8.3L2.64 9.36" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg></div>
         </div>
         <div class="main">
-          <div class="tournament-header">
-            <div class="tournament-title">
-              <div class="tournament-back"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-              Torneo SPRITZ SILVER — Tabellone
-            </div>
-          </div>
-          <div class="bracket-area">
-            <div class="round-headers">
-              <div class="round-hd">4° di finale</div>
-              <div class="round-hd" style="margin-left:80px">Semifinale</div>
-              <div class="round-hd" style="margin-left:80px">Finale</div>
-            </div>
-            <div class="bracket-canvas" id="bracketCanvas">
-              <svg class="bracket-svg" id="bracketSvg"></svg>
-              <div class="match-card" id="qf1" style="left:0;top:0" data-order="1">
-                <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">SFORNA/ROSCIOLI</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
-                <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">SARAVALLE/MIELE</div><div class="match-scores"><span class="match-score lose">3</span><span class="match-score lose">2</span></div><div class="match-dash">—</div></div>
+
+          <!-- ══ PHASE 1: GIRONI ══ -->
+          <div class="phase active" id="phase-gironi">
+            <div class="g-header">
+              <div class="g-title-row">
+                <div class="g-back"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                <div class="g-title">Torneo SPRITZ SILVER</div>
               </div>
-              <div class="match-card" id="qf2" style="left:0;top:104px" data-order="2">
-                <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">DAMIANI/PASTORELLI</div><div class="match-scores"><span class="match-score lose">1</span><span class="match-score lose">3</span></div><div class="match-dash">—</div></div>
-                <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">SECHI/GUARDUCCI</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
-              </div>
-              <div class="match-card" id="qf3" style="left:0;top:248px" data-order="3">
-                <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">STEFANIA/MASSIMO</div><div class="match-scores"><span class="match-score">7</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
-                <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">MARCHIANO/MATTEO</div><div class="match-scores"><span class="match-score lose">5</span><span class="match-score lose">4</span></div><div class="match-dash">—</div></div>
-              </div>
-              <div class="match-card" id="qf4" style="left:0;top:352px" data-order="4">
-                <div class="match-row"><div class="match-seed seed-neutral"></div><div class="match-name">HITAJ/SBARRA</div><div class="match-scores"><span class="match-score">3</span><span class="match-score">3</span></div><div class="match-dash">—</div></div>
-                <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">MACCHERANI/PAGNOTTA</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
-              </div>
-              <div class="match-card" id="sf1" style="left:320px;top:52px" data-order="5">
-                <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">SFORNA/ROSCIOLI</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
-                <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">SECHI/GUARDUCCI</div><div class="match-scores"><span class="match-score lose">4</span><span class="match-score lose">2</span></div><div class="match-dash">—</div></div>
-              </div>
-              <div class="match-card" id="sf2" style="left:320px;top:300px" data-order="6">
-                <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">STEFANIA/MASSIMO</div><div class="match-scores"><span class="match-score lose">2</span><span class="match-score lose">4</span></div><div class="match-dash">—</div></div>
-                <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">MACCHERANI/PAGNOTTA</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
-              </div>
-              <div class="match-card" id="fin" style="left:640px;top:176px" data-order="7">
-                <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">SFORNA/ROSCIOLI</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
-                <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">MACCHERANI/PAGNOTTA</div><div class="match-scores"><span class="match-score lose">4</span><span class="match-score lose">3</span></div><div class="match-dash">—</div></div>
-              </div>
-              <div class="winner-block" id="winner" style="left:912px;top:165px" data-order="8">
-                <div class="winner-trophy">🏆</div>
-                <div class="winner-name">SFORNA/ROSCIOLI</div>
+              <div class="g-tabs">
+                <div class="g-tab on brand">GIRONI</div>
+                <div class="g-tab">TABELLONE</div>
+                <div class="g-tab">CALENDARIO</div>
               </div>
             </div>
-          </div>
-        </div>
+            <div class="g-scroll" id="gironiScroll">
+
+              <!-- PDF buttons row -->
+              <div class="g-pdf-row" id="pdfBtns">
+                <div class="g-pdf-btn">PDF Calendario</div>
+                <div class="g-pdf-btn">PDF Classifica</div>
+                <div class="fase-btn" id="faseFin">PASSA ALLA FASE FINALE &nbsp; →</div>
+              </div>
+
+              <div class="gironi-grid">
+
+                <!-- GIRONE A -->
+                <div class="girone-card" id="gironeA">
+                  <div class="girone-ttl">GIRONE A</div>
+                  <table class="st-tbl">
+                    <thead><tr><th>Pos°</th><th>Squadra</th><th>PG</th><th>PT</th><th>V</th><th>S</th><th>P</th><th><span style="color:var(--brand)">→</span></th></tr></thead>
+                    <tbody>
+                      <tr class="st-row" id="ar1"><td>1</td><td>HITAJ/SBARRA</td><td>2</td><td class="st-pt">6</td><td>2</td><td>0</td><td>0</td><td><span class="st-check"></span></td></tr>
+                      <tr class="st-row" id="ar2"><td>2</td><td>SARAVALLE/MIELE</td><td>2</td><td class="st-pt">2</td><td>1</td><td>1</td><td>0</td><td><span class="st-check"></span></td></tr>
+                      <tr class="st-row" id="ar3"><td>3</td><td>DAMIANI/PASTORELLI</td><td>2</td><td class="st-pt">1</td><td>0</td><td>2</td><td>0</td><td><span class="st-check"></span></td></tr>
+                    </tbody>
+                  </table>
+                  <div class="cal-toggle" id="calToggleA">∨ &nbsp; APRI CALENDARIO</div>
+                  <div class="cal-body" id="calBodyA">
+                    <div class="giornata" id="g1a">
+                      <div class="giornata-hd"><span class="giornata-hd-lbl">GIORNATA 1</span><div class="giornata-icons"><span>∨</span></div></div>
+                      <div class="giornata-body">
+                        <div class="g-riposa">RIPOSA <span>SARAVALLE/MIELE</span></div>
+                        <div class="g-match">
+                          <div class="g-match-teams"><div class="g-team win">HITAJ/SBARRA</div><div class="g-team los">DAMIANI/PASTORELLI</div></div>
+                          <div class="g-match-scores"><div class="g-score">4 &nbsp; 4</div><div class="g-score">3 &nbsp; 1</div></div>
+                          <div class="g-cal-ico"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.1"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="giornata" id="g2a">
+                      <div class="giornata-hd"><span class="giornata-hd-lbl">GIORNATA 2</span><div class="giornata-icons"><span>∨</span><span>∧</span></div></div>
+                      <div class="giornata-body">
+                        <div class="g-riposa">RIPOSA <span>DAMIANI/PASTORELLI</span></div>
+                        <div class="g-match">
+                          <div class="g-match-teams"><div class="g-team los">SARAVALLE/MIELE</div><div class="g-team win">HITAJ/SBARRA</div></div>
+                          <div class="g-match-scores"><div class="g-score">0 &nbsp; 0</div><div class="g-score">4 &nbsp; 4</div></div>
+                          <div class="g-cal-ico"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.1"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="giornata" id="g3a">
+                      <div class="giornata-hd"><span class="giornata-hd-lbl">GIORNATA 3</span><div class="giornata-icons"><span>∧</span></div></div>
+                      <div class="giornata-body">
+                        <div class="g-riposa">RIPOSA <span>HITAJ/SBARRA</span></div>
+                        <div class="g-match">
+                          <div class="g-match-teams"><div class="g-team los">DAMIANI/PASTORELLI</div><div class="g-team win">SARAVALLE/MIELE</div></div>
+                          <div class="g-match-scores"><div class="g-score">4 &nbsp; 2 &nbsp; 7</div><div class="g-score">2 &nbsp; 4 &nbsp; 10</div></div>
+                          <div class="g-cal-ico"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.1"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- GIRONE B -->
+                <div class="girone-card" id="gironeB">
+                  <div class="girone-ttl">GIRONE B</div>
+                  <table class="st-tbl">
+                    <thead><tr><th>Pos°</th><th>Squadra</th><th>PG</th><th>PT</th><th>V</th><th>S</th><th>P</th><th><span style="color:var(--brand)">→</span></th></tr></thead>
+                    <tbody>
+                      <tr class="st-row" id="br1"><td>1</td><td>MARCHIANO/MATTEO</td><td>2</td><td class="st-pt">6</td><td>2</td><td>0</td><td>0</td><td><span class="st-check"></span></td></tr>
+                      <tr class="st-row" id="br2"><td>2</td><td>SFORNA/ROSCIOLI</td><td>2</td><td class="st-pt">3</td><td>1</td><td>1</td><td>0</td><td><span class="st-check"></span></td></tr>
+                      <tr class="st-row" id="br3"><td>3</td><td>MOMI/FEDERICO</td><td>2</td><td class="st-pt-zero">0</td><td>0</td><td>2</td><td>0</td><td><span class="st-check"></span></td></tr>
+                    </tbody>
+                  </table>
+                  <div class="cal-toggle" id="calToggleB">∨ &nbsp; APRI CALENDARIO</div>
+                  <div class="cal-body" id="calBodyB">
+                    <div class="giornata" id="g1b">
+                      <div class="giornata-hd"><span class="giornata-hd-lbl">GIORNATA 1</span><div class="giornata-icons"><span>∨</span></div></div>
+                      <div class="giornata-body">
+                        <div class="g-riposa">RIPOSA <span>MOMI/FEDERICO</span></div>
+                        <div class="g-match">
+                          <div class="g-match-teams"><div class="g-team los">SFORNA/ROSCIOLI</div><div class="g-team win">MARCHIANO/MATTEO</div></div>
+                          <div class="g-match-scores"><div class="g-score">2 &nbsp; 1</div><div class="g-score">4 &nbsp; 4</div></div>
+                          <div class="g-cal-ico"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.1"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="giornata" id="g2b">
+                      <div class="giornata-hd"><span class="giornata-hd-lbl">GIORNATA 2</span><div class="giornata-icons"><span>∨</span><span>∧</span></div></div>
+                      <div class="giornata-body">
+                        <div class="g-riposa">RIPOSA <span>MARCHIANO/MATTEO</span></div>
+                        <div class="g-match">
+                          <div class="g-match-teams"><div class="g-team los">MOMI/FEDERICO</div><div class="g-team win">SFORNA/ROSCIOLI</div></div>
+                          <div class="g-match-scores"><div class="g-score">2 &nbsp; 2</div><div class="g-score">4 &nbsp; 4</div></div>
+                          <div class="g-cal-ico"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.1"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="giornata" id="g3b">
+                      <div class="giornata-hd"><span class="giornata-hd-lbl">GIORNATA 3</span><div class="giornata-icons"><span>∧</span></div></div>
+                      <div class="giornata-body">
+                        <div class="g-riposa">RIPOSA <span>SFORNA/ROSCIOLI</span></div>
+                        <div class="g-match">
+                          <div class="g-match-teams"><div class="g-team win">MARCHIANO/MATTEO</div><div class="g-team los">MOMI/FEDERICO</div></div>
+                          <div class="g-match-scores"><div class="g-score">4 &nbsp; 4</div><div class="g-score">0 &nbsp; 2</div></div>
+                          <div class="g-cal-ico"><svg width="13" height="13" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.1"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- GIRONE C -->
+                <div class="girone-card" id="gironeC">
+                  <div class="girone-ttl">GIRONE C</div>
+                  <table class="st-tbl">
+                    <thead><tr><th>Pos°</th><th>Squadra</th><th>PG</th><th>PT</th><th>V</th><th>S</th><th>P</th><th><span style="color:var(--brand)">→</span></th></tr></thead>
+                    <tbody>
+                      <tr class="st-row" id="cr1"><td>1</td><td>SECHI/GUARDUCCI</td><td>2</td><td class="st-pt">6</td><td>2</td><td>0</td><td>0</td><td><span class="st-check"></span></td></tr>
+                      <tr class="st-row" id="cr2"><td>2</td><td>MACCHERANI/PAGNOTTA</td><td>2</td><td class="st-pt">3</td><td>1</td><td>1</td><td>0</td><td><span class="st-check"></span></td></tr>
+                      <tr class="st-row" id="cr3"><td>3</td><td>STEFANIA/MASSIMO</td><td>2</td><td class="st-pt-zero">0</td><td>0</td><td>2</td><td>0</td><td><span class="st-check"></span></td></tr>
+                    </tbody>
+                  </table>
+                  <div class="cal-toggle">∨ &nbsp; APRI CALENDARIO</div>
+                </div>
+
+              </div><!-- /gironi-grid -->
+            </div><!-- /g-scroll -->
+          </div><!-- /phase-gironi -->
+
+          <!-- ══ PHASE 2: TABELLONE ══ -->
+          <div class="phase" id="phase-bracket">
+            <div class="bracket-phase-inner">
+              <div class="tournament-header">
+                <div class="tournament-title">
+                  <div class="tournament-back"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9 11L5 7l4-4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+                  Torneo SPRITZ SILVER — Tabellone
+                </div>
+              </div>
+              <div class="bracket-area">
+                <div class="round-headers">
+                  <div class="round-hd">4° di finale</div>
+                  <div class="round-hd" style="margin-left:80px">Semifinale</div>
+                  <div class="round-hd" style="margin-left:80px">Finale</div>
+                </div>
+                <div class="bracket-canvas" id="bracketCanvas">
+                  <svg class="bracket-svg" id="bracketSvg"></svg>
+                  <div class="match-card" id="qf1" style="left:0;top:0" data-order="1">
+                    <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">SFORNA/ROSCIOLI</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
+                    <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">SARAVALLE/MIELE</div><div class="match-scores"><span class="match-score lose">3</span><span class="match-score lose">2</span></div><div class="match-dash">—</div></div>
+                  </div>
+                  <div class="match-card" id="qf2" style="left:0;top:104px" data-order="2">
+                    <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">DAMIANI/PASTORELLI</div><div class="match-scores"><span class="match-score lose">1</span><span class="match-score lose">3</span></div><div class="match-dash">—</div></div>
+                    <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">SECHI/GUARDUCCI</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
+                  </div>
+                  <div class="match-card" id="qf3" style="left:0;top:248px" data-order="3">
+                    <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">STEFANIA/MASSIMO</div><div class="match-scores"><span class="match-score">7</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
+                    <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">MARCHIANO/MATTEO</div><div class="match-scores"><span class="match-score lose">5</span><span class="match-score lose">4</span></div><div class="match-dash">—</div></div>
+                  </div>
+                  <div class="match-card" id="qf4" style="left:0;top:352px" data-order="4">
+                    <div class="match-row"><div class="match-seed seed-neutral"></div><div class="match-name">HITAJ/SBARRA</div><div class="match-scores"><span class="match-score">3</span><span class="match-score">3</span></div><div class="match-dash">—</div></div>
+                    <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">MACCHERANI/PAGNOTTA</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
+                  </div>
+                  <div class="match-card" id="sf1" style="left:320px;top:52px" data-order="5">
+                    <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">SFORNA/ROSCIOLI</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
+                    <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">SECHI/GUARDUCCI</div><div class="match-scores"><span class="match-score lose">4</span><span class="match-score lose">2</span></div><div class="match-dash">—</div></div>
+                  </div>
+                  <div class="match-card" id="sf2" style="left:320px;top:300px" data-order="6">
+                    <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">STEFANIA/MASSIMO</div><div class="match-scores"><span class="match-score lose">2</span><span class="match-score lose">4</span></div><div class="match-dash">—</div></div>
+                    <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">MACCHERANI/PAGNOTTA</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
+                  </div>
+                  <div class="match-card" id="fin" style="left:640px;top:176px" data-order="7">
+                    <div class="match-row"><div class="match-seed seed-win"></div><div class="match-name">SFORNA/ROSCIOLI</div><div class="match-scores"><span class="match-score">6</span><span class="match-score">6</span></div><div class="match-dash">—</div></div>
+                    <div class="match-row"><div class="match-seed seed-lose"></div><div class="match-name">MACCHERANI/PAGNOTTA</div><div class="match-scores"><span class="match-score lose">4</span><span class="match-score lose">3</span></div><div class="match-dash">—</div></div>
+                  </div>
+                  <div class="winner-block" id="winner" style="left:912px;top:165px" data-order="8">
+                    <div class="winner-trophy">🏆</div>
+                    <div class="winner-name">SFORNA/ROSCIOLI</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- /phase-bracket -->
+
+        </div><!-- /main -->
       </div>
     </div>
   </div>
 </div>
 <script>
 (function(){
-  const cards=Array.from(document.querySelectorAll('.match-card,.winner-block')).sort((a,b)=>(+a.dataset.order)-(+b.dataset.order));
-  const connections=[
+  const urlbar = document.querySelector('.urlbar');
+  const phaseGironi = document.getElementById('phase-gironi');
+  const phaseBracket = document.getElementById('phase-bracket');
+  const gironiScroll = document.getElementById('gironiScroll');
+
+  // Bracket
+  const bracketCards = Array.from(document.querySelectorAll('.match-card,.winner-block'))
+    .sort((a,b) => (+a.dataset.order) - (+b.dataset.order));
+  const connections = [
     {from:'qf1',to:'sf1',toRow:'top',order:5},
     {from:'qf2',to:'sf1',toRow:'bot',order:5},
     {from:'qf3',to:'sf2',toRow:'top',order:6},
@@ -171,7 +414,8 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
     {from:'sf1',to:'fin',toRow:'top',order:7},
     {from:'sf2',to:'fin',toRow:'bot',order:7},
   ];
-  const svg=document.getElementById('bracketSvg');
+  const svg = document.getElementById('bracketSvg');
+
   function rowY(el,row){const rh=el.offsetHeight/2;return el.offsetTop+(row==='top'?rh*.5:rh*1.5);}
   function buildPath(fe,te,row){
     const fx=fe.offsetLeft+fe.offsetWidth,fy=fe.offsetTop+fe.offsetHeight/2;
@@ -193,23 +437,145 @@ body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(c
       svg.appendChild(p);
     });
   }
-  let timers=[];
-  function clearTimers(){timers.forEach(clearTimeout);timers=[];}
-  function cycle(){
-    clearTimers();
-    cards.forEach(c=>{c.style.transition='none';c.classList.remove('show');});
+
+  let timers = [];
+  function $t(fn, delay){ timers.push(setTimeout(fn, delay)); }
+  function clearAll(){ timers.forEach(clearTimeout); timers = []; }
+
+  function show(id){ const el=document.getElementById(id); if(el) el.classList.add('show'); }
+  function hide(id){ const el=document.getElementById(id); if(el) el.classList.remove('show'); }
+
+  function resetGironi(){
+    // Cards
+    ['gironeA','gironeB','gironeC'].forEach(hide);
+    // Rows
+    ['ar1','ar2','ar3','br1','br2','br3','cr1','cr2','cr3'].forEach(hide);
+    // PDF row
+    hide('pdfBtns');
+    // Calendar
+    const calBody = document.getElementById('calBodyA');
+    const calToggle = document.getElementById('calToggleA');
+    if(calBody){ calBody.classList.remove('open'); }
+    if(calToggle){ calToggle.classList.remove('cal-open'); calToggle.innerHTML = '∨ &nbsp; APRI CALENDARIO'; }
+    document.getElementById('gironeA').classList.remove('cal-on');
+    // Girone B calendar
+    const calBodyB = document.getElementById('calBodyB');
+    const calToggleB = document.getElementById('calToggleB');
+    if(calBodyB){ calBodyB.classList.remove('open'); }
+    if(calToggleB){ calToggleB.classList.remove('cal-open'); calToggleB.innerHTML = '∨ &nbsp; APRI CALENDARIO'; }
+    document.getElementById('gironeB').classList.remove('cal-on');
+    // Giornate
+    ['g1a','g2a','g3a','g1b','g2b','g3b'].forEach(hide);
+    // Fase btn
+    const fb = document.getElementById('faseFin');
+    if(fb) fb.classList.remove('fire');
+    // Scroll top
+    gironiScroll.scrollTop = 0;
+  }
+
+  function resetBracket(){
+    bracketCards.forEach(c=>{ c.style.transition='none'; c.classList.remove('show'); });
     svg.querySelectorAll('.bracket-line').forEach(l=>l.classList.remove('draw'));
     void document.getElementById('bracketCanvas').offsetWidth;
-    cards.forEach(c=>c.style.transition='');
-    cards.forEach((card,i)=>{
-      const delay=400+i*350;
-      timers.push(setTimeout(()=>card.classList.add('show'),delay));
-      const lines=svg.querySelectorAll(`.bracket-line[data-order="${card.dataset.order}"]`);
-      if(lines.length){timers.push(setTimeout(()=>lines.forEach(l=>l.classList.add('draw')),delay+350+180));}
-    });
-    timers.push(setTimeout(cycle,400+cards.length*350+4500));
+    bracketCards.forEach(c=>c.style.transition='');
   }
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{buildSvgLines();timers.push(setTimeout(cycle,500));}));
+
+  function runBracket(){
+    buildSvgLines();
+    bracketCards.forEach((card,i)=>{
+      const delay = 500 + i * 500;
+      $t(()=> card.classList.add('show'), delay);
+      const lines = svg.querySelectorAll(`.bracket-line[data-order="${card.dataset.order}"]`);
+      if(lines.length){ $t(()=> lines.forEach(l=>l.classList.add('draw')), delay + 500 + 180); }
+    });
+  }
+
+  function runCycle(){
+    clearAll();
+    resetGironi();
+    resetBracket();
+
+    // Gironi phase active
+    phaseBracket.classList.remove('active');
+    phaseGironi.classList.add('active');
+    urlbar.textContent = 'app.anytimes.it/tornei/spritz-silver/gironi';
+
+    let t = 300;
+
+    // PDF buttons
+    $t(()=> show('pdfBtns'), t); t += 450;
+
+    // Girone A
+    $t(()=> show('gironeA'), t); t += 250;
+    $t(()=> show('ar1'), t); t += 260;
+    $t(()=> show('ar2'), t); t += 260;
+    $t(()=> show('ar3'), t); t += 460;
+
+    // Girone B
+    $t(()=> show('gironeB'), t); t += 250;
+    $t(()=> show('br1'), t); t += 260;
+    $t(()=> show('br2'), t); t += 260;
+    $t(()=> show('br3'), t); t += 460;
+
+    // Girone C
+    $t(()=> show('gironeC'), t); t += 250;
+    $t(()=> show('cr1'), t); t += 260;
+    $t(()=> show('cr2'), t); t += 260;
+    $t(()=> show('cr3'), t); t += 700;
+
+    // Apri calendario Girone A + B
+    $t(()=>{
+      document.getElementById('gironeA').classList.add('cal-on');
+      const tog = document.getElementById('calToggleA');
+      tog.classList.add('cal-open');
+      tog.innerHTML = '∧ &nbsp; CHIUDI CALENDARIO';
+      document.getElementById('calBodyA').classList.add('open');
+      // Girone B — apri calendario
+      document.getElementById('gironeB').classList.add('cal-on');
+      const togB = document.getElementById('calToggleB');
+      togB.classList.add('cal-open');
+      togB.innerHTML = '∧ &nbsp; CHIUDI CALENDARIO';
+      document.getElementById('calBodyB').classList.add('open');
+    }, t); t += 550;
+
+    // Giornate Girone A
+    $t(()=> show('g1a'), t); t += 600;
+    $t(()=> show('g2a'), t); t += 600;
+    $t(()=> show('g3a'), t); t += 600;
+
+    // Giornate Girone B (stessa cadenza)
+    $t(()=> show('g1b'), t); t += 600;
+    $t(()=> show('g2b'), t); t += 600;
+    $t(()=> show('g3b'), t); t += 600;
+
+    // Scroll giù per mostrare il calendario
+    $t(()=> gironiScroll.scrollTo({ top: gironiScroll.scrollHeight, behavior: 'smooth' }), t - 800);
+
+    // Pausa lettura calendario
+    t += 2200;
+
+    // Evidenzia "PASSA ALLA FASE FINALE"
+    $t(()=>{
+      gironiScroll.scrollTo({ top: gironiScroll.scrollHeight, behavior: 'smooth' });
+      document.getElementById('faseFin').classList.add('fire');
+    }, t); t += 900;
+
+    // Transizione al tabellone
+    $t(()=>{
+      urlbar.textContent = 'app.anytimes.it/tornei/spritz-silver/tabellone';
+      phaseGironi.classList.remove('active');
+      phaseBracket.classList.add('active');
+      runBracket();
+    }, t);
+
+    // Riparti dopo: transizione + bracket animation + pausa
+    // bracket: 500 + 7*500 = 4000ms, +pause 4500 = 8500ms
+    t += 9400;
+    $t(runCycle, t);
+  }
+
+  // Avvia
+  setTimeout(runCycle, 400);
 })();
 </script>
 </body>
