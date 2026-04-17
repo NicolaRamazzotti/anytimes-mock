@@ -600,10 +600,11 @@ function hide(id){ const el=document.getElementById(id); if(el) el.classList.rem
 
 /* ── Finger ── */
 function getPhoneRect(){ return phone.getBoundingClientRect(); }
+/* offset per centrare la punta del 👆: -14px orizzontale (centrato), -2px verticale (punta in cima) */
 function moveFinger(xRel, yRel, cb){
   const r = getPhoneRect();
-  fingerEl.style.left = (r.left + xRel) + 'px';
-  fingerEl.style.top  = (r.top  + yRel) + 'px';
+  fingerEl.style.left = (r.left + xRel - 14) + 'px';
+  fingerEl.style.top  = (r.top  + yRel - 2) + 'px';
   if(cb) $t(cb, 750);
 }
 function showFinger(){ fingerEl.style.opacity='1'; }
@@ -657,12 +658,13 @@ function runCycle(){
   $t(()=> show('tc2'), t); t += 300;
   $t(()=> show('tc3'), t); t += 500;
 
-  // Finger appare e va sul primo torneo
-  $t(()=>{ showFinger(); moveFinger(195, 560); }, t); t += 900;
+  // Finger appare in basso e sale al pulsante VISUALIZZA
+  $t(()=>{ showFinger(); moveFinger(195, 640); }, t); t += 300;
+  $t(()=> moveFinger(195, 404), t); t += 900;
 
   // Tap su "VISUALIZZA"
   $t(()=>{
-    tapFinger(195, 560);
+    tapFinger(195, 404);
     document.getElementById('ctaVisualizza1').classList.add('pulse');
   }, t); t += 700;
 
@@ -688,13 +690,13 @@ function runCycle(){
   $t(()=>{ document.getElementById('perfBar').style.width='25%'; }, t); t += 2500;
 
   // Torna alla lista squadre
-  $t(()=>{ moveFinger(30, 165); }, t); t += 900;
-  $t(()=>{ tapFinger(30, 165); }, t); t += 700;
+  $t(()=>{ moveFinger(34, 84); }, t); t += 900;
+  $t(()=>{ tapFinger(34, 84); }, t); t += 700;
   $t(()=> goBack('screen-detail'), t); t += 600;
 
   // Switch tab GIRONI
-  $t(()=>{ moveFinger(195, 273); }, t); t += 900;
-  $t(()=>{ tapFinger(195, 273); }, t); t += 500;
+  $t(()=>{ moveFinger(195, 131); }, t); t += 900;
+  $t(()=>{ tapFinger(195, 131); }, t); t += 500;
   $t(()=> switchTab('gironi'), t); t += 600;
 
   // Anima righe gironi
@@ -712,8 +714,8 @@ function runCycle(){
   }, t); t += 1200;
 
   // Switch tab TABELLONE
-  $t(()=>{ moveFinger(310, 273); }, t); t += 900;
-  $t(()=>{ tapFinger(310, 273); }, t); t += 500;
+  $t(()=>{ moveFinger(310, 131); }, t); t += 900;
+  $t(()=>{ tapFinger(310, 131); }, t); t += 500;
   $t(()=> switchTab('tabellone'), t); t += 600;
 
   // Anima bracket cards
