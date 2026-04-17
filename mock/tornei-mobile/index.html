@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Anytimes — Tornei Mobile Mock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --brand:#F7583F;
+  --green:#2EC47A;
+  --font-display:'Syne',sans-serif;
+  --font-body:'Inter',sans-serif;
+}
+html,body{
+  width:100%;height:100vh;
+  background:#08080C;
+  font-family:var(--font-body);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 900px 600px at 50% 50%,rgba(247,88,63,0.05) 0%,transparent 70%);pointer-events:none;}
+body::after{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;}
+
+/* ── MOCK LABEL ── */
+.mock-label{position:fixed;top:18px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:600;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.25);font-family:var(--font-body);}
+
+/* ── PHONE FRAME ── */
+.phone{
+  position:relative;
+  width:390px;height:844px;
+  background:#fff;
+  border-radius:54px;
+  box-shadow:0 0 0 10px #1a1a1a,0 0 0 12px #2a2a2a,0 80px 160px rgba(0,0,0,.9),0 20px 60px rgba(0,0,0,.5);
+  overflow:hidden;flex-shrink:0;
+}
+.dynamic-island{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:120px;height:36px;background:#000;border-radius:20px;z-index:200;}
+.phone-screen{position:absolute;inset:0;border-radius:54px;overflow:hidden;background:#f5f4f0;}
+
+/* ── SCREEN ── */
+.screen{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  background:#f5f4f0;
+  transition:transform .42s cubic-bezier(.16,1,.3,1),opacity .42s;
+  will-change:transform;
+}
+.screen.off-right{transform:translateX(100%);opacity:0;pointer-events:none;}
+.screen.off-left{transform:translateX(-100%);opacity:0;pointer-events:none;}
+.screen.active{transform:translateX(0);opacity:1;}
+
+/* ── STATUS BAR ── */
+.status-bar{height:58px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:space-between;padding:0 28px 10px;font-size:12px;font-weight:600;color:#0d0d0d;}
+.status-time{font-size:16px;font-weight:700;letter-spacing:-.5px;}
+.status-icons{display:flex;align-items:center;gap:6px;}
+
+/* ── APP TOPBAR ── */
+.app-topbar{height:52px;flex-shrink:0;background:#fff;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;padding:0 18px;gap:10px;}
+.app-logo{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.app-logo img{height:26px;width:auto;}
+.app-logo-text{font-family:var(--font-display);font-size:16px;font-weight:700;color:#0d0d0d;letter-spacing:-.3px;}
+.app-logo-text span{color:var(--brand);}
+.app-topbar-nav{display:flex;align-items:center;gap:14px;margin-left:auto;}
+.app-topbar-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:10px;color:rgba(0,0,0,.35);}
+.app-topbar-icon.active{background:rgba(247,88,63,.08);color:var(--brand);}
+
+/* ── PAGE HEADER (back) ── */
+.page-header{height:52px;flex-shrink:0;background:#fff;border-bottom:1px solid rgba(0,0,0,.06);display:flex;align-items:center;padding:0 18px;gap:10px;}
+.page-back{width:32px;height:32px;border-radius:9px;background:rgba(0,0,0,.05);display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.5);flex-shrink:0;}
+.page-title{font-family:var(--font-display);font-size:18px;font-weight:800;color:#0d0d0d;letter-spacing:-.4px;}
+
+/* ── SCROLLABLE BODY ── */
+.scroll-body{flex:1;overflow-y:auto;scrollbar-width:none;}
+.scroll-body::-webkit-scrollbar{display:none;}
+
+/* ── BOTTOM NAVBAR ── */
+.bottom-nav{height:82px;flex-shrink:0;background:#fff;border-top:1px solid rgba(0,0,0,.07);display:flex;align-items:flex-start;justify-content:space-around;padding-top:12px;}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:52px;}
+.bnav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:rgba(0,0,0,.3);}
+.bnav-item.active .bnav-icon{color:var(--brand);}
+.bnav-lbl{font-size:9px;font-weight:600;color:rgba(0,0,0,.3);letter-spacing:.2px;}
+.bnav-item.active .bnav-lbl{color:var(--brand);}
+.bnav-dot{width:4px;height:4px;border-radius:50%;background:var(--brand);margin-top:-2px;}
+
+/* ══════════════════════════════════
+   SCREEN 1 — LISTA TORNEI
+══════════════════════════════════ */
+.tornei-list{padding:16px 16px 20px;display:flex;flex-direction:column;gap:12px;}
+.torneo-card{
+  background:#fff;border-radius:18px;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+  opacity:0;transform:translateY(10px);
+  transition:opacity .35s,transform .35s;
+}
+.torneo-card.show{opacity:1;transform:none;}
+.tc-header{padding:14px 14px 10px;display:flex;align-items:flex-start;justify-content:space-between;gap:8px;}
+.tc-name{font-family:var(--font-display);font-size:16px;font-weight:800;color:#0d0d0d;letter-spacing:-.3px;}
+.tc-badge{padding:4px 10px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;flex-shrink:0;}
+.tc-badge.in-corso{background:var(--green);color:#fff;}
+.tc-badge.completato{background:rgba(0,0,0,.08);color:rgba(0,0,0,.45);}
+.tc-meta{padding:0 14px;display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(0,0,0,.45);margin-bottom:6px;}
+.tc-trophy{position:relative;height:90px;background:linear-gradient(135deg,#1a1a1a 0%,#2a2020 100%);overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.tc-trophy-svg{opacity:.18;font-size:56px;line-height:1;}
+.tc-stars{position:absolute;display:flex;gap:6px;}
+.tc-stars svg{opacity:.55;}
+.tc-desc{padding:10px 14px 0;font-size:12px;color:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:space-between;}
+.tc-sep{height:1px;background:rgba(0,0,0,.07);margin:10px 14px 0;}
+.tc-cta{margin:10px 14px 14px;height:42px;background:var(--brand);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:13px;font-weight:700;color:#fff;letter-spacing:.2px;}
+.tc-cta.pulse{animation:ctaPulse .4s ease;}
+@keyframes ctaPulse{0%{transform:scale(1)}40%{transform:scale(.96)}100%{transform:scale(1)}}
+
+/* ══════════════════════════════════
+   SCREEN 2 — DETTAGLIO TORNEO (tabs)
+══════════════════════════════════ */
+.detail-tabs{display:flex;border-bottom:2px solid rgba(0,0,0,.06);background:#fff;flex-shrink:0;}
+.dtab{flex:1;padding:13px 6px;font-size:12px;font-weight:700;color:rgba(0,0,0,.35);letter-spacing:.5px;text-align:center;position:relative;transition:color .2s;}
+.dtab.active{color:var(--brand);}
+.dtab.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:2px;background:var(--brand);border-radius:2px 2px 0 0;}
+
+/* Tab content */
+.tab-pane{display:none;flex:1;overflow:hidden;}
+.tab-pane.active{display:flex;flex-direction:column;}
+
+/* ── SQUADRE TAB ── */
+.squadre-list{flex:1;overflow-y:auto;scrollbar-width:none;}
+.squadre-list::-webkit-scrollbar{display:none;}
+.sq-row{
+  display:flex;align-items:center;padding:14px 18px;
+  border-bottom:1px solid rgba(0,0,0,.05);
+  background:#fff;
+  opacity:0;transform:translateX(8px);
+  transition:opacity .3s,transform .3s;
+}
+.sq-row.show{opacity:1;transform:none;}
+.sq-num{width:22px;font-size:11px;color:rgba(0,0,0,.3);font-weight:500;flex-shrink:0;}
+.sq-name{flex:1;font-size:13px;font-weight:600;color:#0d0d0d;letter-spacing:.2px;}
+.sq-arrow{color:var(--brand);}
+
+/* ── STATS SCREEN ── */
+#screen-stats{background:#f5f4f0;}
+.stats-scroll{flex:1;overflow-y:auto;padding:16px 16px 24px;scrollbar-width:none;}
+.stats-scroll::-webkit-scrollbar{display:none;}
+.stat-section{background:#fff;border-radius:16px;padding:14px 16px;margin-bottom:12px;}
+.stat-section-title{font-size:13px;font-weight:700;color:#0d0d0d;text-align:center;padding-bottom:10px;border-bottom:1px solid rgba(0,0,0,.06);margin-bottom:8px;}
+.stat-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(0,0,0,.05);}
+.stat-row:last-child{border-bottom:none;}
+.stat-lbl{font-size:12px;font-weight:500;color:rgba(0,0,0,.55);letter-spacing:.3px;text-transform:uppercase;}
+.stat-val{font-size:13px;font-weight:700;color:#0d0d0d;}
+.stat-val.neg{color:var(--brand);}
+.perf-bar-bg{height:10px;background:rgba(0,0,0,.07);border-radius:6px;overflow:hidden;margin-top:8px;}
+.perf-bar-fill{height:100%;background:var(--brand);border-radius:6px;width:0%;transition:width 1s cubic-bezier(.16,1,.3,1);}
+.perf-pct{font-size:11px;font-weight:700;color:rgba(0,0,0,.4);margin-top:5px;text-align:right;}
+.partite-section{background:#fff;border-radius:16px;overflow:hidden;margin-bottom:12px;}
+.partite-title{font-size:13px;font-weight:700;color:#0d0d0d;text-align:center;padding:14px 16px 10px;border-bottom:1px solid rgba(0,0,0,.06);}
+.giornata-hd-m{padding:9px 16px;background:#f8f7f4;font-size:11px;font-weight:700;color:#0d0d0d;letter-spacing:.5px;}
+.match-row-m{padding:10px 16px;border-bottom:1px solid rgba(0,0,0,.05);}
+.match-row-m:last-child{border-bottom:none;}
+.m-team{font-size:12px;color:rgba(0,0,0,.55);padding:2px 0;display:flex;align-items:center;justify-content:space-between;}
+.m-team.win{font-weight:700;color:#0d0d0d;}
+.m-score{font-size:11px;color:rgba(0,0,0,.4);letter-spacing:1px;}
+
+/* ══════════════════════════════════
+   GIRONI TAB
+══════════════════════════════════ */
+.gironi-scroll{flex:1;overflow-y:auto;padding:14px 14px 20px;scrollbar-width:none;}
+.gironi-scroll::-webkit-scrollbar{display:none;}
+.m-girone-card{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:12px;box-shadow:0 1px 6px rgba(0,0,0,.05);}
+.m-girone-ttl{padding:10px 14px;font-size:11px;font-weight:800;letter-spacing:.8px;color:rgba(0,0,0,.5);background:#f8f7f4;border-bottom:1px solid rgba(0,0,0,.06);}
+.m-st-tbl{width:100%;border-collapse:collapse;}
+.m-st-tbl th{font-size:9px;font-weight:700;color:rgba(0,0,0,.35);letter-spacing:.5px;padding:6px 8px;text-align:center;background:#f8f7f4;border-bottom:1px solid rgba(0,0,0,.06);}
+.m-st-tbl th:nth-child(2){text-align:left;}
+.m-st-row{opacity:0;transform:translateY(4px);transition:opacity .28s,transform .28s;}
+.m-st-row.show{opacity:1;transform:none;}
+.m-st-tbl td{padding:8px 8px;font-size:11px;color:#0d0d0d;text-align:center;border-bottom:1px solid rgba(0,0,0,.04);}
+.m-st-tbl td:nth-child(2){text-align:left;font-weight:600;font-size:10.5px;letter-spacing:.2px;}
+.m-st-tbl td:first-child{color:rgba(0,0,0,.35);font-size:10px;}
+.m-st-pt{color:var(--brand);font-weight:700;}
+.m-st-row:last-child td{border-bottom:none;}
+
+/* ══════════════════════════════════
+   TABELLONE TAB (mobile bracket)
+══════════════════════════════════ */
+.bracket-scroll{flex:1;overflow-x:auto;overflow-y:auto;padding:14px 12px 20px;scrollbar-width:none;}
+.bracket-scroll::-webkit-scrollbar{display:none;}
+.bracket-inner{min-width:640px;display:flex;gap:0;align-items:flex-start;}
+.b-round{display:flex;flex-direction:column;flex-shrink:0;}
+.b-round-hd{font-size:9px;font-weight:700;letter-spacing:.5px;color:rgba(0,0,0,.4);text-align:center;padding:4px 8px 8px;}
+.b-cards{display:flex;flex-direction:column;gap:0;}
+.b-match{
+  width:160px;margin:0 8px 8px;
+  background:#fff;border:1px solid rgba(0,0,0,.09);border-radius:10px;overflow:hidden;
+  box-shadow:0 1px 6px rgba(0,0,0,.05);
+  opacity:0;transform:translateY(6px) scale(.97);
+  transition:opacity .4s cubic-bezier(.16,1,.3,1),transform .4s cubic-bezier(.16,1,.3,1);
+}
+.b-match.show{opacity:1;transform:none;}
+.b-mrow{display:flex;align-items:center;padding:6px 8px;gap:6px;border-bottom:1px solid rgba(0,0,0,.05);}
+.b-mrow:last-child{border-bottom:none;}
+.b-seed{width:3px;height:24px;border-radius:2px;flex-shrink:0;}
+.seed-w{background:var(--green)}.seed-l{background:var(--brand)}.seed-n{background:rgba(0,0,0,.12)}
+.b-name{flex:1;font-size:10px;font-weight:600;color:#0d0d0d;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.b-score{font-size:10px;font-weight:700;color:rgba(0,0,0,.4);letter-spacing:.5px;}
+.b-score.lose{color:rgba(0,0,0,.25);}
+.b-spacer{height:16px;flex-shrink:0;}
+
+/* Finale / Winner special */
+.b-match.final-card{border-color:rgba(247,88,63,.25);box-shadow:0 2px 12px rgba(247,88,63,.1);}
+.winner-card{
+  width:160px;margin:8px 8px 0;
+  background:linear-gradient(135deg,#F7583F,#D43E27);border-radius:10px;
+  padding:12px 10px;text-align:center;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .5s,transform .5s;
+}
+.winner-card.show{opacity:1;transform:none;}
+.winner-lbl{font-size:9px;font-weight:700;letter-spacing:.8px;color:rgba(255,255,255,.65);}
+.winner-name{font-family:var(--font-display);font-size:13px;font-weight:800;color:#fff;letter-spacing:-.2px;margin-top:3px;}
+
+/* ── FINGER CURSOR ── */
+.finger{position:fixed;z-index:9999;pointer-events:none;opacity:0;transition:left .7s cubic-bezier(.4,0,.2,1),top .7s cubic-bezier(.4,0,.2,1),opacity .3s;font-size:28px;filter:drop-shadow(0 3px 6px rgba(0,0,0,.4));transform-origin:30% 90%;line-height:1;}
+.finger.tap{animation:fingerTap .3s ease forwards;}
+@keyframes fingerTap{0%{transform:scale(1)}40%{transform:scale(.82)}100%{transform:scale(1)}}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.5);width:40px;height:40px;margin-left:-20px;margin-top:-20px;transform:scale(0);opacity:1;pointer-events:none;animation:rippleAnim .5s ease forwards;}
+@keyframes rippleAnim{to{transform:scale(3);opacity:0;}}
+</style>
+</head>
+<body>
+
+<div class="mock-label">Anytimes · Tornei — Vista Utente Mobile</div>
+
+<!-- FINGER -->
+<div class="finger" id="finger">👆</div>
+
+<!-- PHONE -->
+<div class="phone" id="phone">
+  <div class="dynamic-island"></div>
+  <div class="phone-screen">
+
+    <!-- ══ SCREEN 1: LISTA TORNEI ══ -->
+    <div class="screen active" id="screen-lista">
+
+      <div class="status-bar">
+        <span class="status-time">09:41</span>
+        <div class="status-icons">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0" y="3" width="3" height="9" rx="1" fill="currentColor" opacity=".3"/><rect x="4.5" y="2" width="3" height="10" rx="1" fill="currentColor" opacity=".5"/><rect x="9" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".75"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" fill="currentColor"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 2.5C9.8 2.5 11.4 3.2 12.6 4.4L14 3C12.4 1.4 10.3.5 8 .5S3.6 1.4 2 3L3.4 4.4C4.6 3.2 6.2 2.5 8 2.5z" fill="currentColor"/><path d="M8 5.5c1 0 1.9.4 2.6 1L12 5.1C10.9 4 9.5 3.4 8 3.4s-2.9.6-4 1.7L5.4 6.5C6.1 5.9 7 5.5 8 5.5z" fill="currentColor"/><circle cx="8" cy="9.5" r="1.5" fill="currentColor"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity=".35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z" fill="currentColor" opacity=".4"/></svg>
+        </div>
+      </div>
+
+      <div class="app-topbar">
+        <div class="app-logo"><img src="../../assets/logo.png" alt="Anytimes"><div class="app-logo-text">any<span>times</span></div></div>
+        <div class="app-topbar-nav">
+          <div class="app-topbar-icon"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M12.5 12.5l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div>
+          <div class="app-topbar-icon active"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M9 1.5l1.5 3.3 3.5.4-2.5 2.5.6 3.5L9 9.5l-3.1 1.7.6-3.5L4 5.2l3.5-.4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M3 14.5h12M3 17h12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+        </div>
+      </div>
+
+      <div class="page-header" style="background:#f5f4f0;border-bottom:none;">
+        <div class="page-title" style="font-size:22px;">Tornei</div>
+      </div>
+
+      <div class="scroll-body">
+        <div class="tornei-list">
+
+          <!-- Card 1 -->
+          <div class="torneo-card" id="tc1">
+            <div class="tc-header">
+              <div class="tc-name">SPRITZ SILVER</div>
+              <div class="tc-badge in-corso">in corso</div>
+            </div>
+            <div class="tc-meta">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.1"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+              Torneo a gironi &nbsp;·&nbsp; 14 mar
+            </div>
+            <div class="tc-trophy">
+              <div class="tc-stars">
+                <svg width="18" height="17" viewBox="0 0 18 17" fill="#8B4513"><path d="M9 1l2.2 4.5 5 .7-3.6 3.5.85 4.95L9 12.25l-4.45 2.4.85-4.95L1.8 6.2l5-.7z"/></svg>
+                <svg width="22" height="21" viewBox="0 0 22 21" fill="#8B4513"><path d="M11 1l2.7 5.5 6 .85-4.35 4.25 1.03 6L11 14.9l-5.38 2.7 1.03-6L2.3 7.35l6-.85z"/></svg>
+                <svg width="18" height="17" viewBox="0 0 18 17" fill="#8B4513"><path d="M9 1l2.2 4.5 5 .7-3.6 3.5.85 4.95L9 12.25l-4.45 2.4.85-4.95L1.8 6.2l5-.7z"/></svg>
+              </div>
+              <div class="tc-trophy-svg">🏆</div>
+            </div>
+            <div class="tc-desc"><span>Nessuna descrizione</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.3"/></svg></div>
+            <div class="tc-sep"></div>
+            <div class="tc-cta" id="ctaVisualizza1">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1.3"/></svg>
+              VISUALIZZA
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="torneo-card" id="tc2">
+            <div class="tc-header">
+              <div class="tc-name">spritz padel</div>
+              <div class="tc-badge in-corso">in corso</div>
+            </div>
+            <div class="tc-meta">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.1"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+              Torneo a gironi &nbsp;·&nbsp; 13 mar
+            </div>
+            <div class="tc-trophy">
+              <div class="tc-stars">
+                <svg width="18" height="17" viewBox="0 0 18 17" fill="#8B4513"><path d="M9 1l2.2 4.5 5 .7-3.6 3.5.85 4.95L9 12.25l-4.45 2.4.85-4.95L1.8 6.2l5-.7z"/></svg>
+                <svg width="22" height="21" viewBox="0 0 22 21" fill="#8B4513"><path d="M11 1l2.7 5.5 6 .85-4.35 4.25 1.03 6L11 14.9l-5.38 2.7 1.03-6L2.3 7.35l6-.85z"/></svg>
+                <svg width="18" height="17" viewBox="0 0 18 17" fill="#8B4513"><path d="M9 1l2.2 4.5 5 .7-3.6 3.5.85 4.95L9 12.25l-4.45 2.4.85-4.95L1.8 6.2l5-.7z"/></svg>
+              </div>
+              <div class="tc-trophy-svg">🏆</div>
+            </div>
+            <div class="tc-desc"><span>Nessuna descrizione</span><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.3"/></svg></div>
+            <div class="tc-sep"></div>
+            <div class="tc-cta">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.3"/><circle cx="7" cy="7" r="2.5" stroke="currentColor" stroke-width="1.3"/></svg>
+              VISUALIZZA
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="torneo-card" id="tc3">
+            <div class="tc-header">
+              <div class="tc-name">Torneo prova</div>
+              <div class="tc-badge in-corso">in corso</div>
+            </div>
+            <div class="tc-meta">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><rect x="1" y="2" width="10" height="9" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M1 5h10" stroke="currentColor" stroke-width="1.1"/><path d="M4 1v2M8 1v2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+              Americano &nbsp;·&nbsp; 6 gen
+            </div>
+            <div class="tc-trophy" style="height:70px;">
+              <div class="tc-trophy-svg" style="font-size:40px;">🏆</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="bnav-item"><div class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 9.5L10 3l7 6.5V17a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div><span class="bnav-lbl">Home</span></div>
+        <div class="bnav-item"><div class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M2 8h16" stroke="currentColor" stroke-width="1.4"/><path d="M7 2v3M13 2v3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div><span class="bnav-lbl">Agenda</span></div>
+        <div class="bnav-item active"><div class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.5 5 5.5.8-4 3.9 1 5.4L10 14.7l-5 2.4 1-5.4-4-3.9 5.5-.8z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div><span class="bnav-lbl">Tornei</span><div class="bnav-dot"></div></div>
+        <div class="bnav-item"><div class="bnav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.4"/><path d="M3 18c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></div><span class="bnav-lbl">Profilo</span></div>
+      </div>
+    </div><!-- /screen-lista -->
+
+    <!-- ══ SCREEN 2: DETTAGLIO TORNEO ══ -->
+    <div class="screen off-right" id="screen-detail">
+
+      <div class="status-bar">
+        <span class="status-time">09:41</span>
+        <div class="status-icons">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0" y="3" width="3" height="9" rx="1" fill="currentColor" opacity=".3"/><rect x="4.5" y="2" width="3" height="10" rx="1" fill="currentColor" opacity=".5"/><rect x="9" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".75"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" fill="currentColor"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 2.5C9.8 2.5 11.4 3.2 12.6 4.4L14 3C12.4 1.4 10.3.5 8 .5S3.6 1.4 2 3L3.4 4.4C4.6 3.2 6.2 2.5 8 2.5z" fill="currentColor"/><path d="M8 5.5c1 0 1.9.4 2.6 1L12 5.1C10.9 4 9.5 3.4 8 3.4s-2.9.6-4 1.7L5.4 6.5C6.1 5.9 7 5.5 8 5.5z" fill="currentColor"/><circle cx="8" cy="9.5" r="1.5" fill="currentColor"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity=".35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z" fill="currentColor" opacity=".4"/></svg>
+        </div>
+      </div>
+
+      <div class="page-header">
+        <div class="page-back"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8l5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="page-title">SPRITZ SILVER</div>
+      </div>
+
+      <div class="detail-tabs">
+        <div class="dtab active" id="tab-squadre" data-tab="squadre">SQUADRE</div>
+        <div class="dtab" id="tab-gironi" data-tab="gironi">GIRONI</div>
+        <div class="dtab" id="tab-tabellone" data-tab="tabellone">TABELLONE</div>
+      </div>
+
+      <!-- SQUADRE PANE -->
+      <div class="tab-pane active" id="pane-squadre">
+        <div class="squadre-list">
+          <div class="sq-row" id="sq1"><div class="sq-num">1</div><div class="sq-name">DAMIANI/PASTORELLI</div><div class="sq-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div class="sq-row" id="sq2"><div class="sq-num">2</div><div class="sq-name">HITAJ/SBARRA</div><div class="sq-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div class="sq-row" id="sq3"><div class="sq-num">3</div><div class="sq-name">SARAVALLE/MIELE</div><div class="sq-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div class="sq-row" id="sq4"><div class="sq-num">4</div><div class="sq-name">MARCHIANO/MATTEO</div><div class="sq-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div class="sq-row" id="sq5"><div class="sq-num">5</div><div class="sq-name">SFORNA/ROSCIOLI</div><div class="sq-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div class="sq-row" id="sq6"><div class="sq-num">6</div><div class="sq-name">MOMI/FEDERICO</div><div class="sq-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div class="sq-row" id="sq7"><div class="sq-num">7</div><div class="sq-name">SECHI/GUARDUCCI</div><div class="sq-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div class="sq-row" id="sq8"><div class="sq-num">8</div><div class="sq-name">MACCHERANI/PAGNOTTA</div><div class="sq-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+          <div class="sq-row" id="sq9"><div class="sq-num">9</div><div class="sq-name">STEFANIA/MASSIMO</div><div class="sq-arrow"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7.5 3.5l4 3.5-4 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+        </div>
+      </div><!-- /pane-squadre -->
+
+      <!-- GIRONI PANE -->
+      <div class="tab-pane" id="pane-gironi">
+        <div class="gironi-scroll" id="gironiScrollM">
+
+          <div class="m-girone-card">
+            <div class="m-girone-ttl">GIRONE A</div>
+            <table class="m-st-tbl">
+              <thead><tr><th>Pos</th><th>Squadra</th><th>PG</th><th>PT</th><th>V</th><th>S</th></tr></thead>
+              <tbody>
+                <tr class="m-st-row" id="ma1"><td>1</td><td>HITAJ/SBARRA</td><td>2</td><td class="m-st-pt">6</td><td>2</td><td>0</td></tr>
+                <tr class="m-st-row" id="ma2"><td>2</td><td>SARAVALLE/MIELE</td><td>2</td><td class="m-st-pt">2</td><td>1</td><td>1</td></tr>
+                <tr class="m-st-row" id="ma3"><td>3</td><td>DAMIANI/PAST.</td><td>2</td><td class="m-st-pt">1</td><td>0</td><td>2</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="m-girone-card">
+            <div class="m-girone-ttl">GIRONE B</div>
+            <table class="m-st-tbl">
+              <thead><tr><th>Pos</th><th>Squadra</th><th>PG</th><th>PT</th><th>V</th><th>S</th></tr></thead>
+              <tbody>
+                <tr class="m-st-row" id="mb1"><td>1</td><td>MARCHIANO/MATTEO</td><td>2</td><td class="m-st-pt">6</td><td>2</td><td>0</td></tr>
+                <tr class="m-st-row" id="mb2"><td>2</td><td>SFORNA/ROSCIOLI</td><td>2</td><td class="m-st-pt">3</td><td>1</td><td>1</td></tr>
+                <tr class="m-st-row" id="mb3"><td>3</td><td>MOMI/FEDERICO</td><td>2</td><td class="m-st-pt" style="color:rgba(0,0,0,.3)">0</td><td>0</td><td>2</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="m-girone-card">
+            <div class="m-girone-ttl">GIRONE C</div>
+            <table class="m-st-tbl">
+              <thead><tr><th>Pos</th><th>Squadra</th><th>PG</th><th>PT</th><th>V</th><th>S</th></tr></thead>
+              <tbody>
+                <tr class="m-st-row" id="mc1"><td>1</td><td>SECHI/GUARDUCCI</td><td>2</td><td class="m-st-pt">6</td><td>2</td><td>0</td></tr>
+                <tr class="m-st-row" id="mc2"><td>2</td><td>MACCHERANI/PAG.</td><td>2</td><td class="m-st-pt">3</td><td>1</td><td>1</td></tr>
+                <tr class="m-st-row" id="mc3"><td>3</td><td>STEFANIA/MASSIMO</td><td>2</td><td class="m-st-pt" style="color:rgba(0,0,0,.3)">0</td><td>0</td><td>2</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div><!-- /pane-gironi -->
+
+      <!-- TABELLONE PANE -->
+      <div class="tab-pane" id="pane-tabellone">
+        <div class="bracket-scroll">
+          <div class="bracket-inner">
+
+            <!-- QF -->
+            <div class="b-round">
+              <div class="b-round-hd">4° DI FINALE</div>
+              <div class="b-cards">
+                <div class="b-match" id="bm1">
+                  <div class="b-mrow"><div class="b-seed seed-w"></div><div class="b-name">SFORNA/ROSCIOLI</div><div class="b-score">6 6</div></div>
+                  <div class="b-mrow"><div class="b-seed seed-l"></div><div class="b-name">SARAVALLE/MIELE</div><div class="b-score lose">3 2</div></div>
+                </div>
+                <div class="b-spacer"></div>
+                <div class="b-match" id="bm2">
+                  <div class="b-mrow"><div class="b-seed seed-l"></div><div class="b-name">DAMIANI/PAST.</div><div class="b-score lose">1 3</div></div>
+                  <div class="b-mrow"><div class="b-seed seed-w"></div><div class="b-name">SECHI/GUARDUCCI</div><div class="b-score">6 6</div></div>
+                </div>
+                <div class="b-spacer"></div>
+                <div class="b-match" id="bm3">
+                  <div class="b-mrow"><div class="b-seed seed-w"></div><div class="b-name">STEFANIA/MASSIMO</div><div class="b-score">7 6</div></div>
+                  <div class="b-mrow"><div class="b-seed seed-l"></div><div class="b-name">MARCHIANO/MATTEO</div><div class="b-score lose">5 4</div></div>
+                </div>
+                <div class="b-spacer"></div>
+                <div class="b-match" id="bm4">
+                  <div class="b-mrow"><div class="b-seed seed-n"></div><div class="b-name">HITAJ/SBARRA</div><div class="b-score">3 3</div></div>
+                  <div class="b-mrow"><div class="b-seed seed-w"></div><div class="b-name">MACCHERANI/PAG.</div><div class="b-score">6 6</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SF -->
+            <div class="b-round">
+              <div class="b-round-hd">SEMIFINALE</div>
+              <div class="b-cards" style="padding-top:26px;">
+                <div class="b-match" id="bm5">
+                  <div class="b-mrow"><div class="b-seed seed-w"></div><div class="b-name">SFORNA/ROSCIOLI</div><div class="b-score">6 6</div></div>
+                  <div class="b-mrow"><div class="b-seed seed-l"></div><div class="b-name">SECHI/GUARDUCCI</div><div class="b-score lose">3 4</div></div>
+                </div>
+                <div class="b-spacer" style="height:76px;"></div>
+                <div class="b-match" id="bm6">
+                  <div class="b-mrow"><div class="b-seed seed-w"></div><div class="b-name">STEFANIA/MASSIMO</div><div class="b-score">6 7</div></div>
+                  <div class="b-mrow"><div class="b-seed seed-l"></div><div class="b-name">MACCHERANI/PAG.</div><div class="b-score lose">4 5</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FIN + WINNER -->
+            <div class="b-round">
+              <div class="b-round-hd">FINALE</div>
+              <div class="b-cards" style="padding-top:90px;">
+                <div class="b-match final-card" id="bm7">
+                  <div class="b-mrow"><div class="b-seed seed-w"></div><div class="b-name">SFORNA/ROSCIOLI</div><div class="b-score">7 6</div></div>
+                  <div class="b-mrow"><div class="b-seed seed-l"></div><div class="b-name">STEFANIA/MASSIMO</div><div class="b-score lose">5 3</div></div>
+                </div>
+                <div class="winner-card" id="bwinner">
+                  <div class="winner-lbl">🏆 VINCITORE</div>
+                  <div class="winner-name">SFORNA/ROSCIOLI</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div><!-- /pane-tabellone -->
+
+    </div><!-- /screen-detail -->
+
+    <!-- ══ SCREEN 3: STATISTICHE SQUADRA ══ -->
+    <div class="screen off-right" id="screen-stats">
+
+      <div class="status-bar">
+        <span class="status-time">09:41</span>
+        <div class="status-icons">
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><rect x="0" y="3" width="3" height="9" rx="1" fill="currentColor" opacity=".3"/><rect x="4.5" y="2" width="3" height="10" rx="1" fill="currentColor" opacity=".5"/><rect x="9" y="0" width="3" height="12" rx="1" fill="currentColor" opacity=".75"/><rect x="13.5" y="0" width="2.5" height="12" rx="1" fill="currentColor"/></svg>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="none"><path d="M8 2.5C9.8 2.5 11.4 3.2 12.6 4.4L14 3C12.4 1.4 10.3.5 8 .5S3.6 1.4 2 3L3.4 4.4C4.6 3.2 6.2 2.5 8 2.5z" fill="currentColor"/><path d="M8 5.5c1 0 1.9.4 2.6 1L12 5.1C10.9 4 9.5 3.4 8 3.4s-2.9.6-4 1.7L5.4 6.5C6.1 5.9 7 5.5 8 5.5z" fill="currentColor"/><circle cx="8" cy="9.5" r="1.5" fill="currentColor"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x=".5" y=".5" width="21" height="11" rx="3.5" stroke="currentColor" stroke-opacity=".35"/><rect x="2" y="2" width="17" height="8" rx="2" fill="currentColor"/><path d="M23 4v4a2 2 0 0 0 0-4z" fill="currentColor" opacity=".4"/></svg>
+        </div>
+      </div>
+
+      <div class="page-header">
+        <div class="page-back" id="statsBack"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 13L5 8l5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="page-title" style="font-size:15px;font-weight:700;letter-spacing:.2px;">DAMIANI/PASTORELLI</div>
+      </div>
+
+      <div class="stats-scroll">
+
+        <div class="stat-section" id="statsCard">
+          <div class="stat-section-title">Statistiche</div>
+          <div class="stat-row"><span class="stat-lbl">Partite giocate</span><span class="stat-val">4</span></div>
+          <div class="stat-row"><span class="stat-lbl">Partite vittorie</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-lbl">Sconfitte</span><span class="stat-val">3</span></div>
+          <div class="stat-row"><span class="stat-lbl">Set vinti</span><span class="stat-val">1</span></div>
+          <div class="stat-row"><span class="stat-lbl">Set persi</span><span class="stat-val">4</span></div>
+          <div class="stat-row"><span class="stat-lbl">Differenza set</span><span class="stat-val neg">-3</span></div>
+          <div class="stat-row"><span class="stat-lbl">Game vinti</span><span class="stat-val">17</span></div>
+          <div class="stat-row"><span class="stat-lbl">Game persi</span><span class="stat-val">24</span></div>
+        </div>
+
+        <div class="stat-section" id="perfCard">
+          <div class="stat-section-title">Performance</div>
+          <div class="perf-bar-bg"><div class="perf-bar-fill" id="perfBar"></div></div>
+          <div class="perf-pct" id="perfPct">25%</div>
+        </div>
+
+        <div class="partite-section" id="partiteCard">
+          <div class="partite-title">Partite</div>
+          <div class="giornata-hd-m">Giornata 1</div>
+          <div class="match-row-m">
+            <div class="m-team win">HITAJ/SBARRA<span class="m-score" style="float:right">4 4</span></div>
+            <div class="m-team">DAMIANI/PASTORELLI<span class="m-score" style="float:right">3 1</span></div>
+          </div>
+          <div class="match-row-m">
+            <div class="m-team win">DAMIANI/PASTORELLI<span class="m-score" style="float:right">4 4</span></div>
+            <div class="m-team">SECHI/GUARDUCCI<span class="m-score" style="float:right">0 1</span></div>
+          </div>
+          <div class="match-row-m">
+            <div class="m-team win">SFORNA/ROSCIOLI<span class="m-score" style="float:right">4 4</span></div>
+            <div class="m-team">DAMIANI/PASTORELLI<span class="m-score" style="float:right">2 2</span></div>
+          </div>
+          <div class="giornata-hd-m">Giornata 3</div>
+          <div class="match-row-m">
+            <div class="m-team win">HITAJ/SBARRA<span class="m-score" style="float:right">6 6</span></div>
+            <div class="m-team">DAMIANI/PASTORELLI<span class="m-score" style="float:right">1 3</span></div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /screen-stats -->
+
+  </div><!-- /phone-screen -->
+</div><!-- /phone -->
+
+<script>
+const $t = (fn, ms) => setTimeout(fn, ms);
+const phone = document.getElementById('phone');
+let fingerEl = document.getElementById('finger');
+
+/* ── Screen management ── */
+function goTo(id, dir='right'){
+  document.querySelectorAll('.screen').forEach(s=>{
+    if(s.id === id){
+      s.classList.remove('off-right','off-left');
+      s.classList.add('active');
+    } else if(s.classList.contains('active')){
+      s.classList.remove('active');
+      s.classList.add(dir==='right' ? 'off-left' : 'off-right');
+    }
+  });
+}
+function goBack(id){
+  document.querySelectorAll('.screen').forEach(s=>{
+    if(s.id === id){
+      s.classList.remove('off-left','off-right');
+      s.classList.add('active');
+    } else if(s.classList.contains('active')){
+      s.classList.remove('active');
+      s.classList.add('off-right');
+    }
+  });
+}
+
+/* ── Tab switch ── */
+function switchTab(name){
+  document.querySelectorAll('.dtab').forEach(t=>t.classList.toggle('active', t.dataset.tab===name));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.toggle('active', p.id==='pane-'+name));
+}
+
+/* ── show/hide rows ── */
+function show(id){ const el=document.getElementById(id); if(el) el.classList.add('show'); }
+function hide(id){ const el=document.getElementById(id); if(el) el.classList.remove('show'); }
+
+/* ── Finger ── */
+function getPhoneRect(){ return phone.getBoundingClientRect(); }
+function moveFinger(xRel, yRel, cb){
+  const r = getPhoneRect();
+  fingerEl.style.left = (r.left + xRel) + 'px';
+  fingerEl.style.top  = (r.top  + yRel) + 'px';
+  if(cb) $t(cb, 750);
+}
+function showFinger(){ fingerEl.style.opacity='1'; }
+function hideFinger(){ fingerEl.style.opacity='0'; }
+function tapFinger(xRel, yRel, cb){
+  moveFinger(xRel, yRel);
+  $t(()=>{
+    fingerEl.classList.remove('tap');
+    void fingerEl.offsetWidth;
+    fingerEl.classList.add('tap');
+    if(cb) $t(cb, 300);
+  }, 750);
+}
+
+/* ── Reset all ── */
+function resetAll(){
+  // Screens
+  document.querySelectorAll('.screen').forEach((s,i)=>{
+    s.classList.remove('active','off-left','off-right');
+    if(i===0) s.classList.add('active'); else s.classList.add('off-right');
+  });
+  // Cards lista tornei
+  ['tc1','tc2','tc3'].forEach(hide);
+  // Squadre rows
+  for(let i=1;i<=9;i++) hide('sq'+i);
+  // Gironi rows
+  ['ma1','ma2','ma3','mb1','mb2','mb3','mc1','mc2','mc3'].forEach(hide);
+  // Bracket cards
+  for(let i=1;i<=7;i++) hide('bm'+i);
+  hide('bwinner');
+  // Perf bar
+  const pb = document.getElementById('perfBar');
+  if(pb){ pb.style.transition='none'; pb.style.width='0%'; void pb.offsetWidth; pb.style.transition=''; }
+  // Tabs
+  switchTab('squadre');
+  // Scroll
+  const gs = document.getElementById('gironiScrollM');
+  if(gs) gs.scrollTop=0;
+}
+
+/* ══════════════════════════════════
+   MAIN CYCLE
+══════════════════════════════════ */
+function runCycle(){
+  resetAll();
+  hideFinger();
+  let t = 400;
+
+  // Appaiono le card tornei
+  $t(()=> show('tc1'), t); t += 300;
+  $t(()=> show('tc2'), t); t += 300;
+  $t(()=> show('tc3'), t); t += 500;
+
+  // Finger appare e va sul primo torneo
+  $t(()=>{ showFinger(); moveFinger(195, 560); }, t); t += 900;
+
+  // Tap su "VISUALIZZA"
+  $t(()=>{
+    tapFinger(195, 560);
+    document.getElementById('ctaVisualizza1').classList.add('pulse');
+  }, t); t += 700;
+
+  // Vai al dettaglio torneo
+  $t(()=> goTo('screen-detail','right'), t); t += 600;
+
+  // Appaiono le squadre una per una
+  for(let i=1;i<=9;i++){
+    const idx = i;
+    $t(()=> show('sq'+idx), t);
+    t += 200;
+  }
+  t += 500;
+
+  // Finger va sulla riga DAMIANI (la prima)
+  $t(()=> moveFinger(195, 330), t); t += 900;
+
+  // Tap sulla squadra → statistiche
+  $t(()=>{ tapFinger(195, 330); }, t); t += 700;
+  $t(()=> goTo('screen-stats','right'), t); t += 800;
+
+  // Anima performance bar
+  $t(()=>{ document.getElementById('perfBar').style.width='25%'; }, t); t += 2500;
+
+  // Torna alla lista squadre
+  $t(()=>{ moveFinger(30, 165); }, t); t += 900;
+  $t(()=>{ tapFinger(30, 165); }, t); t += 700;
+  $t(()=> goBack('screen-detail'), t); t += 600;
+
+  // Switch tab GIRONI
+  $t(()=>{ moveFinger(195, 273); }, t); t += 900;
+  $t(()=>{ tapFinger(195, 273); }, t); t += 500;
+  $t(()=> switchTab('gironi'), t); t += 600;
+
+  // Anima righe gironi
+  ['ma1','ma2','ma3'].forEach((id,i)=>{ $t(()=> show(id), t+i*220); });
+  t += 800;
+  ['mb1','mb2','mb3'].forEach((id,i)=>{ $t(()=> show(id), t+i*220); });
+  t += 800;
+  ['mc1','mc2','mc3'].forEach((id,i)=>{ $t(()=> show(id), t+i*220); });
+  t += 1200;
+
+  // Scroll giù nei gironi
+  $t(()=>{
+    const gs = document.getElementById('gironiScrollM');
+    gs.scrollTo({top:300,behavior:'smooth'});
+  }, t); t += 1200;
+
+  // Switch tab TABELLONE
+  $t(()=>{ moveFinger(310, 273); }, t); t += 900;
+  $t(()=>{ tapFinger(310, 273); }, t); t += 500;
+  $t(()=> switchTab('tabellone'), t); t += 600;
+
+  // Anima bracket cards
+  for(let i=1;i<=7;i++){
+    const idx=i;
+    $t(()=> show('bm'+idx), t);
+    t += 350;
+  }
+  $t(()=> show('bwinner'), t); t += 2500;
+
+  // Restart
+  $t(()=> runCycle(), t);
+}
+
+runCycle();
+</script>
+</body>
+</html>
